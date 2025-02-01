@@ -30,7 +30,9 @@ export default function Navbar() {
                 <Link href="/">หน้าหลัก</Link>
               </li>
               <li>
-                <Link href="/register">ลงทะเบียนบริจาคและสั่งซื้อเสื้อ</Link>
+                <Link href="/register/personal-info">
+                  ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
+                </Link>
               </li>
               <li>
                 <Link href="/track">ติดตามสถานะ</Link>
@@ -40,7 +42,9 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          <Link href="/" className="btn btn-ghost text-xl">ลงทะเบียนผู้บริจาค ฯ</Link>
+          <Link href="/" className="btn btn-ghost text-xl">
+            ลงทะเบียนผู้บริจาค ฯ
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
@@ -48,7 +52,9 @@ export default function Navbar() {
               <Link href="/">หน้าหลัก</Link>
             </li>
             <li>
-              <Link href="/register">ลงทะเบียนบริจาคและสั่งซื้อเสื้อ</Link>
+              <Link href="/register/personal-info">
+                ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
+              </Link>
             </li>
             <li>
               <Link href="/track">ติดตามสถานะ</Link>
