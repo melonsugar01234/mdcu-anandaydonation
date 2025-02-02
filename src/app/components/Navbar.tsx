@@ -30,7 +30,7 @@ export default function Navbar() {
                 <Link href="/">หน้าหลัก</Link>
               </li>
               <li>
-                <Link href="/register/personal-info">
+                <Link href="/register/step-one">
                   ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
                 </Link>
               </li>
@@ -52,7 +52,7 @@ export default function Navbar() {
               <Link href="/">หน้าหลัก</Link>
             </li>
             <li>
-              <Link href="/register/personal-info">
+              <Link href="/register/step-one">
                 ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
               </Link>
             </li>

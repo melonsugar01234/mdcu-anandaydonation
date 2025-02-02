@@ -9,9 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/date-input": "^2.3.9",
+    "@heroui/date-picker": "^2.3.10",
+    "@heroui/system": "^2.4.7",
+    "@heroui/theme": "^2.4.6",
+    "@prisma/client": "^6.3.0",
+    "cally": "^0.7.2",
+    "framer-motion": "^12.0.6",
     "next": "15.1.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -19,6 +27,7 @@
     "@types/react-dom": "^19",
     "daisyui": "^4.12.23",
     "postcss": "^8",
+    "prisma": "^6.3.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

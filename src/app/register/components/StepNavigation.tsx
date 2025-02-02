@@ -4,22 +4,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import path from "path";
 import { useEffect, useState } from "react";
+import { AddDealRoutes } from "@/lib/types";
 
 const steps = [
   {
     title: "Personal Info",
-    route: "personal-info",
-    link: "/register/personal-info",
+    route: "step-one",
+    link: AddDealRoutes.PERSONAL_INFO,
   },
   {
     title: "Donation Info",
-    route: "donation-info",
-    link: "/register/donation-info",
+    route: "step-two",
+    link: AddDealRoutes.DONATE_INFO,
   },
   {
     title: "Payment Info",
-    route: "payment-info",
-    link: "/register/payment-info",
+    route: "step-three",
+    link: AddDealRoutes.PAYMENT_INFO,
   },
 ];
 
@@ -33,12 +34,12 @@ export default function StepNavigation() {
   }, [currentPath]);
 
   return (
-    <ul className="steps">
+    <ul className="steps mt-5">
       {steps.map((step, index) => (
         <li key={index} className={`step ${index <= currentStep ? 'step-primary' : ''}`}>
-          <Link href={step.link}>
+          {/* <Link href={step.link}>
             <span className="hover:underline">{step.title}</span>
-          </Link>
+          </Link> */}
         </li>
       ))}
     </ul>

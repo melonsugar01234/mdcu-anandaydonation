@@ -1,6 +1,7 @@
 import StepNavigation from "../components/StepNavigation";
-import ConfirmDonation from "../components/ConfirmDonation";
+import ConfirmDonation from "./ConfirmDonation";
 import Navbar from "../../components/Navbar";
+import StepThreeForm from "./StepThreeForm";
 
 export default function ConfirmInfoPage() {
   return (
@@ -16,6 +17,11 @@ export default function ConfirmInfoPage() {
               Microsoft Edge หรือ Safari
             </p>
             <ConfirmDonation />
+            <div className="artboard artboard-horizontal phone-2">
+          <img src="/images/bookbank.png" alt="bookbank" />
+        </div>
+        <StepThreeForm/>
+        
             <StepNavigation />
           </div>
         </div>

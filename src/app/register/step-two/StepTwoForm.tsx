@@ -1,11 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { useActionState } from "react";
+import { stepTwoFormAction } from "./action";
+import { FormErrors } from "@/lib/types";
+import SubmitButton from "@/app/components/SubmitButton";
 
-import Link from "next/link";
-import { SubmitButton } from "./PersonalInfoForm";
+const initialState: FormErrors = {};
 
-export default function DonationInfoForm() {
+export default function StepTwoForm() {
+  const [serverErrors, formAction] = useActionState(
+    stepTwoFormAction,
+    initialState
+  );
+
   const [amount, setAmount] = useState(0);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +51,7 @@ export default function DonationInfoForm() {
     <>
       <div className="container mx-auto p-4">
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <form action="">
+          <form action="formAction">
             <p>ข้อมูลการบริจาค</p>
             <input
               className="input input-bordered w-full max-w-xs"
@@ -159,13 +167,8 @@ export default function DonationInfoForm() {
                 ))}
               </div>
             )}
-            <div className="flex justify-between mt-4">
-              <button className="btn btn-primary w-1/2 mr-2">
-              <Link href={"/register/personal-info"}>Go Back</Link>
-              </button>
-              <div className="w-1/2 ml-2">
-                <SubmitButton />
-              </div>
+            <div>
+              <SubmitButton text="Continue" />
             </div>
           </form>
         </div>

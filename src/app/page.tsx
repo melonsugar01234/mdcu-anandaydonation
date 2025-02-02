@@ -37,7 +37,7 @@ export default function Home() {
           <img src="/images/bookbank.png" alt="bookbank" />
         </div>
         <button className="btn btn-wide bg-primary text-white">
-          <Link href="/register/personal-info">ลงทะเบียน</Link>
+          <Link href="/register/step-one">ลงทะเบียน</Link>
         </button>
         <h2 className="text-xl">
           ขั้นตอนการขอรับเข็ม หรือเสื้อยืด ที่ระลึกวันอานันทมหิดล

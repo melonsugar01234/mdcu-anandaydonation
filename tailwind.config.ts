@@ -1,3 +1,4 @@
+import {heroui} from '@heroui/theme';
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
 
@@ -6,6 +7,7 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@heroui/theme/dist/components/(date-input|date-picker|form|button|ripple|spinner|calendar|popover).js"
   ],
   theme: {
     extend: {
@@ -15,7 +17,7 @@ export default {
       },
     },
   },
-  plugins: [daisyui],
+  plugins: [daisyui,heroui()],
   daisyui: {
     themes: [
       {
