@@ -4,23 +4,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import path from "path";
 import { useEffect, useState } from "react";
-import { AddDealRoutes } from "@/lib/types";
+import { AddRegisterRoutes } from "@/lib/types";
 
 const steps = [
   {
     title: "Personal Info",
     route: "step-one",
-    link: AddDealRoutes.PERSONAL_INFO,
+    link: AddRegisterRoutes.PERSONAL_INFO,
   },
   {
     title: "Donation Info",
     route: "step-two",
-    link: AddDealRoutes.DONATE_INFO,
+    link: AddRegisterRoutes.DONATE_INFO,
   },
   {
     title: "Payment Info",
     route: "step-three",
-    link: AddDealRoutes.PAYMENT_INFO,
+    link: AddRegisterRoutes.PAYMENT_INFO,
   },
 ];
 

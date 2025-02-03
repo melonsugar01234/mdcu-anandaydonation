@@ -2,6 +2,7 @@ import StepNavigation from "../components/StepNavigation";
 import ConfirmDonation from "./ConfirmDonation";
 import Navbar from "../../components/Navbar";
 import StepThreeForm from "./StepThreeForm";
+import SubmitButton from "../components/SubmitButton";
 
 export default function ConfirmInfoPage() {
   return (
@@ -21,7 +22,7 @@ export default function ConfirmInfoPage() {
           <img src="/images/bookbank.png" alt="bookbank" />
         </div>
         <StepThreeForm/>
-        
+        <SubmitButton text="confirm"/>
             <StepNavigation />
           </div>
         </div>

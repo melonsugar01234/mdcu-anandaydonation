@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
-import { stepOneFormAction } from "./action";
-import { FormErrors } from "@/lib/types";
-import SubmitButton from "@/app/components/SubmitButton";
+import Input from '../components/Input';
+import { useActionState } from 'react';
+import { stepOneFormAction } from './action';
+import { FormErrors } from '@/lib/types';
+import SubmitButton from '../components/SubmitButton';
 
 const initialState: FormErrors = {};
 
@@ -14,11 +15,8 @@ export default function StepOneForm() {
     initialState
   );
 
-
   return (
     <div className="container mx-auto p-4">
-
-     
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold mb-4">ลงทะเบียน</h1>
         <p className="mb-4">
@@ -27,42 +25,39 @@ export default function StepOneForm() {
         </p>
 
         <form className="flex flex-col space-y-4 w-full max-w-xs" action={formAction}>
-          <input
-            name="name"
-            required
+          <Input
+            label="ชื่อ-นามสกุล"
+            id="name"
             type="text"
-            placeholder="ชื่อ-นามสกุล"
-            className="input input-bordered w-full max-w-xs"
-            
+            required
+            description="เช่น นายสมชาย ใจดี"
+            errorMsg={serverErrors?.name}
           />
 
-          <span className="text-gray-500 text-xs">เช่น นายสมชาย ใจดี</span>
-
-          <input
-            name="telephone"
-            required
+          <Input
+            label="เบอร์โทรศัพท์"
+            id="telephone"
             type="tel"
-            placeholder="เบอร์โทรศัพท์"
-            className="input input-bordered w-full max-w-xs "
-            
+            required
+            description="เช่น 0812345678"
+            errorMsg={serverErrors?.telephone}
           />
 
-          <span className="text-gray-500 text-xs">เช่น 0812345678</span>
-
-          <input
-            name="email"
+          <Input
+            label="อีเมล(ถ้ามี)"
+            id="email"
             type="email"
-            placeholder="อีเมล(ถ้ามี)"
-            className="input input-bordered w-full max-w-xs"/>
+            errorMsg={serverErrors?.email}
+          />
 
-          <input
-            name="address"
-            required
+          <Input
+            label="ที่อยู่"
+            id="address"
             type="text"
-            placeholder="ที่อยู่"
-            className="input input-bordered w-full max-w-xs "
-            
-            />
+            required
+            errorMsg={serverErrors?.address}
+          />
+
           <p>โปรดเลือกวิธิการชำระเงิน</p>
           <div className="form-control">
             <label className="label cursor-pointer">
@@ -86,9 +81,8 @@ export default function StepOneForm() {
               />
               <span>บริจาคผ่านเลขที่บัญชี</span>
             </label>
+            <SubmitButton text="Submit"/>
           </div>
-
-          <SubmitButton text="Continue" />
         </form>
       </div>
     </div>
