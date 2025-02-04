@@ -1,7 +1,8 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { dataTest } from "./dataTest";
+import DemoPage from "../payment/page";
+// import { dataTest } from ".testAdmin/dataTest";
 
 export default function testAdmin() {
   const statusList = [
@@ -50,7 +51,8 @@ export default function testAdmin() {
               </tbody>
             </table>
           </div>
-          <div className="max-h-[500px] overflow-auto">
+          <DemoPage />
+          {/* <div className="max-h-[500px] overflow-auto">
             <table className="table-auto table-xs table-pin-rows table-pin-cols border-collapse whitespace-nowrap">
               <thead>
                 <tr className="text-base text-black sticky top-0 bg-white">
@@ -107,11 +109,13 @@ export default function testAdmin() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </div> */}
 
           <div className="my-2">
-            {buttonList.map((item,itemIndex) => (
-              <button key={itemIndex} className="btn btn-outline btn-sm">{item.name}</button>
+            {buttonList.map((item, itemIndex) => (
+              <button key={itemIndex} className="btn btn-outline btn-sm">
+                {item.name}
+              </button>
             ))}
           </div>
           <div>
