@@ -111,13 +111,13 @@ export default function testAdmin() {
             </table>
           </div> */}
 
-          <div className="my-2">
+          {/* <div className="my-2">
             {buttonList.map((item, itemIndex) => (
               <button key={itemIndex} className="btn btn-outline btn-sm">
                 {item.name}
               </button>
             ))}
-          </div>
+          </div> */}
           <div>
             <div className="my-5">
               จำนวนคนบริจาคทั้งหมด : 518 <br />
