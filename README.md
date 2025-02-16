@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+This project uses Dev Container, see [Dev Containers tutorial](https://code.visualstudio.com/docs/devcontainers/tutorial) for more information. However, if this isn't an option for you, then you can setup the development environment manually using the `scripts/setupLocalDevEnv.sh`[^shscript] file.
+
+To run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+During development, the database is stored in the folder called `local`. If this is corrupted during development, simply delete the folder and run `scripts/setupLocalDevEnv.sh` again.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[^shscript]: The `.sh` scripts doesn't work on Microsoft Windows, but you can follow along manually (or write an alternative script in PowerShell).
 
-## Learn More
+## Remaining Works
 
-To learn more about Next.js, take a look at the following resources:
+- [ ] Add favicon
+- [ ] Setup CAPTCHA
+- [ ] Update DaisyUI out of beta (currently using v5-beta7)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Maintainance
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Keep In Minds
 
-## Deploy on Vercel
+- Use `<Link>` from `@/i18n/routing` rather than `next/link` for the translations to work.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Code Styles
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project uses Prettier to enforce code styles. You can find the Prettier extension on VSCode. If code is not properly styled, then the **build process will fail**.
+
+### Content Changes
+
+- To change the texts and translations, see `messages` folder. 
+  - The "Not Found" page, which is in `src/app/not-found.tsx` file, doesn't use `messages` because it has to handle the case where the requested language is unsupported. 
+  - Some texts related to the registration/order system, such as order status messages, are stored in the database instead of the `messages` folderr.
+  - Reminder: The English and Thai version of various images should be the same width and height. The width and height is found in the code, so if you updated the images, you should also update the image's width and height in the code as well. 
+- To change the theme colors, see `src/app/globals.css` file. The [theme generator](https://v5.daisyui.com/theme-generator/) may also be useful.
+- To change the font, see `src/app/layout.tsx` file. Changing between [Google Fonts](https://fonts.google.com) is a simple process, but using fonts not on Google Fonts maybe require more work.
+- To change page layout, see the `page.tsx` files in `src/app`. 
+- While some options are configurable via Admin UI, others must be done through by changing `src/config.ts` file.
+- If you want certain parts of the page to be updatable without changing the codes (e.g., live donation amount), the function `getRuntimeConfig` maybe helpful. To add more entries into this function, you can simply add to the `ToggleConfigs` or `FreeformConfigs` in `src/app/admin/main/Settings.tsx`.
+- Passwords are stored in Argon2id hash. To change the password, the easiest way is to go to Admin UI > Security > Change Password. If you are locked out, you will need to edit the database and update the password hash manually.
+
+## Deployment
+
+To build the image:
+```bash
+docker build -t mdcu-anandaydonation .
+```
+
+To run:
+```bash
+docker run -p 3000:3000 -v "/path/to/your/storage/here/:/data/" mdcu-anandaydonation
+```
+Remember to put the `/data/` directory in a persistent volume, otherwise the database will be wiped! Also, you should reset the JWT Key through the Admin UI to prevent unauthorize access.

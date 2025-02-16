@@ -1,0 +1,4 @@
+- TODO: Add faviicon
+- TODO: Setup CAPTCHA
+- TODO: Provide English translations
+- TODO: Update content
