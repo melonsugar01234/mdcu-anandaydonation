@@ -80,32 +80,26 @@ export default function Home(props: { params: Promise<{ locale: string }> }) {
       <Link className="btn btn-primary btn-wide" href="/register">
         {t("register")}
       </Link>
-      <h2 className="text-center text-xl">
-        ขั้นตอนการขอรับเข็ม หรือเสื้อยืด ที่ระลึกวันอานันทมหิดล
-      </h2>
+      <h2 className="text-center text-xl">{t("stepsTitle")}</h2>
       <ol className="list-inside list-decimal">
         <li>
-          กรอกข้อมูลการบริจาค
+          {t("steps1")}
           <ol className="ml-4 list-inside list-decimal">
-            <li>จํานวนเงินที่ประสงค์จะบริจาค</li>
+            <li>{t("steps1_1")}</li>
             <li>
-              ระบุจํานวนเสื้อ หรือ เข็ม หรือ เสื้อและเข็ม ที่ผู้บริจาคประสงค์จะรับในวงเงินที่บริจาค
+              {t("steps1_2")}
               <ol className="ml-4 list-inside list-decimal">
-                <li>เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน</li>
-                <li>เงินบริจาคทุก 299 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว</li>
+                <li>{t("steps1_2_1")}</li>
+                <li>{t("steps1_2_2")}</li>
               </ol>
             </li>
-            <li>หมายเหตุ: จัดส่งฟรีไม่เสียค่าจัดส่งเพิ่มเติม</li>
+            <li>{t("steps1_3")}</li>
           </ol>
         </li>
-        <li>แนบหลักฐานการโอนเงิน(สลิป)</li>
-        <li>กดบันทึกข้อมูล</li>
+        <li>{t("steps2")}</li>
+        <li>{t("steps3")}</li>
       </ol>
-      <p className="text-red-700">
-        ทางคณะแพทยศาสตร์ จุฬา จะดําเนินการส่งเข็มและเสื้อโดยทําการสรุปยอดทุกวันที่ 1 ของทุกเดือนเวลา
-        12:00 และจะทําการจัดส่ง ภายใน 3 สัปดาห์หลังจากสรุปยอด เวลาที่แจ้งเป็นแค่การประมาณ
-        อาจล่าช้าตามการผลิต
-      </p>
+      <p className="text-red-700">{t("stepsNote")}</p>
     </div>
   );
 }
