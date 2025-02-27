@@ -80,7 +80,7 @@
     "addressOnReceiptExample": "(เว้นว่างหากใช้ที่อยู่เดียวกับที่อยู่จัดส่ง)",
     "addressOnReceiptInvalid": "กรุณากรอกข้อมูลนี้",
 
-    "donationAmountLabel": "จำนวนเงินที่ประสงค์จะบริจาค",
+    "donationAmountLabel": "จำนวนเงินที่ประสงค์จะบริจาค (ขั้นต่ำ 299 บาท)",
     "donationAmountInvalid": "กรุณากรอกข้อมูลนี้",
     "pin_img": "/images_th/banner.jpg",
     "shirt_img": "/images_th/banner.jpg",
@@ -96,7 +96,7 @@
     "shirtStyleM": "ผู้ชาย",
     "shirtSize": "ไซส์",
     "shirtAddToCard": "เพิ่มลงตะกร้า",
-    "itemOrderRemaining": "คุณ{amount, plural, =0 {ไม่สามารถสั่งซื้อ{name}เพิ่มได้} =1 {สามารถสั่งซื้อ{name} ได้อีก 1 รายการ} other {สามารถสั่งซื้อ{name} ได้อีก # รายการ}}",
+    "itemOrderRemaining": "{amount, plural, =0 {จำนวนเงินที่ใส่ไม่เพียงพอ กรุณาเลื่อนลงเพื่อกรอกจำนวนเงินบริจาคที่กำหนด} =1 {คุณสามารถสั่งซื้อ {name} ได้อีก 1 รายการ} other {คุณสามารถสั่งซื้อ {name} ได้อีก # รายการ}}",
     "itemCart": "ตะกร้าสินค้า",
     "itemCartAmount": "จำนวน",
     "itemCartPrice": "ราคา",

@@ -80,7 +80,7 @@
     "addressOnReceiptExample": "(Leave this field empty to use the Delivery Address)",
     "addressOnReceiptInvalid": "Please enter this information",
 
-    "donationAmountLabel": "Donation Amount",
+    "donationAmountLabel": "Donation Amount (Minimum 299 baht)",
     "donationAmountInvalid": "Please enter this information",
     "pin_img": "/images_en/banner.jpg",
     "shirt_img": "/images_en/banner.jpg",
@@ -96,7 +96,7 @@
     "shirtStyleM": "Men",
     "shirtSize": "Size",
     "shirtAddToCard": "Add to cart",
-    "itemOrderRemaining": "You {amount, plural, =0 {cannot order more {name}} =1 {can order one more {name}} other {can order # more {name}s}}.",
+    "itemOrderRemaining": "{amount, plural, =0 {The entered donation amount is insufficient. Please scroll down to enter the required donation amount.} =1 {You can order one more {name}.} other {You can order # more {name}s.}}",
     "itemCart": "Cart",
     "itemCartAmount": "Cart",
     "itemCartPrice": "Cart",
