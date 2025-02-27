@@ -1,8 +1,8 @@
-import { Checkbox, Input, Radio, RadioSet } from "@/components/Forms";
 import type { FormStep0Data, FormStepProps } from "./types";
 import { NavButtons } from "./NavButtons";
 import { useRef } from "react";
-import { PaymentMethods, type PaymentMethodsT } from "@/types/registration";
+import { Input } from "@/components/Forms";
+
 import { FORM_TEXT_MAX_SIZE } from "@/config";
 import { useTranslations } from "next-intl";
 
@@ -65,82 +65,7 @@ export const FormStep0UI: React.FC<FormStepProps<0>> = ({ data, setData, setStep
           value={data[0].address}
           onChange={(v) => updateByKey("address", v)}
         />
-        <RadioSet
-          label={t("paymentMethodLabel")}
-          value={data[0].paymentMethod.toString()}
-          onChange={(v) => {
-            const paymentMethod = Number(v) as PaymentMethodsT;
-            updateByKey("paymentMethod", paymentMethod);
-            if (paymentMethod !== PaymentMethods.BankAccountNumber)
-              updateByKey("requestReceipt", false);
-          }}
-        >
-          <Radio
-            className="radio-primary"
-            value={PaymentMethods.QRCode.toString()}
-            label={t("paymentMethodQRCode")}
-          />
-          <Radio
-            className="radio-primary"
-            value={PaymentMethods.BankAccountNumber.toString()}
-            label={t("paymentMethodAccNumber")}
-          />
-        </RadioSet>
-
-        <fieldset className="fieldset bg-base-200 border-base-300 rounded-box border p-4">
-          <legend className="fieldset-legend text-base">{t("requestReceiptLabel")}</legend>
-
-          <Checkbox
-            label={t("requestReceiptCheckbox")}
-            value={data[0].requestReceipt}
-            disabled={data[0].paymentMethod !== PaymentMethods.BankAccountNumber}
-            onChange={(v) => updateByKey("requestReceipt", v)}
-          />
-
-          {data[0].requestReceipt && (
-            <>
-              <Input
-                required
-                isInFieldSet
-                type="text"
-                label={t("natIdLabel")}
-                autoComplete="off"
-                placeholder={t("natIdExample")}
-                maxLength={FORM_TEXT_MAX_SIZE}
-                validate={t("natIdInvalid")}
-                value={data[0].nationalId}
-                onChange={(v) => updateByKey("nationalId", v)}
-              />
-
-              <Input
-                required
-                isInFieldSet
-                type="text"
-                label={t("nameOnReceiptLabel")}
-                autoComplete="section-formstep0 name"
-                placeholder={t("nameOnReceiptExample")}
-                maxLength={FORM_TEXT_MAX_SIZE}
-                validate={t("nameOnReceiptInvalid")}
-                value={data[0].nameOnReceipt}
-                onChange={(v) => updateByKey("nameOnReceipt", v)}
-              />
-
-              <Input
-                isInFieldSet
-                useTextarea
-                label={t("addressOnReceiptLabel")}
-                autoComplete="section-formstep0 billing"
-                placeholder={t("addressOnReceiptExample")}
-                maxLength={FORM_TEXT_MAX_SIZE}
-                validate={t("addressOnReceiptInvalid")}
-                value={data[0].addressOnReceipt}
-                onChange={(v) => updateByKey("addressOnReceipt", v)}
-              />
-            </>
-          )}
-
-          <p className="fieldset-label text-base">{t("requestReceiptNote")}</p>
-        </fieldset>
+        
       </form>
 
       <NavButtons

@@ -113,32 +113,6 @@ export const FormStep1UI: React.FC<FormStepProps<1>> = ({
   return (
     <>
       <form ref={formRef} className="flex w-full flex-col gap-8">
-        <Input
-          required
-          type="number"
-          label={t("donationAmountLabel")}
-          autoComplete="off"
-          min={0}
-          max={Math.trunc(Number.MAX_SAFE_INTEGER / 100)}
-          step={0.01}
-          validate={t("donationAmountInvalid")}
-          value={localDonateAmount}
-          onChange={(v) => {
-            // Convert number to rounded cents while not making the form input "jump-py"
-            const donateAmount = Math.max(
-              Math.min(Math.trunc(Number(v) * 100), Number.MAX_SAFE_INTEGER),
-              0,
-            );
-            if (donateAmount !== Number(v) * 100) {
-              setLocalDonateAmount(formatNumber(donateAmount / 100));
-            } else {
-              while (v.charAt(0) === "0") v = v.substring(1);
-              setLocalDonateAmount(v);
-            }
-            updateByKey("donateAmount", donateAmount);
-          }}
-        />
-
         {
           // #region Pin
         }
@@ -326,6 +300,33 @@ export const FormStep1UI: React.FC<FormStepProps<1>> = ({
         {
           // #endregion Summary Table
         }
+
+        {/* Donate amount input */}
+        <Input
+          required
+          type="number"
+          label={t("donationAmountLabel")}
+          autoComplete="off"
+          min={0}
+          max={Math.trunc(Number.MAX_SAFE_INTEGER / 100)}
+          step={0.01}
+          validate={t("donationAmountInvalid")}
+          value={localDonateAmount}
+          onChange={(v) => {
+            // Convert number to rounded cents while not making the form input "jump-py"
+            const donateAmount = Math.max(
+              Math.min(Math.trunc(Number(v) * 100), Number.MAX_SAFE_INTEGER),
+              0,
+            );
+            if (donateAmount !== Number(v) * 100) {
+              setLocalDonateAmount(formatNumber(donateAmount / 100));
+            } else {
+              while (v.charAt(0) === "0") v = v.substring(1);
+              setLocalDonateAmount(v);
+            }
+            updateByKey("donateAmount", donateAmount);
+          }}
+        />
       </form>
 
       <NavButtons

@@ -29,11 +29,6 @@ export type FormStep0Data = {
   tel: string;
   email: string;
   address: string;
-  paymentMethod: PaymentMethodsT;
-  requestReceipt: boolean;
-  nationalId: string;
-  nameOnReceipt: string;
-  addressOnReceipt: string;
 };
 
 export type FormStep1Data = {
@@ -44,6 +39,11 @@ export type FormStep1Data = {
 export type FormStep2Data = {
   transferDateTime: number;
   receipts: File[];
+  paymentMethod: PaymentMethodsT;
+  requestReceipt: boolean;
+  nationalId: string;
+  nameOnReceipt: string;
+  addressOnReceipt: string;
 };
 
 export const FormSubmissionStatesEnum = {
