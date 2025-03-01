@@ -14,4 +14,17 @@ model Register {
     phone String
     email String? @default("")
     home  String
+    tracking_code String @default("")
+    created_at DateTime @default(now())
+    card  String?
+    shirt String?
+    shipment_status String?
+    payment_method String? 
+    payment_amount String?
+    payment_proof String? 
+    payment_status String?
+    receipt String? // yes or no
+    national_id String?
+    name_on_receipt String?
+    address_on_receipt String? 
 }
