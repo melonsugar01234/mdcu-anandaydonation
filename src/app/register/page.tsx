@@ -7,31 +7,33 @@ export default function Register() {
       <Navbar />
       <div className="container mx-auto p-4">
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-2xl font-bold mb-4">ลงทะเบียน</h1>
-          <p className="mb-4">
-            โครงการวันอานันทมหิดล คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย ประจำปี
-            พ.ศ. ๒๕๖๗
-          </p>
+          <h1 className="text-5xl font-bold mb-4">ลงทะเบียน</h1>
+          <div className="text-2xl mb-4 text-center">
+            <div>โครงการวันอานันทมหิดล คณะแพทยศาสตร์</div>
+            <div>จุฬาลงกรณ์มหาวิทยาลัย ประจำปี พ.ศ. ๒๕๖๗</div>
+          </div>
           <form className="flex flex-col space-y-4 w-full max-w-xs">
+            <span>ชื่อ-นามสกุล</span>
             <input
               required
               type="text"
-              placeholder="ชื่อ-นามสกุล"
+              placeholder="เช่น นายสมชาย ใจดี"
               className="input input-bordered w-full max-w-xs"
             />
-            <span>เช่น นายสมชาย ใจดี</span>
+            <span>เบอร์โทรศัพท์</span>
             <input
               required
               type="tel"
-              placeholder="เบอร์โทรศัพท์"
+              placeholder="เช่น 081-901-xxxx"
               className="input input-bordered w-full max-w-xs"
             />
-            <span>เช่น 081-901-xxxx</span>
+            <span>email (ถ้ามี)</span>
             <input
               type="email"
-              placeholder="อีเมล(ถ้ามี)"
+              placeholder="เข่น steve@gmail.com"
               className="input input-bordered w-full max-w-xs"
             />
+            <span>ที่อยู่จัดส่ง</span>
             <input
               required
               type="text"
