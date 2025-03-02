@@ -26,9 +26,23 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-        <div className="navbar-end">
-          <button className="btn" onClick={toggleLanguage}>
-            {translations[language].switch}
+
+        <div className="navbar-end flex items-center gap-5 px-4">    
+          <button
+            className={`flex items-center gap-2 ${language === "th" ? "btn-disabled" : ""}`}
+            onClick={() => toggleLanguage("th")}
+            disabled={language === "th"} 
+          >
+            <img src="/images/TH_icon.png" alt="TH" className="h-5 w-5" />
+            ไทย /
+          </button>
+          <button
+            className={`flex items-center gap-2 ${language === "en" ? "btn-disabled" : ""}`}
+            onClick={() => toggleLanguage("en")}
+            disabled={language === "en"} 
+          >
+            <img src="/images/EN_icon.png" alt="EN" className="h-5 w-5" />
+            EN
           </button>
         </div>
       </div>

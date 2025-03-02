@@ -1,26 +1,24 @@
 "use client";
 import { createContext, useContext, useState } from "react";
 
-// Define the context type
 interface LanguageContextType {
   language: "th" | "en";
   translations: Record<string, Record<string, string>>;
-  toggleLanguage: () => void;
+  toggleLanguage: (newLanguage: "th" | "en") => void;
 }
 
-// Create the Language Context
+
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
   const [language, setLanguage] = useState<"th" | "en">("th");
 
-  // Define translations
   const translations = {
     th: {
       home: "หน้าหลัก",
       register: "ลงทะเบียน",
       track: "ติดตามสถานะ",
-      switch: "Switch to EN",
+      switch: "EN",
       title: "ลงทะเบียนผู้บริจาค ฯ",
       eventTitle: "'Miles for Heart' Virtual Walk and Run เปิดรับสมัครแล้ววันนี้",
       eventSubtitle: "มาร่วมเดิน-วิ่งเพื่อสุขภาพไปด้วยกันนะคะ",
@@ -57,12 +55,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
       home: "Home",
       register: "Register",
       track: "Track Status",
-      switch: "Switch to TH",
-      title: "Donor Registration",
+      switch: "TH",
+      title: "Registration",
       eventTitle: "'Miles for Heart' Virtual Walk and Run is now open for registration",
-      eventSubtitle: "Join us for a walk and run for health",
+      eventSubtitle: "Come walk or run for health with us today",
       socialMedia: "Facebook: ANAN DAY, Instagram: @anan_day, or on this website",
-      registerRun: "Register for the run",
+      registerRun: "MILES FOR HEART REGISTRATION",
       stepsTitle: "Steps to receive the commemorative pin or T-shirt for Ananda Mahidol Day",
       donationStep1: "Fill in the donation details",
       donationAmount: "Amount you wish to donate",
@@ -92,9 +90,8 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     },
   };
 
-  // Function to toggle language
-  const toggleLanguage = () => {
-    setLanguage((prevLang) => (prevLang === "th" ? "en" : "th"));
+  const toggleLanguage = (newLanguage: "th" | "en") => {
+    setLanguage(newLanguage);
   };
 
   return (
@@ -104,7 +101,6 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   );
 };
 
-// Custom hook to use language context
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
