@@ -94,7 +94,7 @@
     "shirtStyle": "สไตล์",
     "shirtStyleF": "ผู้หญิง",
     "shirtStyleM": "ผู้ชาย",
-    "shirtSize": "ไซส์",
+    "shirtSize": "ไซซ์",
     "shirtAddToCard": "เพิ่มลงตะกร้า",
     "itemOrderRemaining": "{amount, plural, =0 {จำนวนเงินที่ใส่ไม่เพียงพอ กรุณาเลื่อนลงเพื่อกรอกจำนวนเงินบริจาคที่กำหนด} =1 {คุณสามารถสั่งซื้อ {name} ได้อีก 1 รายการ} other {คุณสามารถสั่งซื้อ {name} ได้อีก # รายการ}}",
     "itemCart": "ตะกร้าสินค้า",
