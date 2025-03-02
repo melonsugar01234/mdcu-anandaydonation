@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import type { Province, District, SubDistrict } from "@/types/address";
 import { useLanguage } from "../context/LanguageContext";
+
 interface RegisterFormProps {
   provinces: Province[];
   districts: District[];
@@ -27,7 +28,13 @@ const RegisterForm = ({
   const [email, setEmail] = useState<string>("");
   const [paymentProof, setPaymentProof] = useState<string>("");
   const [payment_amount, setpayment_amount] = useState<string>("");
+  const [card, setCard] = useState<string>("");
+  const [wantsShirt, setWantsShirt] = useState<boolean>(false);
+  const [shirts, setShirts] = useState<
+    { size: string; color: string; amount: number }[]
+  >([]);
   const { language } = useLanguage();
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -100,6 +107,10 @@ const RegisterForm = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const fullAddress = getFullAddress();
+    const shirtData = shirts
+      .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
+      .join(";");
+
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -113,6 +124,8 @@ const RegisterForm = ({
           home: fullAddress,
           payment_proof: paymentProof,
           payment_amount,
+          card,
+          shirts: shirtData,
         }),
       });
 
@@ -129,10 +142,22 @@ const RegisterForm = ({
         phone
       )}&email=${encodeURIComponent(email)}&home=${encodeURIComponent(
         fullAddress
-      )}&payment_amount=${encodeURIComponent(payment_amount)}`;
+      )}&payment_amount=${encodeURIComponent(
+        payment_amount
+      )}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(
+        shirtData
+      )}`;
     } catch (error) {
       console.error("Error during registration:", error);
     }
+  };
+
+  const addShirtOption = () => {
+    setShirts([...shirts, { size: "M", color: "white", amount: 1 }]);
+  };
+
+  const removeShirtOption = () => {
+    setShirts(shirts.slice(0, -1));
   };
 
   return (
@@ -250,8 +275,9 @@ const RegisterForm = ({
           className="input input-bordered w-full"
           value={payment_amount}
           onChange={(e) => setpayment_amount(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
         />
-        <span className="text-xl">เช็มที่ระลึก</span>
+
         <div className="flex justify-center w-full">
           <img
             src="/images/card123.jpg"
@@ -259,6 +285,117 @@ const RegisterForm = ({
             className="w-full h-auto object-contain"
           />
         </div>
+        <span className="text-xl">เช็มที่ระลึก</span>
+        <span className="text-xl">
+          จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม
+          สูงสุด 3 เข็ม)
+        </span>
+        <select
+          required
+          className="select select-bordered w-full"
+          value={card}
+          onChange={(e) => setCard(e.target.value)}
+        >
+          <option value="">เลือกจำนวนเข็ม</option>
+          <option value="1">1 เข็ม</option>
+          <option value="2">2 เข็ม</option>
+          <option value="3">3 เข็ม</option>
+        </select>
+        <span className="text-xl">เสื้อที่ระลึก</span>
+        <div className="flex items-center space-x-4">
+          <label>
+            <input
+              type="checkbox"
+              checked={wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+            />
+            ต้องการรับเสื้อ
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={!wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+            />
+            ไม่ต้องการรับเสื้อ
+          </label>
+        </div>
+        {wantsShirt && (
+          <div className="space-y-4">
+            {shirts.map((shirt, index) => (
+              <div key={index} className="flex space-x-4">
+                <select
+                  value={shirt.size}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, size: e.target.value } : s
+                      )
+                    )
+                  }
+                  className="select select-bordered"
+                >
+                  <option value="xs">XS</option>
+                  <option value="s">S</option>
+                  <option value="m">M</option>
+                  <option value="l">L</option>
+                  <option value="xl">XL</option>
+                  <option value="2xl">2XL</option>
+                  <option value="3xl">3XL</option>
+                </select>
+                <select
+                  value={shirt.color}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, color: e.target.value } : s
+                      )
+                    )
+                  }
+                  className="select select-bordered"
+                >
+                  <option value="white">White</option>
+                  <option value="red">Red</option>
+                </select>
+                <select
+                  value={shirt.amount}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index
+                          ? { ...s, amount: parseInt(e.target.value) }
+                          : s
+                      )
+                    )
+                  }
+                  className="select select-bordered"
+                >
+                  {[...Array(7)].map((_, i) => (
+                    <option key={i} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+            <div className="flex space-x-4">
+              <button
+                type="button"
+                onClick={addShirtOption}
+                className="btn btn-secondary"
+              >
+                เพิ่มเสื้อ
+              </button>
+              <button
+                type="button"
+                onClick={removeShirtOption}
+                className="btn btn-secondary"
+              >
+                เอาออก
+              </button>
+            </div>
+          </div>
+        )}
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text text-xl">
@@ -399,8 +536,10 @@ const RegisterForm = ({
           className="input input-bordered w-full"
           value={payment_amount}
           onChange={(e) => setpayment_amount(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
         />
-        <span className="text-xl">Souvenir card</span>
+
+        <span className="text-xl">commemorable card</span>
         <div className="flex justify-center w-full">
           <img
             src="/images/card123.jpg"
@@ -408,6 +547,116 @@ const RegisterForm = ({
             className="w-full h-auto object-contain"
           />
         </div>
+        <span className="text-xl">
+          amount of card to receive (1 card for each 150 baht donated up to 3
+          cards)
+        </span>
+        <select
+          required
+          className="select select-bordered w-full"
+          value={card}
+          onChange={(e) => setCard(e.target.value)}
+        >
+          <option value="">select amount</option>
+          <option value="1">1 card</option>
+          <option value="2">2 cards</option>
+          <option value="3">3 cards</option>
+        </select>
+        <span className="text-xl">commemorable shirts</span>
+        <div className="flex items-center space-x-4">
+          <label>
+            <input
+              type="checkbox"
+              checked={wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+            />
+            I would like to receive shirts
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={!wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+            />
+            I do not want to receive shirts
+          </label>
+        </div>
+        {wantsShirt && (
+          <div className="space-y-4">
+            {shirts.map((shirt, index) => (
+              <div key={index} className="flex space-x-4">
+                <select
+                  value={shirt.size}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, size: e.target.value } : s
+                      )
+                    )
+                  }
+                  className="select select-bordered"
+                >
+                  <option value="xs">XS</option>
+                  <option value="s">S</option>
+                  <option value="m">M</option>
+                  <option value="l">L</option>
+                  <option value="xl">XL</option>
+                  <option value="2xl">2XL</option>
+                  <option value="3xl">3XL</option>
+                </select>
+                <select
+                  value={shirt.color}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, color: e.target.value } : s
+                      )
+                    )
+                  }
+                  className="select select-bordered"
+                >
+                  <option value="white">White</option>
+                  <option value="red">Red</option>
+                </select>
+                <select
+                  value={shirt.amount}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index
+                          ? { ...s, amount: parseInt(e.target.value) }
+                          : s
+                      )
+                    )
+                  }
+                  className="select select-bordered"
+                >
+                  {[...Array(7)].map((_, i) => (
+                    <option key={i} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+            <div className="flex space-x-4">
+              <button
+                type="button"
+                onClick={addShirtOption}
+                className="btn btn-secondary"
+              >
+                Add Shirt
+              </button>
+              <button
+                type="button"
+                onClick={removeShirtOption}
+                className="btn btn-secondary"
+              >
+                Remove Shirt
+              </button>
+            </div>
+          </div>
+        )}
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text text-xl">

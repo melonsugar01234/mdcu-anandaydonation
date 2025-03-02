@@ -23,9 +23,8 @@ async function isTrackingCodeUnique(code: string) {
 
 export async function POST(req: NextApiRequest) {
   try {
-    const { name, phone, email, home, payment_proof, payment_amount } = await (
-      req as any
-    ).json();
+    const { name, phone, email, home, payment_proof, payment_amount, card, shirts } =
+      await (req as any).json();
 
     if (!name || !phone || !home || !payment_amount) {
       return NextResponse.json(
@@ -48,6 +47,8 @@ export async function POST(req: NextApiRequest) {
         payment_proof: payment_proof || "",
         payment_amount,
         tracking_code: trackingCode,
+        card,
+        shirt: shirts,
       },
     });
     return NextResponse.json(newRegister, { status: 201 });
