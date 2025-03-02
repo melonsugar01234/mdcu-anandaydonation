@@ -41,7 +41,7 @@ export async function GET() {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { name, phone, email, home } = req.body;
+    const { name, phone, email, home, } = req.body;
 
     try {
       const newRegister = await prisma.register.create({

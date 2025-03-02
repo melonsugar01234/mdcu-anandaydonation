@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { useState } from "react";
 import SearchBar from "../components/Tracksearch";
 import RegistrationGrid from "../components/RegistrationGrid";
+import { useLanguage } from "../context/LanguageContext";
 
 interface Register {
   id: number;
@@ -16,10 +17,11 @@ interface Register {
   payment_status: string;
 }
 
-export default function TesterPage() {
+export default function TrackingPage() {
   const [registrations, setRegistrations] = useState<Register[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { language } = useLanguage();
 
   const handleSearch = async (searchTrackingCode: string) => {
     if (!searchTrackingCode.trim()) {
@@ -55,7 +57,20 @@ export default function TesterPage() {
       <Navbar />
       <div className="container mx-auto p-4 min-h-screen flex flex-col items-center">
         <div className="w-full max-w-4xl flex flex-col items-center">
-          <h1 className="text-2xl text-center font-bold mb-4">ติดตามสถานะ</h1>
+          <h1
+            className={`text-2xl text-center font-bold mb-4 ${
+              language === "th" ? "" : "hidden"
+            }`}
+          >
+            ติดตามสถานะ
+          </h1>
+          <h1
+            className={`text-2xl text-center font-bold mb-4 ${
+              language === "en" ? "" : "hidden"
+            }`}
+          >
+            View Status
+          </h1>
           <SearchBar onSearch={handleSearch} loading={loading} />
           {error && <div className="alert alert-error mb-4">{error}</div>}
           <RegistrationGrid registrations={registrations} />

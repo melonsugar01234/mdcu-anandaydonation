@@ -1,31 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useLanguage } from "../context/LanguageContext"; // Adjust the path as necessary
 
 type LanguageCode = "th" | "en"; // Add more language codes as needed
 
 export default function Navbar() {
-  const [language, setLanguage] = useState<LanguageCode>("th");
-
-  // Load saved language preference on component mount
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem("language") as LanguageCode;
-    if (savedLanguage && (savedLanguage === "th" || savedLanguage === "en")) {
-      setLanguage(savedLanguage);
-    }
-  }, []);
-
-  const toggleLanguage = () => {
-    // Cycle through languages
-    const languages: LanguageCode[] = ["th", "en"];
-    const currentIndex = languages.indexOf(language);
-    const nextIndex = (currentIndex + 1) % languages.length;
-    const newLanguage = languages[nextIndex];
-    setLanguage(newLanguage);
-    // Save to localStorage
-    localStorage.setItem("language", newLanguage);
-  };
+  const { language, toggleLanguage } = useLanguage();
 
   return (
     <>
@@ -68,7 +49,7 @@ export default function Navbar() {
                     ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
                   </span>
                   <span className={language === "en" ? "" : "hidden"}>
-                    Register Donation & T-Shirt
+                    Register & Donation
                   </span>
                 </Link>
               </li>
@@ -78,14 +59,13 @@ export default function Navbar() {
                     ติดตามสถานะ
                   </span>
                   <span className={language === "en" ? "" : "hidden"}>
-                    Track Status
+                    View Status
                   </span>
                 </Link>
               </li>
               <li>
                 <button onClick={toggleLanguage}>
-                  {language === "th" && "English"}
-                  {language === "en" && "ภาษาไทย"}
+                  {language === "th" ? "English" : "ภาษาไทย"}
                 </button>
               </li>
             </ul>
@@ -115,7 +95,7 @@ export default function Navbar() {
                   ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
                 </span>
                 <span className={language === "en" ? "" : "hidden"}>
-                  Register Donation & T-Shirt
+                  Register & Donation
                 </span>
               </Link>
             </li>
@@ -125,16 +105,15 @@ export default function Navbar() {
                   ติดตามสถานะ
                 </span>
                 <span className={language === "en" ? "" : "hidden"}>
-                  Track Status
+                  View Status
                 </span>
               </Link>
             </li>
           </ul>
         </div>
-        <div className="navbar-end  lg:flex"> 
+        <div className="navbar-end hidden lg:flex">
           <button className="btn" onClick={toggleLanguage}>
-            {language === "th" && "English"}
-            {language === "en" && "ภาษาไทย"}
+            {language === "th" ? "English" : "ภาษาไทย"}
           </button>
         </div>
       </div>

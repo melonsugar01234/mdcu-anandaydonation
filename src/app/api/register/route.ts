@@ -4,17 +4,41 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function POST(req: NextApiRequest) {
-  const { name, phone, email, home, payment_proof, payment_amount } = await (req as any).json();
-
-  if (!name || !phone || !home) {
-    return NextResponse.json(
-      { error: "Missing required fields" },
-      { status: 400 }
-    );
+function generateTrackingCode() {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 6; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
+  return result;
+}
 
+async function isTrackingCodeUnique(code: string) {
+  const existing = await prisma.register.findFirst({
+    where: { tracking_code: code },
+  });
+  return !existing;
+}
+
+export async function POST(req: NextApiRequest) {
   try {
+    const { name, phone, email, home, payment_proof, payment_amount } = await (
+      req as any
+    ).json();
+
+    if (!name || !phone || !home || !payment_amount) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    let trackingCode;
+    do {
+      trackingCode = generateTrackingCode();
+    } while (!(await isTrackingCodeUnique(trackingCode)));
+
     const newRegister = await prisma.register.create({
       data: {
         name,
@@ -22,7 +46,8 @@ export async function POST(req: NextApiRequest) {
         email: email || "",
         home,
         payment_proof: payment_proof || "",
-        payment_amount: payment_amount || "",
+        payment_amount,
+        tracking_code: trackingCode,
       },
     });
     return NextResponse.json(newRegister, { status: 201 });
