@@ -1,27 +1,66 @@
+"use client";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Link from "next/link";
+import { useState } from "react";
+import SearchBar from "../components/Tracksearch";
+import RegistrationGrid from "../components/RegistrationGrid";
 
-export default function Track() {
+interface Register {
+  id: number;
+  name: string;
+  tracking_code: string;
+  shirt: string;
+  card: string;
+  shipment_status: string;
+  payment_amount: string;
+  payment_proof: string;
+  payment_status: string;
+}
+
+export default function TesterPage() {
+  const [registrations, setRegistrations] = useState<Register[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSearch = async (searchTrackingCode: string) => {
+    if (!searchTrackingCode.trim()) {
+      setError("Please enter tracking code");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        `/api/search?TrackingCode=${encodeURIComponent(searchTrackingCode)}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch registrations");
+      }
+      const data = await response.json();
+      setRegistrations(data);
+      if (data.length === 0) {
+        setError("Not found");
+      }
+    } catch (err) {
+      setError("Error searching");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-4">
-        <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-2xl font-bold mb-4">ติดตามสถานะ</h1>
-          <form className="flex flex-col space-y-4 w-full max-w-xs">
-            <input
-              required
-              type="text"
-              placeholder="รหัสติดตาม"
-              className="input input-bordered w-full max-w-xs"
-            />
-            <button className="btn btn-primary w-full max-w-xs">ค้นหา</button>
-          </form>
-          <Link href="/forgotTrack" className="link link-accent">ลืมรหัส</Link>
+      <div className="container mx-auto p-4 min-h-screen flex flex-col items-center">
+        <div className="w-full max-w-4xl flex flex-col items-center">
+          <h1 className="text-2xl text-center font-bold mb-4">ติดตามสถานะ</h1>
+          <SearchBar onSearch={handleSearch} loading={loading} />
+          {error && <div className="alert alert-error mb-4">{error}</div>}
+          <RegistrationGrid registrations={registrations} />
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-
+import Navbar from "../components/Navbar";
 import { useState } from "react";
 import SearchBar from "../components/Tracksearch";
 import RegistrationGrid from "../components/RegistrationGrid";
@@ -10,10 +10,10 @@ interface Register {
   tracking_code: string;
   shirt: string;
   card: string;
-  shipment_status: string
-  payment_amount: string
-  payment_proof: string 
-  payment_status: string
+  shipment_status: string;
+  payment_amount: string;
+  payment_proof: string;
+  payment_status: string;
 }
 
 export default function TesterPage() {
@@ -51,11 +51,16 @@ export default function TesterPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">ติดตามสถานะ</h1>
-      <SearchBar onSearch={handleSearch} loading={loading} />
-      {error && <div className="alert alert-error mb-4">{error}</div>}
-      <RegistrationGrid registrations={registrations} />
-    </div>
+    <>
+      <Navbar />
+      <div className="container mx-auto p-4 min-h-screen flex flex-col items-center">
+        <div className="w-full max-w-4xl flex flex-col items-center">
+          <h1 className="text-2xl text-center font-bold mb-4">ติดตามสถานะ</h1>
+          <SearchBar onSearch={handleSearch} loading={loading} />
+          {error && <div className="alert alert-error mb-4">{error}</div>}
+          <RegistrationGrid registrations={registrations} />
+        </div>
+      </div>
+    </>
   );
 }

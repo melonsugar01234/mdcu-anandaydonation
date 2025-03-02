@@ -26,6 +26,7 @@ const RegisterForm = ({
   const [phone, setPhone] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [paymentProof, setPaymentProof] = useState<string>("");
+  const [payment_amount, setpayment_amount] = useState<string>("");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -111,6 +112,7 @@ const RegisterForm = ({
           email,
           home: fullAddress,
           payment_proof: paymentProof,
+          payment_amount: payment_amount,
         }),
       });
 
@@ -130,6 +132,7 @@ const RegisterForm = ({
       setSelectedSubDistrict("");
       setPostalCode("");
       setPaymentProof("");
+      setpayment_amount("");
     } catch (error) {
       console.error(error);
     }
@@ -138,14 +141,15 @@ const RegisterForm = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col space-y-4 w-full max-w-xs"
+      className="flex flex-col space-y-4 w-full max-w-4xl mx-auto"
     >
+      <div className="text-3xl text-center">ผู้บริจาค</div>
       <span>ชื่อ-นามสกุล</span>
       <input
         required
         type="text"
         placeholder="เช่น นายสมชาย ใจดี"
-        className="input input-bordered w-full max-w-xs"
+        className="input input-bordered w-full"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
@@ -154,7 +158,7 @@ const RegisterForm = ({
         required
         type="tel"
         placeholder="เช่น 081-901-xxxx"
-        className="input input-bordered w-full max-w-xs"
+        className="input input-bordered w-full"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
       />
@@ -162,7 +166,7 @@ const RegisterForm = ({
       <input
         type="email"
         placeholder="เช่น steve@gmail.com"
-        className="input input-bordered w-full max-w-xs"
+        className="input input-bordered w-full"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -175,12 +179,12 @@ const RegisterForm = ({
           placeholder="บ้านเลขที่ หมู่บ้าน ถนน"
           value={addressDetail}
           onChange={(e) => setAddressDetail(e.target.value)}
-          className="input input-bordered w-full max-w-xs"
+          className="input input-bordered w-full"
         />
 
         <select
           required
-          className="select select-bordered w-full max-w-xs"
+          className="select select-bordered w-full"
           value={selectedProvince}
           onChange={handleProvinceChange}
         >
@@ -194,7 +198,7 @@ const RegisterForm = ({
 
         <select
           required
-          className="select select-bordered w-full max-w-xs"
+          className="select select-bordered w-full"
           value={selectedDistrict}
           onChange={handleDistrictChange}
           disabled={!selectedProvince}
@@ -209,7 +213,7 @@ const RegisterForm = ({
 
         <select
           required
-          className="select select-bordered w-full max-w-xs"
+          className="select select-bordered w-full"
           value={selectedSubDistrict}
           onChange={handleSubDistrictChange}
           disabled={!selectedDistrict}
@@ -224,7 +228,7 @@ const RegisterForm = ({
 
         <select
           required
-          className="select select-bordered w-full max-w-xs"
+          className="select select-bordered w-full"
           value={postalCode}
           onChange={(e) => setPostalCode(e.target.value)}
           disabled={!selectedSubDistrict}
@@ -237,7 +241,24 @@ const RegisterForm = ({
           ))}
         </select>
       </div>
-      <div className="form-control w-full max-w-xs">
+      <div className="text-3xl text-center">ข้อมูลการบริจาค</div>
+      <span>จำนวนเงินที่ต้องการบริจาค</span>
+      <input
+        required
+        type="number"
+        placeholder="ใส่แค่ตัวเลข"
+        className="input input-bordered w-full"
+        value={payment_amount}
+        onChange={(e) => setpayment_amount(e.target.value)}
+      />
+      <div className="flex justify-center w-full">
+        <img
+          src="/images/banner_1.jpg"
+          alt="banner_1"
+          className="w-full h-auto object-contain"
+        />
+      </div>
+      <div className="form-control w-full">
         <label className="label">
           <span className="label-text">
             หลักฐานการชำระเงิน (ไฟล์ .jpg, .png ขนาดไม่เกิน 5MB)
@@ -247,14 +268,14 @@ const RegisterForm = ({
           type="file"
           accept="image/jpeg,image/png"
           onChange={handleImageUpload}
-          className="file-input file-input-bordered w-full max-w-xs"
+          className="file-input file-input-bordered w-full"
         />
         {paymentProof && (
           <div className="mt-2">
             <img
               src={paymentProof}
               alt="Payment proof preview"
-              className="max-w-xs rounded-lg shadow-lg"
+              className="w-full rounded-lg shadow-lg"
             />
           </div>
         )}

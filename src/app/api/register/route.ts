@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function POST(req: NextApiRequest) {
-  const { name, phone, email, home, payment_proof } = await (req as any).json();
+  const { name, phone, email, home, payment_proof, payment_amount } = await (req as any).json();
 
   if (!name || !phone || !home) {
     return NextResponse.json(
@@ -22,6 +22,7 @@ export async function POST(req: NextApiRequest) {
         email: email || "",
         home,
         payment_proof: payment_proof || "",
+        payment_amount: payment_amount || "",
       },
     });
     return NextResponse.json(newRegister, { status: 201 });

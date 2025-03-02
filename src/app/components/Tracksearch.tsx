@@ -22,7 +22,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
         value={searchTrackingCode}
         onChange={(e) => setSearchTrackingCode(e.target.value)}
         placeholder="Enter tracking code to search"
-        className="input input-bordered flex-1"
+        className="input input-bordered flex-1 max-w-xs"
       />
       <button type="submit" disabled={loading} className="btn btn-primary">
         {loading ? "Searching..." : "Search"}
