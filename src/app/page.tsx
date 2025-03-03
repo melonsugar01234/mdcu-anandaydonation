@@ -1,26 +1,23 @@
+"use client";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Link from "next/link";
+import { useLanguage } from "./components/LanguageContext";
 
 export default function Home() {
+  const { language, translations } = useLanguage();
+
   return (
     <>
       <Navbar />
-      <div className="flex flex-col items-center gap-4 p-4 ">
+      <div className="flex flex-col items-center gap-4 p-4">
         <div className="artboard artboard-horizontal phone-2">
           <img src="/images/banner_1.jpg" alt="banner_1" />
         </div>
         <div className="divider"></div>
-        <h1 className="text-xl font-bold">
-          'Miles for Heart' Virtual Walk and Run เปิดรับสมัครแล้ววันนี้
-        </h1>
-        <h1 className="text-xl font-bold">
-          มาร่วมเดิน-วิ่งเพื่อสุขภาพไปด้วยกันนะคะ
-        </h1>
-        <h2 className="font-bold">
-          {" "}
-          Facebook : ANAN DAY Instagram: @anan_day หรือบนเว็บไซต์นี้
-        </h2>
+        <h1 className="text-xl font-bold">{translations[language].eventTitle}</h1>
+        <h1 className="text-xl font-bold">{translations[language].eventSubtitle}</h1>
+        <h2 className="font-bold">{translations[language].socialMedia}</h2>
         <div className="artboard artboard-horizontal phone-2">
           <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" />
         </div>
@@ -30,47 +27,35 @@ export default function Home() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            ลงทะเบียนงานวิ่ง
+            {translations[language].registerRun}
           </Link>
         </button>
         <div className="artboard artboard-horizontal phone-2">
           <img src="/images/bookbank.png" alt="bookbank" />
         </div>
         <button className="btn btn-wide bg-primary text-white">
-          <Link href="/register">ลงทะเบียน</Link>
+          <Link href="/register">{translations[language].register}</Link>
         </button>
-        <h2 className="text-xl">
-          ขั้นตอนการขอรับเข็ม หรือเสื้อยืด ที่ระลึกวันอานันทมหิดล
-        </h2>
+        <h2 className="text-xl">{translations[language].stepsTitle}</h2>
         <ol className="list-decimal list-inside">
           <li>
-            กรอกข้อมูลการบริจาค
+            {translations[language].donationStep1}
             <ol className="list-decimal list-inside ml-4">
-              <li>จํานวนเงินที่ประสงค์จะบริจาค</li>
+              <li>{translations[language].donationAmount}</li>
               <li>
-                ระบุจํานวนเสื้อ หรือ เข็ม หรือ เสื้อและเข็ม
-                ที่ผู้บริจาคประสงค์จะรับในวงเงินที่บริจาค
+                {translations[language].donationItems}
                 <ol className="list-decimal list-inside ml-4">
-                  <li>
-                    เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน
-                  </li>
-                  <li>
-                    เงินบริจาคทุก 299 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว
-                  </li>
+                  <li>{translations[language].pinOption}</li>
+                  <li>{translations[language].shirtOption}</li>
                 </ol>
               </li>
-              <li>หมายเหตุ: จัดส่งฟรีไม่เสียค่าจัดส่งเพิ่มเติม</li>
+              <li>{translations[language].shippingNote}</li>
             </ol>
           </li>
-          <li>แนบหลักฐานการโอนเงิน(สลิป)</li>
-          <li>กดบันทึกข้อมูล</li>
+          <li>{translations[language].uploadProof}</li>
+          <li>{translations[language].saveInfo}</li>
         </ol>
-        <p className="text-red-700">
-          ทางคณะแพทยศาสตร์ จุฬา
-          จะดําเนินการส่งเข็มและเสื้อโดยทําการสรุปยอดทุกวันที่ 1 ของทุกเดือนเวลา
-          12:00 และจะทําการจัดส่ง ภายใน 3 สัปดาห์หลังจากสรุปยอด
-          เวลาที่แจ้งเป็นแค่การประมาณ อาจล่าช้าตามการผลิต
-        </p>
+        <p className="text-red-700">{translations[language].deliveryInfo}</p>
       </div>
       <Footer />
     </>
