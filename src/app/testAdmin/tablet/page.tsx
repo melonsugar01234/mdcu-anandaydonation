@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import {
   useReactTable,
@@ -7,29 +8,386 @@ import {
 } from '@tanstack/react-table';
 
 type Person = {
-  id: number;
+  created_at: string;
+  updated_at: string;
+  id: string;
+  status: "0" | "1" | "2" | "3" | "4" | "99";
   name: string;
-  age: number;
+  telephone: string;
+  email: string;
+  address: string;
+  donate: boolean;
+  donateAmount: number;
+  singlePinAmount: number;
+  pinSetAmount: number;
+  receipt: boolean;
+  nationalId: string;
+  receiptName: string;
+  receiptAddress: string;
+  buyShirt: boolean;
+  order: number;
+  transferTime: string;
+  transferDate: string;
+  trackingNumber1: string;
+  trackingNumber2: string;
 };
 
 const data: Person[] = [
-  { id: 1, name: 'Alice', age: 25 },
-  { id: 2, name: 'Bob', age: 30 },
-  { id: 3, name: 'Charlie', age: 28 },
+  {
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },
+  {
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },{
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },{
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },{
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },{
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },{
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },{
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },{
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },
+  {
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },
+  {
+    created_at: "2025-01-15 @ 17:41",
+    updated_at: "2025-01-15 @ 17:41",
+    id: "adada",
+    status: "1",
+    name: "้กกืๆกๆๆ ไดไดได",
+    telephone: "0875774688",
+    email: "bfwbfwlfbwbfwfwf@gmail.com",
+    address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
+    donate: true,
+    donateAmount: 968576647,
+    singlePinAmount: 23,
+    pinSetAmount: 32,
+    receipt: false,
+    nationalId: "12612624121725",
+    receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
+    receiptAddress:
+      "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
+    buyShirt: false,
+    order: 4,
+    transferTime: "20.14",
+    transferDate: "1 มกราคม 2025",
+    trackingNumber1: "2363138",
+    trackingNumber2: "857648",
+  },
+  
 ];
 
 const columns: ColumnDef<Person>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID',
+    accessorKey: "created_at",
+    header: "Create at",
   },
   {
-    accessorKey: 'name',
-    header: 'Name',
+    accessorKey: "updated_at",
+    header: "Updated at",
   },
   {
-    accessorKey: 'age',
-    header: 'Age',
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "email",
+    header: "E-Mail",
+  },
+  {
+    accessorKey: "address",
+    header: "Address",
+  },
+  {
+    accessorKey: "donate",
+    header: "Donate",
+  },
+  {
+    accessorKey: "donateAmount",
+    header: "Donate amount",
+  },
+  {
+    accessorKey: "singlePinAmount",
+    header: "single pin amount",
+  },
+  {
+    accessorKey: "pinSetAmount",
+    header: "Pin set amount",
+  },
+  {
+    accessorKey: "receipt",
+    header: "Receipt",
+  },
+  {
+    accessorKey: "nationalId",
+    header: "national ID",
+  },
+  {
+    accessorKey: "receiptName",
+    header: "Receipt Name",
+  },
+  {
+    accessorKey: "receiptAddress",
+    header: "Receipt address",
+  },
+  {
+    accessorKey: "buyShirt",
+    header: "Buy shirt",
+  },
+  {
+    accessorKey: " order",
+    header:  "Order",
+  },
+  {
+    accessorKey: "transferTime",
+    header:  "Transfer time",
+  },
+  {
+    accessorKey: "transferDate",
+    header:  "Transfer date",
+  },
+  {
+    accessorKey: "trackingNumber1",
+    header:  "Tracking number 1",
+  },
+  {
+    accessorKey: "trackingNumber2",
+    header:  "Tracking number 2",
   },
 ];
 
@@ -41,8 +399,8 @@ const Table: React.FC = () => {
   });
 
   return (
-    <div className="p-4">
-      <table className="min-w-full border-collapse border border-gray-300">
+    <div className="p-4 max-h-[500px] overflow-auto">
+      <table className="whitespace-nowrap min-w-full border-collapse border border-gray-300">
         <thead className="bg-gray-100">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -76,4 +434,4 @@ const Table: React.FC = () => {
   );
 };
 
-export default Table;
+export default Table; 
