@@ -50,6 +50,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
       trackStatus: "ติดตามสถานะ",
       trackingCode: "รหัสติดตาม",
       forgotCode: "ลืมรหัส",
+      MDCU: "คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย โทร. 02 256 4183 หรือ 02 256 4462",
     },
     en: {
       home: "Home",
@@ -87,6 +88,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
       trackStatus: "Track Status",
       trackingCode: "Tracking Code",
       forgotCode: "Forgot Code?",
+      MDCU: "Faculty of Medicine, Chulalongkron University Tel. 02 256 4183 or 02 256 4462",
     },
   };
 
