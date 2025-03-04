@@ -2,6 +2,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Table from "./tablet/page";
 // import DemoPage from "../payment/page";
 // import { dataTest } from ".testAdmin/dataTest";
 
@@ -53,6 +54,7 @@ export default function testAdmin() {
               </tbody>
             </table>
           </div>
+          <Table/>
           <div>
             <div className="my-5">
               จำนวนคนบริจาคทั้งหมด : 518 <br />
