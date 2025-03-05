@@ -2,7 +2,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Table from "./tablet/page";
+import Table from "./tableTest/page";
 // import DemoPage from "../payment/page";
 // import { dataTest } from ".testAdmin/dataTest";
 
