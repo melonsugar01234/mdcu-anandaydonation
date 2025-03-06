@@ -9,7 +9,7 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
+  // getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -34,7 +34,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -51,13 +51,14 @@ export function DataTable<TData, TValue>({
   });
   return (
     <>
+      Filter status<br/>
       <input
-        placeholder="Filter status..."
+        placeholder="กรุณาใส่เลขสถานะ"
         value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
         onChange={(event) =>
           table.getColumn("status")?.setFilterValue(event.target.value)
         }
-        className="max-w-sm"
+        className="max-w-sm border border-b-2 rounded-md"
       />
       <div className="p-4 max-h-[500px] overflow-auto">
         <table className="whitespace-nowrap min-w-full border-collapse border border-gray-300">
