@@ -55,8 +55,8 @@ export default function testAdmin() {
               </tbody>
             </table>
           </div>
-          {/* <Table/> */}
-          <DemoPage/>
+          <Table/>
+          {/* <DemoPage/> */}
           <div>
             <div className="my-5">
               จำนวนคนบริจาคทั้งหมด : 518 <br />

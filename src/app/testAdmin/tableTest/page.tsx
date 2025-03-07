@@ -1,10 +1,16 @@
 "use client";
 import React from "react";
 import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  // getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 
 type Person = {
@@ -38,7 +44,7 @@ const data: Person[] = [
     created_at: "2025-01-15 @ 17:41",
     updated_at: "2025-01-15 @ 17:41",
     id: "adada",
-    status: "1",
+    status: "99",
     name: "้กกืๆกๆๆ ไดไดได",
     telephone: "0875774688",
     email: "bfwbfwlfbwbfwfwf@gmail.com",
@@ -88,7 +94,7 @@ const data: Person[] = [
     created_at: "2025-01-15 @ 17:41",
     updated_at: "2025-01-15 @ 17:41",
     id: "adada",
-    status: "1",
+    status: "4",
     name: "้กกืๆกๆๆ ไดไดได",
     telephone: "0875774688",
     email: "bfwbfwlfbwbfwfwf@gmail.com",
@@ -113,7 +119,7 @@ const data: Person[] = [
     created_at: "2025-01-15 @ 17:41",
     updated_at: "2025-01-15 @ 17:41",
     id: "adada",
-    status: "1",
+    status: "3",
     name: "้กกืๆกๆๆ ไดไดได",
     telephone: "0875774688",
     email: "bfwbfwlfbwbfwfwf@gmail.com",
@@ -138,7 +144,7 @@ const data: Person[] = [
     created_at: "2025-01-15 @ 17:41",
     updated_at: "2025-01-15 @ 17:41",
     id: "adada",
-    status: "1",
+    status: "2",
     name: "้กกืๆกๆๆ ไดไดได",
     telephone: "0875774688",
     email: "bfwbfwlfbwbfwfwf@gmail.com",
@@ -399,14 +405,44 @@ const columns: ColumnDef<Person>[] = [
 ];
 
 const Table: React.FC = () => {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
   });
 
   return (
     <>
+    <fieldset className="fieldset">
+        <legend className="fieldset-legend">กรองสถานะ</legend>
+        <input
+          placeholder="กรุณาใส่เลขสถานะ"
+          value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("status")?.setFilterValue(event.target.value)
+          }
+          className="input input-neutral input-sm border-2 border-gray-400"
+        />
+      </fieldset>
       <div className="p-4 max-h-[500px] overflow-auto">
         <table className="whitespace-nowrap min-w-full border-collapse border border-gray-300">
           <thead className="bg-gray-100">
