@@ -57,7 +57,7 @@ export default function testAdmin() {
           </div>
           <Table/>
           {/* <DemoPage/> */}
-          <div>
+          {/* <div>
             <div className="my-5">
               จำนวนคนบริจาคทั้งหมด : 518 <br />
               จำนวนคนที่บริจาคแต่ไม่ซื้อของ : 27
@@ -91,7 +91,7 @@ export default function testAdmin() {
               จำนวนเสื้อสีครีมไซส์ 3XL ทั้งหมด : 19
               <br />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />

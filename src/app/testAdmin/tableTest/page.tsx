@@ -53,8 +53,8 @@ const data: Person[] = [
     address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
     donate: true,
     donateAmount: 968576647,
-    singlePinAmount: 23,
-    pinSetAmount: 32,
+    singlePinAmount: 0,
+    pinSetAmount: 0,
     receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
@@ -78,14 +78,14 @@ const data: Person[] = [
     address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
     donate: true,
     donateAmount: 968576647,
-    singlePinAmount: 23,
-    pinSetAmount: 32,
+    singlePinAmount: 0,
+    pinSetAmount: 0,
     receipt: false,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
-    buyShirt: false,
+    buyShirt: true,
     order: 4,
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
@@ -103,8 +103,8 @@ const data: Person[] = [
     address: "นไืดนไดืไืวนๆยืไๆนิดำีนดิๆำรีดิ",
     donate: true,
     donateAmount: 968576647,
-    singlePinAmount: 23,
-    pinSetAmount: 32,
+    singlePinAmount: 0,
+    pinSetAmount: 0,
     receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
@@ -135,7 +135,7 @@ const data: Person[] = [
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
-    buyShirt: false,
+    buyShirt: true,
     order: 4,
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
@@ -432,12 +432,48 @@ const Table: React.FC = () => {
     },
   });
 
-  const downloadExcel = (data:Person[]) => {
+  const downloadExcel = (data: Person[]) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, "DataSheet.xlsx");
   };
+
+  const filteredRowCount = table.getFilteredRowModel().rows.length;
+
+  //รวมเข็มเดี่ยว
+  const totalSinPin = table.getRowModel().rows.reduce((sum, row) => {
+    const singPinSum = row.original.singlePinAmount;
+    return sum + (singPinSum || 0); // บวกค่าเข้ากับผลรวม (ตรวจสอบว่าเป็นตัวเลข)
+  }, 0);
+
+  //รวมเข็มชุด
+  const totalPinSet = table.getRowModel().rows.reduce((sum, row) => {
+    const pinSetSum = row.original.pinSetAmount;
+    return sum + (pinSetSum || 0); // บวกค่าเข้ากับผลรวม (ตรวจสอบว่าเป็นตัวเลข)
+  }, 0);
+
+  //บริจาคอย่างเดียว
+  const donateOnly = table.getRowModel().rows.filter(
+    row => row.original.donate === true && row.original.buyShirt===false&&row.original.singlePinAmount ===0 && row.original.pinSetAmount ===0
+  ).length;
+
+  //บริจาค ซื้อเสื้อ
+  const donateShirt = table.getRowModel().rows.filter(
+    row => row.original.donate === true && row.original.buyShirt===true&&row.original.singlePinAmount ===0 && row.original.pinSetAmount ===0
+  ).length;
+
+  //บริจาค ซื้อเข็ม
+  const donatePin = table.getRowModel().rows.filter(
+    row => row.original.donate === true && row.original.buyShirt===false&&(row.original.singlePinAmount >0 || row.original.pinSetAmount >0)
+  ).length;
+
+  //บริจาค ซื้อเสื้อ เข็ม
+  const donateShirtPin = table.getRowModel().rows.filter(
+    row => row.original.donate === true && row.original.buyShirt===true&&row.original.singlePinAmount >0 && row.original.pinSetAmount >0
+  ).length;
+
+
   return (
     <>
       <fieldset className="fieldset">
@@ -485,7 +521,7 @@ const Table: React.FC = () => {
       </div>
       <div className="flex space-x-2 py-2">
         {/* สำรอง ใช้ดูคนรับ ไม่รับใบเสร็จ แบบไม่พิไจารณาเงื่อนไขอื่น */}
-        {/* {["true", "false"].map((status) => (
+        {["true", "false"].map((status) => (
           <button
             key={status}
             onClick={() => {
@@ -501,7 +537,7 @@ const Table: React.FC = () => {
           >
             {status}
           </button>
-        ))} */}
+        ))}
         {/* รวมรับใบเสร็จทุกกรณี */}
         {/* <button
           onClick={() => {
@@ -558,7 +594,7 @@ const Table: React.FC = () => {
         >
           รับใบเสร็จอย่างเดียว
         </button> */}
-        {/* <button
+        <button
           onClick={() => {
             const columnsToClear = [
               "receipt",
@@ -573,13 +609,55 @@ const Table: React.FC = () => {
           className="btn btn-sm btn-outline border-2"
         >
           ล้างตัวกรองทั้งหมด
-        </button> */}
+        </button>
       </div>
       {/* <button onClick={() => this.downloadExcel(data)}>
         Download As Excel
       </button> */}
-      <button className="btn btn-sm" onClick={() => downloadExcel(data)}>ดาวน์โหลด .xlsx</button>
+      <button className="btn btn-sm" onClick={() => downloadExcel(data)}>
+        ดาวน์โหลด .xlsx
+      </button>
       {/* <button onClick={() => downloadExcel(data)}>Export to Excel</button> */}
+
+      {/* แสดงผลจำนวนแถวที่กรอง */}
+      {/* <h1>Filtered Row Count: {filteredRowCount}</h1> */}
+
+      <div>
+            <div className="my-5">
+              จำนวนคนบริจาคทั้งหมด : {filteredRowCount} <br />
+              จำนวนคนที่บริจาคแต่ไม่ซื้อของ : {donateOnly}
+              <br />
+              จำนวนคนที่บริจาคซื้อเสื้อ : {donateShirt} <br />
+              จำนวนคนที่บริจาคซื้อเข็ม :  {donatePin}<br />
+              จำนวนที่บริจาคซื้อเสื้อและเข็ม : {donateShirtPin} <br />
+            </div>
+            <div className="my-5">
+              จำนวนเข็มเดี่ยวทั้งหมด : {totalSinPin}
+              <br />
+              จำนวนเข็มชุดทั้งหมด : {totalPinSet}<br />
+            </div>
+            <div className="my-5">
+              จำนวนเสื้อสีแดงไซส์ XS ทั้งหมด : 
+              <br />
+              จำนวนเสื้อสีแดงไซส์ S ทั้งหมด :  <br />
+              จำนวนเสื้อสีแดงไซส์ M ทั้งหมด :  <br />
+              จำนวนเสื้อสีแดงไซส์ L ทั้งหมด :  <br />
+              จำนวนเสื้อสีแดงไซส์ XL ทั้งหมด : <br />
+              จำนวนเสื้อสีแดงไซส์ 2XL ทั้งหมด :  <br />
+              จำนวนเสื้อสีแดงไซส์ 3XL ทั้งหมด : <br />
+            </div>
+            <div className="my-5">
+              จำนวนเสื้อสีครีมไซส์ XS ทั้งหมด :  <br />
+              จำนวนเสื้อสีครีมไซส์ S ทั้งหมด : <br />
+              จำนวนเสื้อสีครีมไซส์ M ทั้งหมด :  <br />
+              จำนวนเสื้อสีครีมไซส์ L ทั้งหมด : <br />
+              จำนวนเสื้อสีครีมไซส์ XL ทั้งหมด :  <br />
+              จำนวนเสื้อสีครีมไซส์ 2XL ทั้งหมด :  <br />
+              จำนวนเสื้อสีครีมไซส์ 3XL ทั้งหมด : 
+              <br />
+            </div>
+          </div>
+
     </>
   );
 };
