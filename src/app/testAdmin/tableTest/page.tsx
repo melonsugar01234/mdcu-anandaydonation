@@ -13,6 +13,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import * as XLSX from "xlsx";
+
 type Person = {
   created_at: string;
   updated_at: string;
@@ -53,7 +55,7 @@ const data: Person[] = [
     donateAmount: 968576647,
     singlePinAmount: 23,
     pinSetAmount: 32,
-    receipt: false,
+    receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
@@ -103,7 +105,7 @@ const data: Person[] = [
     donateAmount: 968576647,
     singlePinAmount: 23,
     pinSetAmount: 32,
-    receipt: false,
+    receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
@@ -153,7 +155,7 @@ const data: Person[] = [
     donateAmount: 968576647,
     singlePinAmount: 23,
     pinSetAmount: 32,
-    receipt: false,
+    receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
@@ -203,7 +205,7 @@ const data: Person[] = [
     donateAmount: 968576647,
     singlePinAmount: 23,
     pinSetAmount: 32,
-    receipt: false,
+    receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
@@ -253,7 +255,7 @@ const data: Person[] = [
     donateAmount: 968576647,
     singlePinAmount: 23,
     pinSetAmount: 32,
-    receipt: false,
+    receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
@@ -303,7 +305,7 @@ const data: Person[] = [
     donateAmount: 968576647,
     singlePinAmount: 23,
     pinSetAmount: 32,
-    receipt: false,
+    receipt: true,
     nationalId: "12612624121725",
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
@@ -430,9 +432,15 @@ const Table: React.FC = () => {
     },
   });
 
+  const downloadExcel = (data:Person[]) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "DataSheet.xlsx");
+  };
   return (
     <>
-    <fieldset className="fieldset">
+      <fieldset className="fieldset">
         <legend className="fieldset-legend">กรองสถานะ</legend>
         <input
           placeholder="กรุณาใส่เลขสถานะ"
@@ -443,7 +451,7 @@ const Table: React.FC = () => {
           className="input input-neutral input-sm border-2 border-gray-400"
         />
       </fieldset>
-      <div className="p-4 max-h-[500px] overflow-auto">
+      <div className="py-4 max-h-[500px] overflow-auto">
         <table className="whitespace-nowrap min-w-full border-collapse border border-gray-300">
           <thead className="bg-gray-100">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -475,18 +483,103 @@ const Table: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">กรองสถานะ</legend>
-        <select defaultValue="Pick a browser" className="select">
-          <option disabled={true}>กรุณาเลือกเลขสถานะ</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>99</option>
-        </select>
-      </fieldset>
+      <div className="flex space-x-2 py-2">
+        {/* สำรอง ใช้ดูคนรับ ไม่รับใบเสร็จ แบบไม่พิไจารณาเงื่อนไขอื่น */}
+        {/* {["true", "false"].map((status) => (
+          <button
+            key={status}
+            onClick={() => {
+              const value = status === "true" ? true : false;
+              table.getColumn("receipt")?.setFilterValue(value);
+            }}
+            className={`btn btn-sm border-2 ${
+              table.getColumn("receipt")?.getFilterValue() ===
+              (status === "true")
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+          >
+            {status}
+          </button>
+        ))} */}
+        {/* รวมรับใบเสร็จทุกกรณี */}
+        {/* <button
+          onClick={() => {
+            table.getColumn("receipt")?.setFilterValue(true);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("receipt")?.getFilterValue()
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับใบเสร็จทุกกรณี
+        </button> */}
+        {/* รับใบเสร็จ ไม่รับเสื้อไม่รับเข็ม */}
+        {/* <button
+          onClick={() => {
+            const receiptColumn = table.getColumn("receipt");
+            const shirtColumn = table.getColumn("buyShirt");
+            const singlePinColumn = table.getColumn("singlePinAmount");
+            const pinSetColumn = table.getColumn("pinSetAmount");
+            
+            if (
+              receiptColumn &&
+              shirtColumn &&
+              singlePinColumn &&
+              pinSetColumn
+            ) {
+              receiptColumn.setFilterValue(true); // กรอง receipt
+              shirtColumn.setFilterValue(false); // ไม่ซื้อเสื้อ
+              singlePinColumn.setFilterValue((value: number) => value <= 0); // pin 0
+              pinSetColumn.setFilterValue((value: number) => value <= 0); // set pin 0
+            }
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("receipt")?.getFilterValue() === true &&
+            table.getColumn("buyShirt")?.getFilterValue() === false &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+            "function" &&
+            (
+              table.getColumn("singlePinAmount")?.getFilterValue() as (
+                value: number
+              ) => boolean
+            )(3) &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+            "function" &&
+            (
+              table.getColumn("pinSetAmount")?.getFilterValue() as (
+                value: number
+              ) => boolean
+            )(3)
+            ? "btn-neutral"
+            : "btn-outline"
+          }`}
+        >
+          รับใบเสร็จอย่างเดียว
+        </button> */}
+        {/* <button
+          onClick={() => {
+            const columnsToClear = [
+              "receipt",
+              "buyShirt",
+              "singlePinAmount",
+              "pinSetAmount",
+            ]; // ระบุชื่อคอลัมน์ที่ต้องการล้าง
+            columnsToClear.forEach((col) => {
+              table.getColumn(col)?.setFilterValue(null);
+            });
+          }}
+          className="btn btn-sm btn-outline border-2"
+        >
+          ล้างตัวกรองทั้งหมด
+        </button> */}
+      </div>
+      {/* <button onClick={() => this.downloadExcel(data)}>
+        Download As Excel
+      </button> */}
+      <button className="btn btn-sm" onClick={() => downloadExcel(data)}>ดาวน์โหลด .xlsx</button>
+      {/* <button onClick={() => downloadExcel(data)}>Export to Excel</button> */}
     </>
   );
 };
