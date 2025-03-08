@@ -10,12 +10,9 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  // getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-import * as XLSX from "xlsx";
 
 type Person = {
   created_at: string;
@@ -35,7 +32,7 @@ type Person = {
   receiptName: string;
   receiptAddress: string;
   buyShirt: boolean;
-  order: number;
+  order: string;
   transferTime: string;
   transferDate: string;
   trackingNumber1: string;
@@ -63,7 +60,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -88,7 +85,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: true,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -113,7 +110,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -138,7 +135,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: true,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -163,7 +160,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -188,7 +185,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -213,7 +210,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -238,7 +235,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -263,7 +260,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: true,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -288,7 +285,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -313,7 +310,7 @@ const data: Person[] = [
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
     buyShirt: false,
-    order: 4,
+    order:"4",
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
     trackingNumber1: "2363138",
@@ -340,7 +337,11 @@ const columns: ColumnDef<Person>[] = [
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Name-Surname",
+  },
+  {
+    accessorKey: "telephone",
+    header: "Telephone",
   },
   {
     accessorKey: "email",
@@ -436,7 +437,6 @@ const Table: React.FC = () => {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection,
     },
   });
 
@@ -588,16 +588,7 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value === 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("donate")?.getFilterValue() === true &&
-            table.getColumn("buyShirt")?.getFilterValue() === false &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
           บริจาคเท่านั้น
         </button>
@@ -613,15 +604,7 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value === 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("buyShirt")?.getFilterValue() === true &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
           รับเสื้อ
         </button>
@@ -637,15 +620,7 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value !== 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("buyShirt")?.getFilterValue() === true &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
           รับเข็ม
         </button>
@@ -661,15 +636,7 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value !== 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("buyShirt")?.getFilterValue() === true &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
           รับเสื้อและเข็ม
         </button>
@@ -686,16 +653,7 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value === 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("receipt")?.getFilterValue() === true &&
-            table.getColumn("buyShirt")?.getFilterValue() === false &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
           รับใบเสร็จอย่างเดียว
         </button>
@@ -712,16 +670,7 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value === 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("receipt")?.getFilterValue() === true &&
-            table.getColumn("buyShirt")?.getFilterValue() === true &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
           รับใบเสร็จและเสื้อ
         </button>
@@ -738,16 +687,7 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value !== 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("receipt")?.getFilterValue() === true &&
-            table.getColumn("buyShirt")?.getFilterValue() === false &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
           รับใบเสร็จและเข็ม
         </button>
@@ -764,18 +704,9 @@ const Table: React.FC = () => {
               { column: "pinSetAmount", value: (value: number) => value !== 0 },
             ]);
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("receipt")?.getFilterValue() === true &&
-            table.getColumn("buyShirt")?.getFilterValue() === true &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-              "function" &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-              "function"
-              ? "btn-neutral"
-              : "btn-outline"
-          }`}
+          className={`btn btn-sm border-2 btn-outline`}
         >
-          รับใบเสร็จอย่างเดียว
+          รับใบเสร็จ เสื้อ เข็ม
         </button>
         {/* รวมรับใบเสร็จทุกกรณี */}
         {/* <button
