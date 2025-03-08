@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import ExportButton from "./exportButton";
+import Filter from "./filterStatus";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -411,6 +413,12 @@ const Table: React.FC = () => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  //fix hydration error=>
+  const [isMounted, setIsMounted] = React.useState(false);
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  ///<=
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -432,12 +440,12 @@ const Table: React.FC = () => {
     },
   });
 
-  const downloadExcel = (data: Person[]) => {
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(workbook, "DataSheet.xlsx");
+  //fix hydration error =>
+  if (!isMounted) return null;
+  const handleFilterChange = (value: string) => {
+    setColumnFilters([{ id: "status", value }]);
   };
+  //<=
 
   const filteredRowCount = table.getFilteredRowModel().rows.length;
 
@@ -454,39 +462,50 @@ const Table: React.FC = () => {
   }, 0);
 
   //บริจาคอย่างเดียว
-  const donateOnly = table.getRowModel().rows.filter(
-    row => row.original.donate === true && row.original.buyShirt===false&&row.original.singlePinAmount ===0 && row.original.pinSetAmount ===0
-  ).length;
+  const donateOnly = table
+    .getRowModel()
+    .rows.filter(
+      (row) =>
+        row.original.donate === true &&
+        row.original.buyShirt === false &&
+        row.original.singlePinAmount === 0 &&
+        row.original.pinSetAmount === 0
+    ).length;
 
   //บริจาค ซื้อเสื้อ
-  const donateShirt = table.getRowModel().rows.filter(
-    row => row.original.donate === true && row.original.buyShirt===true&&row.original.singlePinAmount ===0 && row.original.pinSetAmount ===0
-  ).length;
+  const donateShirt = table
+    .getRowModel()
+    .rows.filter(
+      (row) =>
+        row.original.donate === true &&
+        row.original.buyShirt === true &&
+        row.original.singlePinAmount === 0 &&
+        row.original.pinSetAmount === 0
+    ).length;
 
   //บริจาค ซื้อเข็ม
-  const donatePin = table.getRowModel().rows.filter(
-    row => row.original.donate === true && row.original.buyShirt===false&&(row.original.singlePinAmount >0 || row.original.pinSetAmount >0)
-  ).length;
+  const donatePin = table
+    .getRowModel()
+    .rows.filter(
+      (row) =>
+        row.original.donate === true &&
+        row.original.buyShirt === false &&
+        (row.original.singlePinAmount > 0 || row.original.pinSetAmount > 0)
+    ).length;
 
   //บริจาค ซื้อเสื้อ เข็ม
-  const donateShirtPin = table.getRowModel().rows.filter(
-    row => row.original.donate === true && row.original.buyShirt===true&&row.original.singlePinAmount >0 && row.original.pinSetAmount >0
-  ).length;
-
+  const donateShirtPin = table
+    .getRowModel()
+    .rows.filter(
+      (row) =>
+        row.original.donate === true &&
+        row.original.buyShirt === true &&
+        row.original.singlePinAmount > 0 &&
+        row.original.pinSetAmount > 0
+    ).length;
 
   return (
     <>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">กรองสถานะ</legend>
-        <input
-          placeholder="กรุณาใส่เลขสถานะ"
-          value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("status")?.setFilterValue(event.target.value)
-          }
-          className="input input-neutral input-sm border-2 border-gray-400"
-        />
-      </fieldset>
       <div className="py-4 max-h-[500px] overflow-auto">
         <table className="whitespace-nowrap min-w-full border-collapse border border-gray-300">
           <thead className="bg-gray-100">
@@ -519,27 +538,32 @@ const Table: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex space-x-2 py-2">
-        {/* สำรอง ใช้ดูคนรับ ไม่รับใบเสร็จ แบบไม่พิไจารณาเงื่อนไขอื่น */}
-        {["true", "false"].map((status) => (
-          <button
-            key={status}
-            onClick={() => {
-              const value = status === "true" ? true : false;
-              table.getColumn("receipt")?.setFilterValue(value);
-            }}
-            className={`btn btn-sm border-2 ${
-              table.getColumn("receipt")?.getFilterValue() ===
-              (status === "true")
-                ? "btn-neutral"
-                : "btn-outline"
-            }`}
-          >
-            {status}
-          </button>
-        ))}
-        {/* รวมรับใบเสร็จทุกกรณี */}
-        {/* <button
+
+      <Filter onFilterChange={handleFilterChange} />
+
+      {/* dowload excel */}
+      <ExportButton data={data} fileName="PeopleData.xlsx" />
+
+      {/* <div className="flex space-x-2 py-2"> */}
+      {/* สำรอง ใช้ดูคนรับ ไม่รับใบเสร็จ แบบไม่พิไจารณาเงื่อนไขอื่น */}
+      {["true", "false"].map((status) => (
+        <button
+          key={status}
+          onClick={() => {
+            const value = status === "true" ? true : false;
+            table.getColumn("receipt")?.setFilterValue(value);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("receipt")?.getFilterValue() === (status === "true")
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          {status}
+        </button>
+      ))}
+      {/* รวมรับใบเสร็จทุกกรณี */}
+      {/* <button
           onClick={() => {
             table.getColumn("receipt")?.setFilterValue(true);
           }}
@@ -551,8 +575,8 @@ const Table: React.FC = () => {
         >
           รับใบเสร็จทุกกรณี
         </button> */}
-        {/* รับใบเสร็จ ไม่รับเสื้อไม่รับเข็ม */}
-        {/* <button
+      {/* รับใบเสร็จ ไม่รับเสื้อไม่รับเข็ม */}
+      {/* <button
           onClick={() => {
             const receiptColumn = table.getColumn("receipt");
             const shirtColumn = table.getColumn("buyShirt");
@@ -594,70 +618,64 @@ const Table: React.FC = () => {
         >
           รับใบเสร็จอย่างเดียว
         </button> */}
-        <button
-          onClick={() => {
-            const columnsToClear = [
-              "receipt",
-              "buyShirt",
-              "singlePinAmount",
-              "pinSetAmount",
-            ]; // ระบุชื่อคอลัมน์ที่ต้องการล้าง
-            columnsToClear.forEach((col) => {
-              table.getColumn(col)?.setFilterValue(null);
-            });
-          }}
-          className="btn btn-sm btn-outline border-2"
-        >
-          ล้างตัวกรองทั้งหมด
-        </button>
-      </div>
-      {/* <button onClick={() => this.downloadExcel(data)}>
-        Download As Excel
-      </button> */}
-      <button className="btn btn-sm" onClick={() => downloadExcel(data)}>
-        ดาวน์โหลด .xlsx
+      <button
+        onClick={() => {
+          const columnsToClear = [
+            "receipt",
+            "buyShirt",
+            "singlePinAmount",
+            "pinSetAmount",
+          ]; // ระบุชื่อคอลัมน์ที่ต้องการล้าง
+          columnsToClear.forEach((col) => {
+            table.getColumn(col)?.setFilterValue(null);
+          });
+        }}
+        className="btn btn-sm btn-outline border-2"
+      >
+        ล้างตัวกรองทั้งหมด
       </button>
-      {/* <button onClick={() => downloadExcel(data)}>Export to Excel</button> */}
+      {/* </div> */}
 
       {/* แสดงผลจำนวนแถวที่กรอง */}
       {/* <h1>Filtered Row Count: {filteredRowCount}</h1> */}
 
       <div>
-            <div className="my-5">
-              จำนวนคนบริจาคทั้งหมด : {filteredRowCount} <br />
-              จำนวนคนที่บริจาคแต่ไม่ซื้อของ : {donateOnly}
-              <br />
-              จำนวนคนที่บริจาคซื้อเสื้อ : {donateShirt} <br />
-              จำนวนคนที่บริจาคซื้อเข็ม :  {donatePin}<br />
-              จำนวนที่บริจาคซื้อเสื้อและเข็ม : {donateShirtPin} <br />
-            </div>
-            <div className="my-5">
-              จำนวนเข็มเดี่ยวทั้งหมด : {totalSinPin}
-              <br />
-              จำนวนเข็มชุดทั้งหมด : {totalPinSet}<br />
-            </div>
-            <div className="my-5">
-              จำนวนเสื้อสีแดงไซส์ XS ทั้งหมด : 
-              <br />
-              จำนวนเสื้อสีแดงไซส์ S ทั้งหมด :  <br />
-              จำนวนเสื้อสีแดงไซส์ M ทั้งหมด :  <br />
-              จำนวนเสื้อสีแดงไซส์ L ทั้งหมด :  <br />
-              จำนวนเสื้อสีแดงไซส์ XL ทั้งหมด : <br />
-              จำนวนเสื้อสีแดงไซส์ 2XL ทั้งหมด :  <br />
-              จำนวนเสื้อสีแดงไซส์ 3XL ทั้งหมด : <br />
-            </div>
-            <div className="my-5">
-              จำนวนเสื้อสีครีมไซส์ XS ทั้งหมด :  <br />
-              จำนวนเสื้อสีครีมไซส์ S ทั้งหมด : <br />
-              จำนวนเสื้อสีครีมไซส์ M ทั้งหมด :  <br />
-              จำนวนเสื้อสีครีมไซส์ L ทั้งหมด : <br />
-              จำนวนเสื้อสีครีมไซส์ XL ทั้งหมด :  <br />
-              จำนวนเสื้อสีครีมไซส์ 2XL ทั้งหมด :  <br />
-              จำนวนเสื้อสีครีมไซส์ 3XL ทั้งหมด : 
-              <br />
-            </div>
-          </div>
-
+        <div className="my-5">
+          จำนวนคนบริจาคทั้งหมด : {filteredRowCount} <br />
+          จำนวนคนที่บริจาคแต่ไม่ซื้อของ : {donateOnly}
+          <br />
+          จำนวนคนที่บริจาคซื้อเสื้อ : {donateShirt} <br />
+          จำนวนคนที่บริจาคซื้อเข็ม : {donatePin}
+          <br />
+          จำนวนที่บริจาคซื้อเสื้อและเข็ม : {donateShirtPin} <br />
+        </div>
+        <div className="my-5">
+          จำนวนเข็มเดี่ยวทั้งหมด : {totalSinPin}
+          <br />
+          จำนวนเข็มชุดทั้งหมด : {totalPinSet}
+          <br />
+        </div>
+        <div className="my-5">
+          จำนวนเสื้อสีแดงไซส์ XS ทั้งหมด :
+          <br />
+          จำนวนเสื้อสีแดงไซส์ S ทั้งหมด : <br />
+          จำนวนเสื้อสีแดงไซส์ M ทั้งหมด : <br />
+          จำนวนเสื้อสีแดงไซส์ L ทั้งหมด : <br />
+          จำนวนเสื้อสีแดงไซส์ XL ทั้งหมด : <br />
+          จำนวนเสื้อสีแดงไซส์ 2XL ทั้งหมด : <br />
+          จำนวนเสื้อสีแดงไซส์ 3XL ทั้งหมด : <br />
+        </div>
+        <div className="my-5">
+          จำนวนเสื้อสีครีมไซส์ XS ทั้งหมด : <br />
+          จำนวนเสื้อสีครีมไซส์ S ทั้งหมด : <br />
+          จำนวนเสื้อสีครีมไซส์ M ทั้งหมด : <br />
+          จำนวนเสื้อสีครีมไซส์ L ทั้งหมด : <br />
+          จำนวนเสื้อสีครีมไซส์ XL ทั้งหมด : <br />
+          จำนวนเสื้อสีครีมไซส์ 2XL ทั้งหมด : <br />
+          จำนวนเสื้อสีครีมไซส์ 3XL ทั้งหมด :
+          <br />
+        </div>
+      </div>
     </>
   );
 };
