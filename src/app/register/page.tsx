@@ -1,71 +1,74 @@
 "use client";
+
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useLanguage } from "../components/LanguageContext";
+import RegisterForm from "../components/RegisterForm";
+import type { Province, District, SubDistrict } from "@/types/address";
+import { useLanguage } from "../context/LanguageContext";
 
-export default function Register() {
-  const { language, translations } = useLanguage();
+const RegisterPage = () => {
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [districts, setDistricts] = useState<District[]>([]);
+  const [subDistricts, setSubDistricts] = useState<SubDistrict[]>([]);
+  const { language } = useLanguage();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/address");
+        if (!response.ok) {
+          throw new Error("Failed to fetch address data");
+        }
+        const data = await response.json();
+        setProvinces(data.provinces || []);
+        setDistricts(data.districts || []);
+        setSubDistricts(data.subDistricts || []);
+      } catch (err) {
+        console.error("Error fetching address data:", err);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-4">
+      <div className={`container mx-auto p-4 ${
+              language === "th" ? "" : "hidden"
+            }`}>
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-2xl font-bold mb-4">{translations[language].register}</h1>
-          <p className="mb-4">{translations[language].registerDescription}</p>
-          <form className="flex flex-col space-y-4 w-full max-w-xs">
-            <input
-              required
-              type="text"
-              placeholder={translations[language].fullName}
-              className="input input-bordered w-full max-w-xs"
-            />
-            <span>{translations[language].fullNameExample}</span>
-            <input
-              required
-              type="tel"
-              placeholder={translations[language].phone}
-              className="input input-bordered w-full max-w-xs"
-            />
-            <span>{translations[language].phoneExample}</span>
-            <input
-              type="email"
-              placeholder={translations[language].email}
-              className="input input-bordered w-full max-w-xs"
-            />
-            <input
-              required
-              type="text"
-              placeholder={translations[language].address}
-              className="input input-bordered w-full max-w-xs"
-            />
-            <p>{translations[language].paymentMethod}</p>
-            <div className="form-control">
-              <label className="label cursor-pointer">
-                <input
-                  type="radio"
-                  name="payment"
-                  className="radio checked:bg-primary"
-                  defaultChecked
-                />
-                <span>{translations[language].qrPayment}</span>
-              </label>
-            </div>
-            <div className="form-control">
-              <label className="label cursor-pointer">
-                <input
-                  type="radio"
-                  name="payment"
-                  className="radio checked:bg-primary"
-                />
-                <span>{translations[language].bankPayment}</span>
-              </label>
-            </div>
-            <button className="btn btn-primary self-end">{translations[language].next} →</button>
-          </form>
+          <h1 className="text-5xl font-bold mb-4">ลงทะเบียนบริจาคและสั่งซื้อเสื้อ</h1>
+          <div className="text-2xl mb-4 text-center">
+            <div>โครงการวันอานันทมหิดล คณะแพทยศาสตร์</div>
+            <div>จุฬาลงกรณ์มหาวิทยาลัย ประจำปี พ.ศ. ๒๕๖๘</div>
+          </div>
+          <RegisterForm
+            provinces={provinces}
+            districts={districts}
+            subDistricts={subDistricts}
+          />
+        </div>
+      </div>
+      <div className={`container mx-auto p-4 ${
+              language === "en" ? "" : "hidden"
+            }`}>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <h1 className="text-5xl font-bold mb-4">Register for donation and ordering</h1>
+          <div className="text-2xl mb-4 text-center">
+            <div>Ananda Mahidol the Faculty of Medicine</div>
+            <div>Chulalongkorn University year 2025</div>
+          </div>
+          <RegisterForm
+            provinces={provinces}
+            districts={districts}
+            subDistricts={subDistricts}
+          />
         </div>
       </div>
       <Footer />
     </>
   );
-}
+};
+
+export default RegisterPage;
