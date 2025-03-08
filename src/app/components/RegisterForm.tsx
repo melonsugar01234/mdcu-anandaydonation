@@ -297,6 +297,7 @@ const RegisterForm = ({
           onChange={(e) => setCard(e.target.value)}
         >
           <option value="">เลือกจำนวนเข็ม</option>
+          <option value="0">0 เข็ม</option>
           <option value="1">1 เข็ม</option>
           <option value="2">2 เข็ม</option>
           <option value="3">3 เข็ม</option>
@@ -558,6 +559,7 @@ const RegisterForm = ({
           onChange={(e) => setCard(e.target.value)}
         >
           <option value="">select amount</option>
+          <option value="0">0 card</option>
           <option value="1">1 card</option>
           <option value="2">2 cards</option>
           <option value="3">3 cards</option>

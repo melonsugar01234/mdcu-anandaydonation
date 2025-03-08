@@ -38,27 +38,3 @@ export async function GET() {
     });
   }
 }
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { name, phone, email, home, } = req.body;
-
-    try {
-      const newRegister = await prisma.register.create({
-        data: {
-          name,
-          phone,
-          email,
-          home,
-        },
-      });
-      res.status(201).json(newRegister);
-    } catch (error) {
-      console.error('Error creating new register:', error);
-      res.status(500).json({ error: 'Failed to create new register' });
-    }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-}
