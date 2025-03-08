@@ -262,7 +262,7 @@ const data: Person[] = [
     receiptName: "กสกๆก้ไๆกๆไก ๆไกๆไก่ๆาดดได",
     receiptAddress:
       "ฟำริดๆไนสดิ้ๆำนสรดิๆไืสๆดื ๆส่ดๆนย้ดำยๆด่รๆนำ้ดๆืิดำดืวเเหไิำ้ำ้",
-    buyShirt: false,
+    buyShirt: true,
     order: 4,
     transferTime: "20.14",
     transferDate: "1 มกราคม 2025",
@@ -447,6 +447,18 @@ const Table: React.FC = () => {
   };
   //<=
 
+  //filter
+  const filterColumns = (table: any, filters: any) => {
+    // กรองคอลัมน์ต่างๆ ที่ได้รับในตัวแปร filters
+    filters.forEach((filter: any) => {
+      const column = table.getColumn(filter.column);
+      if (column) {
+        column.setFilterValue(filter.value);
+      }
+    });
+  };
+
+  //นับจำนวน
   const filteredRowCount = table.getFilteredRowModel().rows.length;
 
   //รวมเข็มเดี่ยว
@@ -544,26 +556,229 @@ const Table: React.FC = () => {
       {/* dowload excel */}
       <ExportButton data={data} fileName="PeopleData.xlsx" />
 
-      {/* <div className="flex space-x-2 py-2"> */}
-      {/* สำรอง ใช้ดูคนรับ ไม่รับใบเสร็จ แบบไม่พิไจารณาเงื่อนไขอื่น */}
-      {["true", "false"].map((status) => (
+      <div className="">
+        {/* สำรอง ใช้ดูคนรับ ไม่รับใบเสร็จ แบบไม่พิไจารณาเงื่อนไขอื่น */}
+        {/* {["true", "false"].map((status) => (
+          <button
+            key={status}
+            onClick={() => {
+              const value = status === "true" ? true : false;
+              table.getColumn("receipt")?.setFilterValue(value);
+            }}
+            className={`btn btn-sm border-2 ${
+              table.getColumn("receipt")?.getFilterValue() ===
+              (status === "true")
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+          >
+            {status}
+          </button>
+        ))} */}
+        {/* บริจาคเท่านั้น */}
         <button
-          key={status}
           onClick={() => {
-            const value = status === "true" ? true : false;
-            table.getColumn("receipt")?.setFilterValue(value);
+            filterColumns(table, [
+              { column: "donate", value: true },
+              { column: "buyShirt", value: false },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value === 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value === 0 },
+            ]);
           }}
           className={`btn btn-sm border-2 ${
-            table.getColumn("receipt")?.getFilterValue() === (status === "true")
+            table.getColumn("donate")?.getFilterValue() === true &&
+            table.getColumn("buyShirt")?.getFilterValue() === false &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
               ? "btn-neutral"
               : "btn-outline"
           }`}
         >
-          {status}
+          บริจาคเท่านั้น
         </button>
-      ))}
-      {/* รวมรับใบเสร็จทุกกรณี */}
-      {/* <button
+        {/* รับเสื้อ */}
+        <button
+          onClick={() => {
+            filterColumns(table, [
+              { column: "buyShirt", value: true },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value === 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value === 0 },
+            ]);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("buyShirt")?.getFilterValue() === true &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับเสื้อ
+        </button>
+        {/* รับเข็ม */}
+        <button
+          onClick={() => {
+            filterColumns(table, [
+              { column: "buyShirt", value: false },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value !== 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value !== 0 },
+            ]);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("buyShirt")?.getFilterValue() === true &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับเข็ม
+        </button>
+        {/* รับเสื้อและเข็ม */}
+        <button
+          onClick={() => {
+            filterColumns(table, [
+              { column: "buyShirt", value: true },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value !== 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value !== 0 },
+            ]);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("buyShirt")?.getFilterValue() === true &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับเสื้อและเข็ม
+        </button>
+        {/* รับใบเสร็จ ไม่รับเสื้อไม่รับเข็ม */}
+        <button
+          onClick={() => {
+            filterColumns(table, [
+              { column: "receipt", value: true },
+              { column: "buyShirt", value: false },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value === 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value === 0 },
+            ]);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("receipt")?.getFilterValue() === true &&
+            table.getColumn("buyShirt")?.getFilterValue() === false &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับใบเสร็จอย่างเดียว
+        </button>
+        {/* รับใบเสร็จและเสื้อ */}
+        <button
+          onClick={() => {
+            filterColumns(table, [
+              { column: "receipt", value: true },
+              { column: "buyShirt", value: true },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value === 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value === 0 },
+            ]);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("receipt")?.getFilterValue() === true &&
+            table.getColumn("buyShirt")?.getFilterValue() === true &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับใบเสร็จและเสื้อ
+        </button>
+        {/* รับใบเสร็จและเข็ม */}
+        <button
+          onClick={() => {
+            filterColumns(table, [
+              { column: "receipt", value: true },
+              { column: "buyShirt", value: false },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value !== 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value !== 0 },
+            ]);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("receipt")?.getFilterValue() === true &&
+            table.getColumn("buyShirt")?.getFilterValue() === false &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับใบเสร็จและเข็ม
+        </button>
+        {/* รับใบเสร็จ เสื้อ เข็ม */}
+        <button
+          onClick={() => {
+            filterColumns(table, [
+              { column: "receipt", value: true },
+              { column: "buyShirt", value: true },
+              {
+                column: "singlePinAmount",
+                value: (value: number) => value !== 0,
+              },
+              { column: "pinSetAmount", value: (value: number) => value !== 0 },
+            ]);
+          }}
+          className={`btn btn-sm border-2 ${
+            table.getColumn("receipt")?.getFilterValue() === true &&
+            table.getColumn("buyShirt")?.getFilterValue() === true &&
+            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
+              "function" &&
+            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
+              "function"
+              ? "btn-neutral"
+              : "btn-outline"
+          }`}
+        >
+          รับใบเสร็จอย่างเดียว
+        </button>
+        {/* รวมรับใบเสร็จทุกกรณี */}
+        {/* <button
           onClick={() => {
             table.getColumn("receipt")?.setFilterValue(true);
           }}
@@ -575,66 +790,24 @@ const Table: React.FC = () => {
         >
           รับใบเสร็จทุกกรณี
         </button> */}
-      {/* รับใบเสร็จ ไม่รับเสื้อไม่รับเข็ม */}
-      {/* <button
+        <button
           onClick={() => {
-            const receiptColumn = table.getColumn("receipt");
-            const shirtColumn = table.getColumn("buyShirt");
-            const singlePinColumn = table.getColumn("singlePinAmount");
-            const pinSetColumn = table.getColumn("pinSetAmount");
-            
-            if (
-              receiptColumn &&
-              shirtColumn &&
-              singlePinColumn &&
-              pinSetColumn
-            ) {
-              receiptColumn.setFilterValue(true); // กรอง receipt
-              shirtColumn.setFilterValue(false); // ไม่ซื้อเสื้อ
-              singlePinColumn.setFilterValue((value: number) => value <= 0); // pin 0
-              pinSetColumn.setFilterValue((value: number) => value <= 0); // set pin 0
-            }
+            const columnsToClear = [
+              "donate",
+              "receipt",
+              "buyShirt",
+              "singlePinAmount",
+              "pinSetAmount",
+            ];
+            columnsToClear.forEach((col) => {
+              table.getColumn(col)?.setFilterValue(null);
+            });
           }}
-          className={`btn btn-sm border-2 ${
-            table.getColumn("receipt")?.getFilterValue() === true &&
-            table.getColumn("buyShirt")?.getFilterValue() === false &&
-            typeof table.getColumn("singlePinAmount")?.getFilterValue() ===
-            "function" &&
-            (
-              table.getColumn("singlePinAmount")?.getFilterValue() as (
-                value: number
-              ) => boolean
-            )(3) &&
-            typeof table.getColumn("pinSetAmount")?.getFilterValue() ===
-            "function" &&
-            (
-              table.getColumn("pinSetAmount")?.getFilterValue() as (
-                value: number
-              ) => boolean
-            )(3)
-            ? "btn-neutral"
-            : "btn-outline"
-          }`}
+          className="btn btn-sm btn-outline border-2"
         >
-          รับใบเสร็จอย่างเดียว
-        </button> */}
-      <button
-        onClick={() => {
-          const columnsToClear = [
-            "receipt",
-            "buyShirt",
-            "singlePinAmount",
-            "pinSetAmount",
-          ]; // ระบุชื่อคอลัมน์ที่ต้องการล้าง
-          columnsToClear.forEach((col) => {
-            table.getColumn(col)?.setFilterValue(null);
-          });
-        }}
-        className="btn btn-sm btn-outline border-2"
-      >
-        ล้างตัวกรองทั้งหมด
-      </button>
-      {/* </div> */}
+          ล้างตัวกรองทั้งหมด
+        </button>
+      </div>
 
       {/* แสดงผลจำนวนแถวที่กรอง */}
       {/* <h1>Filtered Row Count: {filteredRowCount}</h1> */}
