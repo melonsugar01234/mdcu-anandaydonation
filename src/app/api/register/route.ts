@@ -23,7 +23,7 @@ async function isTrackingCodeUnique(code: string) {
 
 export async function POST(req: NextApiRequest) {
   try {
-    const { name, phone, email, home, payment_proof, payment_amount, card, shirts } =
+    const { name, phone, email, home, payment_proof, payment_amount, payment_method, card, shirts, receipt, national_id, name_on_receipt, address_on_receipt} =
       await (req as any).json();
 
     if (!name || !phone || !home || !payment_amount) {
@@ -38,6 +38,11 @@ export async function POST(req: NextApiRequest) {
       trackingCode = generateTrackingCode();
     } while (!(await isTrackingCodeUnique(trackingCode)));
 
+    let shipmentStatus = "อยู่ในขั้นตอนการจัดเตรียม"; // Default status
+    if ((card === "0" || card === "") && (shirts === "")) {
+      shipmentStatus = "ไม่มีคำสั่งซื้อ"; // No order status
+    }
+
     const newRegister = await prisma.register.create({
       data: {
         name,
@@ -48,7 +53,14 @@ export async function POST(req: NextApiRequest) {
         payment_amount,
         tracking_code: trackingCode,
         card,
-        shirt: shirts,
+        shirt: shirts || "",
+        payment_status: "pending",
+        shipment_status: shipmentStatus,
+        receipt,
+        payment_method,
+        national_id: national_id || "",
+        name_on_receipt: name_on_receipt || "",
+        address_on_receipt: address_on_receipt || "",
       },
     });
     return NextResponse.json(newRegister, { status: 201 });

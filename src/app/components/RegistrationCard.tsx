@@ -21,7 +21,7 @@ export default function RegistrationCard(
   return (
     <div className="card bg-base-100 shadow-xl">
       <div className="card-body items-center text-center">
-        {registration.payment_proof && (
+        {/* {registration.payment_proof && (
           <figure className="mb-4">
             <img
               src={registration.payment_proof}
@@ -29,7 +29,7 @@ export default function RegistrationCard(
               className="rounded-lg max-w-sm"
             />
           </figure>
-        )}
+        )} */}
 
         <h2 className="card-title">{registration.name}</h2>
         

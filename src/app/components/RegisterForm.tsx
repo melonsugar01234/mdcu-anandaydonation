@@ -23,16 +23,28 @@ const RegisterForm = ({
   const [availablePostalCodes, setAvailablePostalCodes] = useState<string[]>(
     []
   );
+  const [selectedProvince2, setSelectedProvince2] = useState<string>("");
+  const [selectedDistrict2, setSelectedDistrict2] = useState<string>("");
+  const [selectedSubDistrict2, setSelectedSubDistrict2] = useState<string>("");
+  const [addressDetail2, setAddressDetail2] = useState("");
+  const [postalCode2, setPostalCode2] = useState("");
+  const [availablePostalCodes2, setAvailablePostalCodes2] = useState<string[]>(
+    []
+  );
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [paymentProof, setPaymentProof] = useState<string>("");
   const [payment_amount, setpayment_amount] = useState<string>("");
+  const [paymentMethod, setPaymentMethod] = useState<string>(""); // New state for payment method
   const [card, setCard] = useState<string>("");
   const [wantsShirt, setWantsShirt] = useState<boolean>(false);
   const [shirts, setShirts] = useState<
     { size: string; color: string; amount: number }[]
   >([]);
+  const [wantsReceipt, setWantsReceipt] = useState<boolean>(false);
+  const [nationalId, setNationalId] = useState<string>("");
+  const [nameOnReceipt, setNameOnReceipt] = useState<string>("");
   const { language } = useLanguage();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +98,39 @@ const RegisterForm = ({
     (subDistrict) => subDistrict.district_id === selectedDistrict
   );
 
+  const handleProvinceChange2 = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedProvince2(e.target.value);
+    setSelectedDistrict2("");
+    setSelectedSubDistrict2("");
+    setPostalCode2("");
+  };
+
+  const handleDistrictChange2 = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDistrict2(e.target.value);
+    setSelectedSubDistrict2("");
+    setPostalCode2("");
+  };
+
+  const handleSubDistrictChange2 = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubDistrict2(e.target.value);
+
+    const subDistrictPostalCodes2 = subDistricts
+      .filter((sd) => sd.district_id === selectedDistrict2)
+      .map((sd) => sd.postal_code)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    setAvailablePostalCodes2(subDistrictPostalCodes2);
+    setPostalCode2(subDistrictPostalCodes2[0] || "");
+  };
+
+  const filteredDistricts2 = districts.filter(
+    (district) => district.province_id.toString() === selectedProvince2
+  );
+
+  const filteredSubDistricts2 = subDistricts.filter(
+    (subDistrict) => subDistrict.district_id === selectedDistrict2
+  );
+
   const getFullAddress = () => {
     const selectedProvinceName = provinces.find(
       (p) => p.id.toString() === selectedProvince
@@ -104,9 +149,28 @@ const RegisterForm = ({
     } รหัสไปรษณีย์ ${postalCode} `.trim();
   };
 
+  const getFullAddressforReceipt = () => {
+    const selectedProvinceName2 = provinces.find(
+      (p) => p.id.toString() === selectedProvince2
+    )?.name_th;
+    const selectedDistrictName2 = districts.find(
+      (d) => d.id.toString() === selectedDistrict2
+    )?.name_th;
+    const selectedSubDistrictName2 = subDistricts.find(
+      (s) => s.id === selectedSubDistrict2
+    )?.name_th;
+
+    return `${addressDetail2} แขวง/ตำบล ${
+      selectedSubDistrictName2 || ""
+    } เขต/อำเภอ ${selectedDistrictName2 || ""} จังหวัด ${
+      selectedProvinceName2 || ""
+    } รหัสไปรษณีย์ ${postalCode2} `.trim();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const fullAddress = getFullAddress();
+    const fullAddressforReceipt = getFullAddressforReceipt();
     const shirtData = shirts
       .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
       .join(";");
@@ -126,6 +190,11 @@ const RegisterForm = ({
           payment_amount,
           card,
           shirts: shirtData,
+          receipt: wantsReceipt ? "yes" : "no",
+          payment_method: paymentMethod,
+          national_id: wantsReceipt ? nationalId : "",
+          name_on_receipt: wantsReceipt ? nameOnReceipt : "",
+          address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
         }),
       });
 
@@ -302,6 +371,13 @@ const RegisterForm = ({
           <option value="2">2 เข็ม</option>
           <option value="3">3 เข็ม</option>
         </select>
+        <div className="flex justify-center w-full">
+          <img
+            src="/images/shirt.jpg"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
         <span className="text-xl">เสื้อที่ระลึก</span>
         <div className="flex items-center space-x-4">
           <label>
@@ -309,6 +385,7 @@ const RegisterForm = ({
               type="checkbox"
               checked={wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
             />
             ต้องการรับเสื้อ
           </label>
@@ -317,6 +394,7 @@ const RegisterForm = ({
               type="checkbox"
               checked={!wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
             />
             ไม่ต้องการรับเสื้อ
           </label>
@@ -397,6 +475,24 @@ const RegisterForm = ({
             </div>
           </div>
         )}
+        <div className="space-y-4">
+          <span className="text-xl">วิธีการบริจาค</span>
+          <select
+            required
+            className="select select-bordered w-full"
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          >
+            <option value="">เลือกวิธีการบริจาค</option>
+            <option value="QR code">QR code</option>
+            <option value="Bank number">Bank number</option>
+          </select>
+          <img
+            src="/images/donate qr.png"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text text-xl">
@@ -419,6 +515,126 @@ const RegisterForm = ({
             </div>
           )}
         </div>
+
+        {/* Receipt Checkbox */}
+        <div className="flex items-center space-x-4">
+  <label className="flex items-center cursor-pointer">
+    <input
+      type="checkbox"
+      checked={wantsReceipt}
+      onChange={() => setWantsReceipt(!wantsReceipt)}
+      className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+    />
+    <span className="ml-2 text-lg">ต้องการใบเสร็จ</span>
+  </label>
+  <label>
+            <input
+              type="checkbox"
+              checked={!wantsReceipt}
+              onChange={() => setWantsReceipt(!wantsReceipt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+            />
+            ไม่ต้องการรับใบเสร็จ
+          </label>
+</div>
+
+        {/* Conditional Fields for Receipt */}
+        {wantsReceipt && (
+          <div className="space-y-4">
+            <span className="text-xl">หมายเลขประจำตัวประชาชน</span>
+            <input
+              type="text"
+              placeholder="ใส่แค่ตัวเลข"
+              className="input input-bordered w-full"
+              value={nationalId}
+              onChange={(e) => setNationalId(e.target.value)}
+              maxLength={13} // Limit input to 13 characters
+              pattern="\d{13}" // Ensure only 13 digits are allowed
+              title="หมายเลขประจำตัวประชาชนต้องมี 13 หลัก" // Tooltip for user guidance
+            
+            />
+            <span className="text-xl">ชื่อ-นามสกุลในใบเสร็จ</span>
+            <input
+              required
+              type="text"
+              placeholder="เช่น นายสมชาย ใจดี"
+              className="input input-bordered w-full"
+              value={nameOnReceipt}
+              onChange={(e) => setNameOnReceipt(e.target.value)}
+            />
+            <div className="space-y-4">
+          <span className="text-xl">ที่อยู่ในใบเสร็จ</span>
+          <input
+            required
+            type="text"
+            placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
+            value={addressDetail2}
+            onChange={(e) => setAddressDetail2(e.target.value)}
+            className="input input-bordered w-full"
+          />
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={selectedProvince2}
+            onChange={handleProvinceChange2}
+          >
+            <option value="">เลือกจังหวัด</option>
+            {provinces.map((province) => (
+              <option key={province.id} value={province.id}>
+                {province.name_th}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={selectedDistrict2}
+            onChange={handleDistrictChange2}
+            disabled={!selectedProvince2}
+          >
+            <option value="">เลือกอำเภอ/เขต</option>
+            {filteredDistricts2.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name_th}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={selectedSubDistrict2}
+            onChange={handleSubDistrictChange2}
+            disabled={!selectedDistrict2}
+          >
+            <option value="">เลือกตำบล/แขวง</option>
+            {filteredSubDistricts2.map((subDistrict) => (
+              <option key={subDistrict.id} value={subDistrict.id}>
+                {subDistrict.name_th}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={postalCode2}
+            onChange={(e) => setPostalCode2(e.target.value)}
+            disabled={!selectedSubDistrict2}
+          >
+            <option value="">เลือกรหัสไปรษณีย์</option>
+            {availablePostalCodes2.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
+          </select>
+        </div>
+          </div>
+        )}
+
         <button type="submit" className="btn btn-primary self-end">
           ยืนยัน →
         </button>
@@ -564,6 +780,13 @@ const RegisterForm = ({
           <option value="2">2 cards</option>
           <option value="3">3 cards</option>
         </select>
+        <div className="flex justify-center w-full">
+          <img
+            src="/images/shirt.jpg"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
         <span className="text-xl">commemorable shirts</span>
         <div className="flex items-center space-x-4">
           <label>
@@ -571,6 +794,7 @@ const RegisterForm = ({
               type="checkbox"
               checked={wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
             />
             I would like to receive shirts
           </label>
@@ -579,6 +803,7 @@ const RegisterForm = ({
               type="checkbox"
               checked={!wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
             />
             I do not want to receive shirts
           </label>
@@ -659,7 +884,26 @@ const RegisterForm = ({
             </div>
           </div>
         )}
+        <div className="space-y-4">
+          <span className="text-xl">payment method</span>
+          <select
+            required
+            className="select select-bordered w-full"
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          >
+            <option value="">choose payment method</option>
+            <option value="QR code">QR code</option>
+            <option value="Bank number">Bank number</option>
+          </select>
+          <img
+            src="/images/donate qr.png"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
         <div className="form-control w-full">
+        
           <label className="label">
             <span className="label-text text-xl">
               Payment slip (File .jpg, .png size less than 5MB)
@@ -678,9 +922,129 @@ const RegisterForm = ({
                 alt="Payment proof preview"
                 className="w-full rounded-lg shadow-lg"
               />
-            </div>
+            </div>          
           )}
+          </div>
+
+{/* Receipt Checkbox */}
+<div className="flex items-center space-x-4">
+  <label className="flex items-center cursor-pointer">
+    <input
+      type="checkbox"
+      checked={wantsReceipt}
+      onChange={() => setWantsReceipt(!wantsReceipt)}
+      className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+    />
+    <span className="ml-2 text-lg">I would like a receipt</span>
+  </label>
+  <label>
+            <input
+              type="checkbox"
+              checked={!wantsReceipt}
+              onChange={() => setWantsReceipt(!wantsReceipt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+            />
+            I don't want a receipt
+          </label>
+</div>
+
+{/* Conditional Fields for Receipt */}
+{wantsReceipt && (
+          <div className="space-y-4">
+            <span className="text-xl">national id</span>
+            <input
+              type="text"
+              placeholder="only enter numbers"
+              className="input input-bordered w-full"
+              value={nationalId}
+              onChange={(e) => setNationalId(e.target.value)}
+              maxLength={13} // Limit input to 13 characters
+              pattern="\d{13}" // Ensure only 13 digits are allowed
+              title="pls enter 13 digit for national id" // Tooltip for user guidance
+            
+            />
+            <span className="text-xl">name on receipt</span>
+            <input
+              required
+              type="text"
+              placeholder="enter full name"
+              className="input input-bordered w-full"
+              value={nameOnReceipt}
+              onChange={(e) => setNameOnReceipt(e.target.value)}
+            />
+            <div className="space-y-4">
+          <span className="text-xl">address on receipt</span>
+          <input
+            required
+            type="text"
+            placeholder="House number, Village/building, Road"
+            value={addressDetail2}
+            onChange={(e) => setAddressDetail2(e.target.value)}
+            className="input input-bordered w-full"
+          />
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={selectedProvince2}
+            onChange={handleProvinceChange2}
+          >
+            <option value="">select province</option>
+            {provinces.map((province) => (
+              <option key={province.id} value={province.id}>
+                {province.name_en}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={selectedDistrict2}
+            onChange={handleDistrictChange2}
+            disabled={!selectedProvince2}
+          >
+            <option value="">select district</option>
+            {filteredDistricts2.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name_en}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={selectedSubDistrict2}
+            onChange={handleSubDistrictChange2}
+            disabled={!selectedDistrict2}
+          >
+            <option value="">select subdistrict</option>
+            {filteredSubDistricts2.map((subDistrict) => (
+              <option key={subDistrict.id} value={subDistrict.id}>
+                {subDistrict.name_en}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full"
+            value={postalCode2}
+            onChange={(e) => setPostalCode2(e.target.value)}
+            disabled={!selectedSubDistrict2}
+          >
+            <option value="">postal code</option>
+            {availablePostalCodes2.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
+          </select>
         </div>
+          </div>
+)}
+        
         <button type="submit" className="btn btn-primary self-end">
           submit →
         </button>
