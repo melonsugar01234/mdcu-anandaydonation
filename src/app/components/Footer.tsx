@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <>
       <footer
-        className={`footer bg-primary text-neutral-content p-4 flex justify-between items-center ${
+        className={`footer bg-rose-800 text-white p-4 flex justify-between items-center ${
           language === "th" ? "" : "hidden"
         }`}
       >
@@ -25,7 +25,7 @@ export default function Footer() {
         </Link>
       </footer>
       <footer
-        className={`footer bg-primary text-neutral-content p-4 flex justify-between items-center ${
+        className={`footer bg-rose-800 text-neutral-content p-4 flex justify-between items-center ${
           language === "en" ? "" : "hidden"
         }`}
       >

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLanguage } from "../context/LanguageContext"; // Adjust the path as necessary
-
+import Link from "next/link";
 interface SearchBarProps {
   onSearch: (searchTrackingCode: string) => Promise<void>;
   loading: boolean;
@@ -18,6 +18,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
   };
 
   return (
+    <>
     <form
       onSubmit={handleSubmit}
       className="flex items-center gap-2 mb-4"
@@ -45,6 +46,16 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
       <button type="submit" disabled={loading} className="btn btn-primary">
         {loading ? "Searching..." : "Search"}
       </button>
+     
     </form>
+     <div className="text-center "> {/* Optional: Add margin for spacing */}
+     <Link href="/forgotTrack" className={`underline ${
+            language === "th" ? "" : "hidden"
+          } `} >ลืมรหัส</Link>
+      <Link href="/forgotTrack" className={`underline ${
+            language === "en" ? "" : "hidden"
+          } `} >forgot code</Link>
+   </div>
+   </>
   );
 }

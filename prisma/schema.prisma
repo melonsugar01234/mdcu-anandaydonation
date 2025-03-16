@@ -17,7 +17,7 @@ model Register {
     tracking_code      String   @unique
     created_at         DateTime @default(now())
     edited_at          DateTime @updatedAt
-    card               String?
+    card               Int?
     shirt              String?
     shipment_status    String?
     payment_method     String?

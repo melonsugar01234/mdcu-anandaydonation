@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className={`flex flex-col items-center gap-4 p-4 ${
+      <div className={`text-slate-900 flex flex-col items-center gap-4 p-4 bg-stone-100 ${
               language === "th" ? "" : "hidden"
             }`}>
 
@@ -31,7 +31,7 @@ export default function Home() {
         <div className="artboard artboard-horizontal phone-2">
           <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" />
         </div>
-        <button className="btn btn-wide bg-primary text-white">
+        <button className="btn btn-wide bg-rose-800 text-white">
         <Link
             href="https://thai.fit/c/mfhvr2024"
             rel="noopener noreferrer"
@@ -43,7 +43,7 @@ export default function Home() {
         <div className="artboard artboard-horizontal phone-2">
           <img src="/images/bookbank.png" alt="bookbank" />
         </div>
-        <button className="btn btn-wide bg-primary text-white">
+        <button className="btn btn-wide bg-rose-800 text-white">
           <Link href="/register">ลงทะเบียน</Link>
         </button>
         <h2 className="text-xl">
@@ -99,7 +99,7 @@ export default function Home() {
         <div className="artboard artboard-horizontal phone-2">
           <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" />
         </div>
-        <button className="btn btn-wide bg-primary text-white">
+        <button className="btn btn-wide bg-rose-800 text-white">
           <Link
             href="https://thai.fit/c/mfhvr2024"
             rel="noopener noreferrer"
@@ -111,7 +111,7 @@ export default function Home() {
         <div className="artboard artboard-horizontal phone-2">
           <img src="/images/bookbank.png" alt="bookbank" />
         </div>
-        <button className="btn btn-wide bg-primary text-white">
+        <button className="btn btn-wide bg-rose-800 text-white">
           <Link href="/register">Register</Link>
         </button>
         <h2 className="text-xl">

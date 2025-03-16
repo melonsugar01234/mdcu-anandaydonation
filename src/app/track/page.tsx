@@ -4,6 +4,8 @@ import { useState } from "react";
 import SearchBar from "../components/Tracksearch";
 import RegistrationGrid from "../components/RegistrationGrid";
 import { useLanguage } from "../context/LanguageContext";
+import Link from "next/link";
+import Footer from "../components/Footer";
 
 interface Register {
   id: number;
@@ -53,9 +55,9 @@ export default function TrackingPage() {
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="container mx-auto p-4 min-h-screen flex flex-col items-center">
+      <div className="container mx-auto p-4 flex-grow flex flex-col items-center">
         <div className="w-full max-w-4xl flex flex-col items-center">
           <h1
             className={`text-2xl text-center font-bold mb-4 ${
@@ -72,10 +74,12 @@ export default function TrackingPage() {
             View Status
           </h1>
           <SearchBar onSearch={handleSearch} loading={loading} />
+
           {error && <div className="alert alert-error mb-4">{error}</div>}
           <RegistrationGrid registrations={registrations} />
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 }
