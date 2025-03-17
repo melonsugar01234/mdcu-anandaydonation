@@ -174,7 +174,7 @@ const RegisterForm = ({
     const shirtData = shirts
       .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
       .join(";");
-
+    
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -199,7 +199,9 @@ const RegisterForm = ({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create new register");
+        const errorText = await response.text
+        console.error('Failed to submit data:', errorText);
+        return;
       }
 
       const result = await response.json();

@@ -25,7 +25,6 @@ export async function POST(req: NextApiRequest) {
   try {
     const { name, phone, email, home, payment_proof, payment_amount, payment_method, card, shirts, receipt, national_id, name_on_receipt, address_on_receipt} =
       await (req as any).json();
-
     if (!name || !phone || !home || !payment_amount) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -53,7 +52,7 @@ export async function POST(req: NextApiRequest) {
         payment_amount,
         tracking_code: trackingCode,
         card,
-        shirt: shirts || "",
+        shirts: shirts || "",
         payment_status: "pending",
         shipment_status: shipmentStatus,
         receipt,
@@ -63,9 +62,17 @@ export async function POST(req: NextApiRequest) {
         address_on_receipt: address_on_receipt || "",
       },
     });
+    
+    
     return NextResponse.json(newRegister, { status: 201 });
-  } catch (error) {
-    console.error("Error creating new register:", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      // Log the stack trace of the error for debugging
+      console.error("Error creating new register:", error.stack);
+    } else {
+      // If the error is not an instance of Error, just log a generic message
+      console.error("An unknown error occurred:", error);
+    }  
     return NextResponse.json(
       { error: "Failed to create new register" },
       { status: 500 }

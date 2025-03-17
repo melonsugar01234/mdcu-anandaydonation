@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const CORRECT_PASSPHRASE = "mdcu778899"; // Change this to your desired passphrase
+const CORRECT_PASSPHRASE = process.env.PASSPHRASE; // Change this to your desired passphrase
 
 export const config: NextAuthOptions = {
     providers: [
