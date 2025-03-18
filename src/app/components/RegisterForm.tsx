@@ -111,7 +111,9 @@ const RegisterForm = ({
     setPostalCode2("");
   };
 
-  const handleSubDistrictChange2 = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSubDistrictChange2 = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedSubDistrict2(e.target.value);
 
     const subDistrictPostalCodes2 = subDistricts
@@ -174,7 +176,7 @@ const RegisterForm = ({
     const shirtData = shirts
       .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
       .join(";");
-    
+
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -188,7 +190,7 @@ const RegisterForm = ({
           home: fullAddress,
           payment_proof: paymentProof,
           payment_amount,
-          card,
+          card : parseInt(card),
           shirts: shirtData,
           receipt: wantsReceipt ? "yes" : "no",
           payment_method: paymentMethod,
@@ -199,8 +201,8 @@ const RegisterForm = ({
       });
 
       if (!response.ok) {
-        const errorText = await response.text
-        console.error('Failed to submit data:', errorText);
+        const errorText = await response.text();
+        console.error("Failed to submit data:", errorText);
         return;
       }
 
@@ -520,16 +522,16 @@ const RegisterForm = ({
 
         {/* Receipt Checkbox */}
         <div className="flex items-center space-x-4">
-  <label className="flex items-center cursor-pointer">
-    <input
-      type="checkbox"
-      checked={wantsReceipt}
-      onChange={() => setWantsReceipt(!wantsReceipt)}
-      className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
-    />
-    <span className="ml-2 text-lg">ต้องการใบเสร็จ</span>
-  </label>
-  <label>
+          <label className="flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={wantsReceipt}
+              onChange={() => setWantsReceipt(!wantsReceipt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+            />
+            <span className="ml-2 text-lg">ต้องการใบเสร็จ</span>
+          </label>
+          <label>
             <input
               type="checkbox"
               checked={!wantsReceipt}
@@ -538,7 +540,7 @@ const RegisterForm = ({
             />
             ไม่ต้องการรับใบเสร็จ
           </label>
-</div>
+        </div>
 
         {/* Conditional Fields for Receipt */}
         {wantsReceipt && (
@@ -553,7 +555,6 @@ const RegisterForm = ({
               maxLength={13} // Limit input to 13 characters
               pattern="\d{13}" // Ensure only 13 digits are allowed
               title="หมายเลขประจำตัวประชาชนต้องมี 13 หลัก" // Tooltip for user guidance
-            
             />
             <span className="text-xl">ชื่อ-นามสกุลในใบเสร็จ</span>
             <input
@@ -565,75 +566,75 @@ const RegisterForm = ({
               onChange={(e) => setNameOnReceipt(e.target.value)}
             />
             <div className="space-y-4">
-          <span className="text-xl">ที่อยู่ในใบเสร็จ</span>
-          <input
-            required
-            type="text"
-            placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
-            value={addressDetail2}
-            onChange={(e) => setAddressDetail2(e.target.value)}
-            className="input input-bordered w-full"
-          />
+              <span className="text-xl">ที่อยู่ในใบเสร็จ</span>
+              <input
+                required
+                type="text"
+                placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
+                value={addressDetail2}
+                onChange={(e) => setAddressDetail2(e.target.value)}
+                className="input input-bordered w-full"
+              />
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={selectedProvince2}
-            onChange={handleProvinceChange2}
-          >
-            <option value="">เลือกจังหวัด</option>
-            {provinces.map((province) => (
-              <option key={province.id} value={province.id}>
-                {province.name_th}
-              </option>
-            ))}
-          </select>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={selectedProvince2}
+                onChange={handleProvinceChange2}
+              >
+                <option value="">เลือกจังหวัด</option>
+                {provinces.map((province) => (
+                  <option key={province.id} value={province.id}>
+                    {province.name_th}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={selectedDistrict2}
-            onChange={handleDistrictChange2}
-            disabled={!selectedProvince2}
-          >
-            <option value="">เลือกอำเภอ/เขต</option>
-            {filteredDistricts2.map((district) => (
-              <option key={district.id} value={district.id}>
-                {district.name_th}
-              </option>
-            ))}
-          </select>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={selectedDistrict2}
+                onChange={handleDistrictChange2}
+                disabled={!selectedProvince2}
+              >
+                <option value="">เลือกอำเภอ/เขต</option>
+                {filteredDistricts2.map((district) => (
+                  <option key={district.id} value={district.id}>
+                    {district.name_th}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={selectedSubDistrict2}
-            onChange={handleSubDistrictChange2}
-            disabled={!selectedDistrict2}
-          >
-            <option value="">เลือกตำบล/แขวง</option>
-            {filteredSubDistricts2.map((subDistrict) => (
-              <option key={subDistrict.id} value={subDistrict.id}>
-                {subDistrict.name_th}
-              </option>
-            ))}
-          </select>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={selectedSubDistrict2}
+                onChange={handleSubDistrictChange2}
+                disabled={!selectedDistrict2}
+              >
+                <option value="">เลือกตำบล/แขวง</option>
+                {filteredSubDistricts2.map((subDistrict) => (
+                  <option key={subDistrict.id} value={subDistrict.id}>
+                    {subDistrict.name_th}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={postalCode2}
-            onChange={(e) => setPostalCode2(e.target.value)}
-            disabled={!selectedSubDistrict2}
-          >
-            <option value="">เลือกรหัสไปรษณีย์</option>
-            {availablePostalCodes2.map((code) => (
-              <option key={code} value={code}>
-                {code}
-              </option>
-            ))}
-          </select>
-        </div>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={postalCode2}
+                onChange={(e) => setPostalCode2(e.target.value)}
+                disabled={!selectedSubDistrict2}
+              >
+                <option value="">เลือกรหัสไปรษณีย์</option>
+                {availablePostalCodes2.map((code) => (
+                  <option key={code} value={code}>
+                    {code}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         )}
 
@@ -905,7 +906,6 @@ const RegisterForm = ({
           />
         </div>
         <div className="form-control w-full">
-        
           <label className="label">
             <span className="label-text text-xl">
               Payment slip (File .jpg, .png size less than 5MB)
@@ -924,22 +924,22 @@ const RegisterForm = ({
                 alt="Payment proof preview"
                 className="w-full rounded-lg shadow-lg"
               />
-            </div>          
+            </div>
           )}
-          </div>
+        </div>
 
-{/* Receipt Checkbox */}
-<div className="flex items-center space-x-4">
-  <label className="flex items-center cursor-pointer">
-    <input
-      type="checkbox"
-      checked={wantsReceipt}
-      onChange={() => setWantsReceipt(!wantsReceipt)}
-      className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
-    />
-    <span className="ml-2 text-lg">I would like a receipt</span>
-  </label>
-  <label>
+        {/* Receipt Checkbox */}
+        <div className="flex items-center space-x-4">
+          <label className="flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={wantsReceipt}
+              onChange={() => setWantsReceipt(!wantsReceipt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+            />
+            <span className="ml-2 text-lg">I would like a receipt</span>
+          </label>
+          <label>
             <input
               type="checkbox"
               checked={!wantsReceipt}
@@ -948,10 +948,10 @@ const RegisterForm = ({
             />
             I don't want a receipt
           </label>
-</div>
+        </div>
 
-{/* Conditional Fields for Receipt */}
-{wantsReceipt && (
+        {/* Conditional Fields for Receipt */}
+        {wantsReceipt && (
           <div className="space-y-4">
             <span className="text-xl">national id</span>
             <input
@@ -963,7 +963,6 @@ const RegisterForm = ({
               maxLength={13} // Limit input to 13 characters
               pattern="\d{13}" // Ensure only 13 digits are allowed
               title="pls enter 13 digit for national id" // Tooltip for user guidance
-            
             />
             <span className="text-xl">name on receipt</span>
             <input
@@ -975,78 +974,78 @@ const RegisterForm = ({
               onChange={(e) => setNameOnReceipt(e.target.value)}
             />
             <div className="space-y-4">
-          <span className="text-xl">address on receipt</span>
-          <input
-            required
-            type="text"
-            placeholder="House number, Village/building, Road"
-            value={addressDetail2}
-            onChange={(e) => setAddressDetail2(e.target.value)}
-            className="input input-bordered w-full"
-          />
+              <span className="text-xl">address on receipt</span>
+              <input
+                required
+                type="text"
+                placeholder="House number, Village/building, Road"
+                value={addressDetail2}
+                onChange={(e) => setAddressDetail2(e.target.value)}
+                className="input input-bordered w-full"
+              />
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={selectedProvince2}
-            onChange={handleProvinceChange2}
-          >
-            <option value="">select province</option>
-            {provinces.map((province) => (
-              <option key={province.id} value={province.id}>
-                {province.name_en}
-              </option>
-            ))}
-          </select>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={selectedProvince2}
+                onChange={handleProvinceChange2}
+              >
+                <option value="">select province</option>
+                {provinces.map((province) => (
+                  <option key={province.id} value={province.id}>
+                    {province.name_en}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={selectedDistrict2}
-            onChange={handleDistrictChange2}
-            disabled={!selectedProvince2}
-          >
-            <option value="">select district</option>
-            {filteredDistricts2.map((district) => (
-              <option key={district.id} value={district.id}>
-                {district.name_en}
-              </option>
-            ))}
-          </select>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={selectedDistrict2}
+                onChange={handleDistrictChange2}
+                disabled={!selectedProvince2}
+              >
+                <option value="">select district</option>
+                {filteredDistricts2.map((district) => (
+                  <option key={district.id} value={district.id}>
+                    {district.name_en}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={selectedSubDistrict2}
-            onChange={handleSubDistrictChange2}
-            disabled={!selectedDistrict2}
-          >
-            <option value="">select subdistrict</option>
-            {filteredSubDistricts2.map((subDistrict) => (
-              <option key={subDistrict.id} value={subDistrict.id}>
-                {subDistrict.name_en}
-              </option>
-            ))}
-          </select>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={selectedSubDistrict2}
+                onChange={handleSubDistrictChange2}
+                disabled={!selectedDistrict2}
+              >
+                <option value="">select subdistrict</option>
+                {filteredSubDistricts2.map((subDistrict) => (
+                  <option key={subDistrict.id} value={subDistrict.id}>
+                    {subDistrict.name_en}
+                  </option>
+                ))}
+              </select>
 
-          <select
-            required
-            className="select select-bordered w-full"
-            value={postalCode2}
-            onChange={(e) => setPostalCode2(e.target.value)}
-            disabled={!selectedSubDistrict2}
-          >
-            <option value="">postal code</option>
-            {availablePostalCodes2.map((code) => (
-              <option key={code} value={code}>
-                {code}
-              </option>
-            ))}
-          </select>
-        </div>
+              <select
+                required
+                className="select select-bordered w-full"
+                value={postalCode2}
+                onChange={(e) => setPostalCode2(e.target.value)}
+                disabled={!selectedSubDistrict2}
+              >
+                <option value="">postal code</option>
+                {availablePostalCodes2.map((code) => (
+                  <option key={code} value={code}>
+                    {code}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-)}
-        
+        )}
+
         <button type="submit" className="btn btn-primary self-end">
           submit →
         </button>

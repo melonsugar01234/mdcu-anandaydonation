@@ -17,12 +17,12 @@ model Register {
     tracking_code      String   @unique
     created_at         DateTime @default(now())
     edited_at          DateTime @updatedAt
-    card               String?
+    card               Int?
     shirts             String?
     shipment_status    String?
     payment_method     String?
     payment_amount     String?
-    payment_proof      String? @db.LongText
+    payment_proof      String?
     payment_status     String?
     receipt            String? // yes or no
     national_id        String?

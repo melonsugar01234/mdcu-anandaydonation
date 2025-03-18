@@ -5,7 +5,7 @@ interface Register {
   id: number;
   name: string;
   tracking_code: string;
-  shirt: string;
+  shirts: string;
   card: string;
   shipment_status: string;
   payment_amount: string;
@@ -70,8 +70,8 @@ export default function RegistrationCard({
             <h3 className="underline font-bold text-lg">Order Details</h3>
             <p>
               Shirts:{" "}
-              {registration.shirt
-                ? formatShirtData(registration.shirt)
+              {registration.shirts
+                ? formatShirtData(registration.shirts)
                 : "Not selected"}
             </p>
             <p>Card: {registration.card || "Not selected"}</p>
@@ -108,8 +108,8 @@ export default function RegistrationCard({
             </h3>
             <p>
               เสื้อที่สั่ง:{" "}
-              {registration.shirt
-                ? formatShirtData(registration.shirt)
+              {registration.shirts
+                ? formatShirtData(registration.shirts)
                 : "Not selected"}
             </p>
             <p>เข็มที่ระลึก: {`${registration.card} เข็ม` || "Not selected"}</p>
