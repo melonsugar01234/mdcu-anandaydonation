@@ -15,7 +15,7 @@ export async function GET() {
 
     // Donators with shirt order
     const donatorsWithShirtOrder = await prisma.register.count({
-      where: { shirt: { not: "" } },
+      where: { shirts: { not: "" } },
     });
 
     // Donators with commemorable card order
@@ -27,7 +27,7 @@ export async function GET() {
     const donatorsWithBothOrders = await prisma.register.count({
       where: {
         card: { not: "0" },
-        shirt: { not: "" },
+        shirts: { not: "" },
       },
     });
 
@@ -55,8 +55,8 @@ export async function GET() {
     const shirtCounts: { [key: string]: number } = {};
 
     totalShirtOrders.forEach((registration) => {
-      if (registration.shirt) {
-        const shirts = registration.shirt.split(";");
+      if (registration.shirts) {
+        const shirts = registration.shirts.split(";");
         shirts.forEach((shirt) => {
           const [size, color, amount] = shirt.split("-");
           const key = `${size}-${color}`;
@@ -72,8 +72,8 @@ export async function GET() {
 
     const shirtCountsApproved: { [key: string]: number } = {};
     totalShirtOrdersApproved.forEach((registration) => {
-      if (registration.shirt) {
-        const shirts = registration.shirt.split(";");
+      if (registration.shirts) {
+        const shirts = registration.shirts.split(";");
         shirts.forEach((shirt) => {
           const [size, color, amount] = shirt.split("-");
           const key = `${size}-${color}`;
