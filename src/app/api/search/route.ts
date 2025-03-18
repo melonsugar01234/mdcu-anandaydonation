@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
         id: true,
         name: true,
         tracking_code: true,
-        shirt: true,
+        shirts: true,
         card: true,
         shipment_status: true,
         payment_amount: true,
