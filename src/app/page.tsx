@@ -14,7 +14,7 @@ export default function Home() {
               language === "th" ? "" : "hidden"
             }`}>
 
-        <div className="w-full max-w-[600px] mx-auto">
+        <div className="w-full max-w-[1000px] mx-auto">
           <img src="/images/banner_1.jpg" alt="banner_1" className="w-full h-auto object-cover" />
         </div>
         <div className="divider"></div>
@@ -28,7 +28,7 @@ export default function Home() {
           {" "}
           Facebook : ANAN DAY Instagram: @anan_day หรือบนเว็บไซต์นี้
         </h2>
-        <div className="w-full max-w-[600px] mx-auto">
+        <div className="w-full max-w-[1000px] mx-auto">
           <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" className="w-full h-auto object-cover" />
         </div>
         <Link href="https://thai.fit/c/mfhvr2024">
@@ -42,8 +42,8 @@ export default function Home() {
           </Link>
         </button>
         </Link>
-        <div className="w-full max-w-[600px] mx-auto">
-          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-cover"/>
+        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full mx-auto">
+          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-contain"/>
         </div>
         <Link href="/register">
         <button className="btn btn-wide bg-rose-800 text-white">
@@ -86,7 +86,7 @@ export default function Home() {
       <div className={`flex flex-col items-center gap-4 p-4 ${
               language === "en" ? "" : "hidden"
             }`}>
-        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full max-w-[600px] mx-auto">
+        <div className="w-full max-w-[1000px] mx-auto">
           <img src="/images/banner_1.jpg" alt="banner_1" />
         </div>
         <div className="divider"></div>
@@ -100,7 +100,7 @@ export default function Home() {
           {" "}
           Facebook : ANAN DAY Instagram: @anan_day or on this website
         </h2>
-        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full max-w-[600px] mx-auto">
+        <div className="w-full max-w-[1000px] mx-auto">
           <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" className="w-full h-auto object-cover" />
         </div>
         <button className="btn btn-wide bg-rose-800 text-white">
@@ -112,8 +112,8 @@ export default function Home() {
             Register for the virtual walk & run
           </Link>
         </button>
-        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full max-w-[600px] mx-auto">
-          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-cover"/>
+        <div className="w-full max-w-[1000px] mx-auto">
+          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-contain"/>
         </div>
         <button className="btn btn-wide bg-rose-800 text-white">
           <Link href="/register">Register</Link>

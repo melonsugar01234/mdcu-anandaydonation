@@ -28,17 +28,17 @@ export default function RegistrationCard({
       .split(";")
       .map((shirt) => {
         const [size, color, amount] = shirt.split("-");
-        return `Size: ${size} Color: ${
+        return `Size: ${size.toUpperCase()} Color: ${
           color.charAt(0).toUpperCase() + color.slice(1)
         } Amount: ${amount}`;
       })
-      .join(" , "); // Join with a comma and space
+      .join(", "); // Join with a comma and space
   };
 
   return (
     <div className="card bg-base-100 shadow-xl">
       <div className="card-body items-center text-center">
-        {/* {registration.payment_proof && (
+        {registration.payment_proof && (
           <figure className="mb-4">
             <img
               src={registration.payment_proof}
@@ -46,7 +46,7 @@ export default function RegistrationCard({
               className="rounded-lg max-w-sm"
             />
           </figure>
-        )} */}
+        )}
 
         <h2 className="card-title">{registration.name}</h2>
 

@@ -261,7 +261,7 @@ const RegisterForm = ({
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <span className="text-xl">email (ถ้ามี)</span>
+        <span className="text-xl">Email (ถ้ามี)</span>
         <input
           type="email"
           placeholder="เช่น steve@gmail.com"
@@ -383,14 +383,14 @@ const RegisterForm = ({
             className="w-full h-auto object-contain"
           />
         </div>
-        <span className="text-xl">เสื้อที่ระลึก</span>
+        <span className="text-xl">เสื้อที่ระลึก (เงินบริจาค 299 บาทต่อเสื้อ 1 ตัว)</span>
         <div className="flex items-center space-x-4">
           <label>
             <input
               type="checkbox"
               checked={wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
-              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
             />
             ต้องการรับเสื้อ
           </label>
@@ -399,7 +399,7 @@ const RegisterForm = ({
               type="checkbox"
               checked={!wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
-              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
             />
             ไม่ต้องการรับเสื้อ
           </label>
@@ -539,7 +539,7 @@ const RegisterForm = ({
               onChange={() => setWantsReceipt(!wantsReceipt)}
               className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
             />
-            ไม่ต้องการรับใบเสร็จ
+            <span className="ml-2 text-lg">ไม่ต้องการรับใบเสร็จ</span>
           </label>
         </div>
 
@@ -550,7 +550,7 @@ const RegisterForm = ({
             <input
               type="text"
               placeholder="ใส่แค่ตัวเลข"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full mb-4"
               value={nationalId}
               onChange={(e) => setNationalId(e.target.value)}
               maxLength={13} // Limit input to 13 characters
@@ -650,7 +650,7 @@ const RegisterForm = ({
           language === "en" ? "" : "hidden"
         }`}
       >
-        <div className="text-3xl text-center">Profile information</div>
+        <div className="text-3xl text-center">Profile Information</div>
         <span className="text-xl">Name</span>
         <input
           required
@@ -991,7 +991,7 @@ const RegisterForm = ({
             value={selectedProvince2}
             onChange={handleProvinceChange2}
           >
-            <option value="">select province</option>
+            <option value="">Select province</option>
             {provinces.map((province) => (
               <option key={province.id} value={province.id}>
                 {province.name_en}
@@ -1006,7 +1006,7 @@ const RegisterForm = ({
             onChange={handleDistrictChange2}
             disabled={!selectedProvince2}
           >
-            <option value="">select district</option>
+            <option value="">Select district</option>
             {filteredDistricts2.map((district) => (
               <option key={district.id} value={district.id}>
                 {district.name_en}
@@ -1021,7 +1021,7 @@ const RegisterForm = ({
             onChange={handleSubDistrictChange2}
             disabled={!selectedDistrict2}
           >
-            <option value="">select subdistrict</option>
+            <option value="">Select subdistrict</option>
             {filteredSubDistricts2.map((subDistrict) => (
               <option key={subDistrict.id} value={subDistrict.id}>
                 {subDistrict.name_en}
@@ -1036,7 +1036,7 @@ const RegisterForm = ({
             onChange={(e) => setPostalCode2(e.target.value)}
             disabled={!selectedSubDistrict2}
           >
-            <option value="">postal code</option>
+            <option value="">Postal code</option>
             {availablePostalCodes2.map((code) => (
               <option key={code} value={code}>
                 {code}
