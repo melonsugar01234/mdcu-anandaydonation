@@ -6,7 +6,7 @@ interface Register {
   id: number;
   name: string;
   tracking_code: string;
-  shirt: string;
+  shirts: string;
   card: string;
   shipment_status: string
   payment_amount: string

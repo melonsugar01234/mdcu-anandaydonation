@@ -20,13 +20,13 @@ export async function GET() {
 
     // Donators with commemorable card order
     const donatorsWithCardOrder = await prisma.register.count({
-      where: { card: { not: "0" } },
+      where: { card: { not: 0 } },
     });
 
     // Donators with both shirt and card order
     const donatorsWithBothOrders = await prisma.register.count({
       where: {
-        card: { not: "0" },
+        card: { not: 0 },
         shirts: { not: "" },
       },
     });
@@ -34,7 +34,7 @@ export async function GET() {
     // Total commemorable card order
     const totalCardOrdersData = await prisma.register.findMany();
     const totalCardOrders = totalCardOrdersData.reduce((sum, registration) => {
-      const cardValue = parseInt(registration.card || "0", 10); // Convert string to number, default to 0 if null
+      const cardValue = registration.card || 0; // Convert string to number, default to 0 if null
       return sum + cardValue;
     }, 0);
 
@@ -44,7 +44,7 @@ export async function GET() {
     });
     const totalCardOrdersApproved = totalCardOrdersApprovedData.reduce(
       (sum, registration) => {
-        const cardValue = parseInt(registration.card || "0", 10); // Convert string to number, default to 0 if null
+        const cardValue = registration.card || 0; // Convert string to number, default to 0 if null
         return sum + cardValue;
       },
       0
