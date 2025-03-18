@@ -65,9 +65,14 @@ export default function Navbar() {
                 </Link>
               </li>
               <li>
-                <button onClick={toggleLanguage}>
-                  {language === "th" ? "English" : "ภาษาไทย"}
-                </button>
+              <button onClick={toggleLanguage} className="flex items-center space-x-2">
+                    <img
+                      src={language === "th" ? "/images/EN_icon.png" : "/images/TH_icon.png"}
+                      alt={language === "th" ? "English Icon" : "Thai Icon"}
+                      className="w-5 h-5"
+                    />
+                  <span>{language === "th" ? "English" : "ภาษาไทย"}</span>
+              </button>
               </li>
             </ul>
           </div>
@@ -113,9 +118,14 @@ export default function Navbar() {
           </ul>
         </div>
         <div className="navbar-end hidden lg:flex">
-          <button className="btn" onClick={toggleLanguage}>
-            {language === "th" ? "English" : "ภาษาไทย"}
-          </button>
+        <button onClick={toggleLanguage} className="btn flex items-center">
+                    <img
+                      src={language === "th" ? "/images/EN_icon.png" : "/images/TH_icon.png"}
+                      alt={language === "th" ? "English Icon" : "Thai Icon"}
+                      className="w-5 h-5"
+                    />
+                  <span>{language === "th" ? "English" : "ภาษาไทย"}</span>
+              </button>
         </div>
       </div>
     </>

@@ -53,7 +53,7 @@ export async function POST(req: NextApiRequest) {
         tracking_code: trackingCode,
         card,
         shirts: shirts || "",
-        payment_status: "pending",
+        payment_status: "Pending",
         shipment_status: shipmentStatus,
         receipt,
         payment_method,

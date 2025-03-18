@@ -10,7 +10,7 @@ export async function GET() {
 
     // Donators without order
     const donatorsWithoutOrder = await prisma.register.count({
-      where: { shipment_status: "No order" },
+      where: { shipment_status: "ไม่มีคำสั่งซื้อ" },
     });
 
     // Donators with shirt order

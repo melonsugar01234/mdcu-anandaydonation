@@ -58,9 +58,9 @@ export default function TrackingPage() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <div className="container mx-auto p-4 flex-grow flex flex-col items-center">
-        <div className="w-full max-w-4xl flex flex-col items-center">
+        <div className="w-full max-w-4xl flex flex-col items-center justify-center">
           <h1
-            className={`text-2xl text-center font-bold mb-4 ${
+            className={`text-2xl text-center font-bold mb-4 w-full px-4 break-words ${
               language === "th" ? "" : "hidden"
             }`}
           >

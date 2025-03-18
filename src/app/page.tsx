@@ -14,8 +14,8 @@ export default function Home() {
               language === "th" ? "" : "hidden"
             }`}>
 
-        <div className="artboard artboard-horizontal phone-2">
-          <img src="/images/banner_1.jpg" alt="banner_1" />
+        <div className="w-full max-w-[600px] mx-auto">
+          <img src="/images/banner_1.jpg" alt="banner_1" className="w-full h-auto object-cover" />
         </div>
         <div className="divider"></div>
         <h1 className="text-xl font-bold">
@@ -28,9 +28,10 @@ export default function Home() {
           {" "}
           Facebook : ANAN DAY Instagram: @anan_day หรือบนเว็บไซต์นี้
         </h2>
-        <div className="artboard artboard-horizontal phone-2">
-          <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" />
+        <div className="w-full max-w-[600px] mx-auto">
+          <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" className="w-full h-auto object-cover" />
         </div>
+        <Link href="https://thai.fit/c/mfhvr2024">
         <button className="btn btn-wide bg-rose-800 text-white">
         <Link
             href="https://thai.fit/c/mfhvr2024"
@@ -40,12 +41,15 @@ export default function Home() {
             ลงทะเบียนงานวิ่ง
           </Link>
         </button>
-        <div className="artboard artboard-horizontal phone-2">
-          <img src="/images/bookbank.png" alt="bookbank" />
+        </Link>
+        <div className="w-full max-w-[600px] mx-auto">
+          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-cover"/>
         </div>
+        <Link href="/register">
         <button className="btn btn-wide bg-rose-800 text-white">
           <Link href="/register">ลงทะเบียน</Link>
         </button>
+        </Link>
         <h2 className="text-xl">
           ขั้นตอนการขอรับเข็ม หรือเสื้อยืด ที่ระลึกวันอานันทมหิดล
         </h2>
@@ -82,7 +86,7 @@ export default function Home() {
       <div className={`flex flex-col items-center gap-4 p-4 ${
               language === "en" ? "" : "hidden"
             }`}>
-        <div className="artboard artboard-horizontal phone-2">
+        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full max-w-[600px] mx-auto">
           <img src="/images/banner_1.jpg" alt="banner_1" />
         </div>
         <div className="divider"></div>
@@ -96,8 +100,8 @@ export default function Home() {
           {" "}
           Facebook : ANAN DAY Instagram: @anan_day or on this website
         </h2>
-        <div className="artboard artboard-horizontal phone-2">
-          <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" />
+        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full max-w-[600px] mx-auto">
+          <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" className="w-full h-auto object-cover" />
         </div>
         <button className="btn btn-wide bg-rose-800 text-white">
           <Link
@@ -108,8 +112,8 @@ export default function Home() {
             Register for the virtual walk & run
           </Link>
         </button>
-        <div className="artboard artboard-horizontal phone-2">
-          <img src="/images/bookbank.png" alt="bookbank" />
+        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full max-w-[600px] mx-auto">
+          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-cover"/>
         </div>
         <button className="btn btn-wide bg-rose-800 text-white">
           <Link href="/register">Register</Link>
@@ -121,24 +125,24 @@ export default function Home() {
           <li>
             Fill in donation information
             <ol className="list-decimal list-inside ml-4">
-              <li>donation amount</li>
+              <li>Donation amount</li>
               <li>
-                number of t-shirts or card
+                Number of T-shirts or cards
                 that the donor wants to receive in the donation amount
                 <ol className="list-decimal list-inside ml-4">
                   <li>
                     For each 150 baht donated, you can receive 1 commemorative card
                   </li>
                   <li>
-                    For each 299 baht donated, you can receive 1 t-shirt
+                    For each 299 baht donated, you can receive 1 T-shirt
                   </li>
                 </ol>
               </li>
-              <li>note: shipping is free</li>
+              <li>Note: Shipping is free</li>
             </ol>
           </li>
-          <li>atttach donation proof(slip)</li>
-          <li>press submit</li>
+          <li>Atttach donation proof(slip)</li>
+          <li>Press submit</li>
         </ol>
         <p className="text-red-700">
         "The Faculty of Medicine, Chulalongkorn University, 

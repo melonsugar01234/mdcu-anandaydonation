@@ -233,6 +233,7 @@ const RegisterForm = ({
 
   return (
     <>
+    <div className="px-2">
       <form
         onSubmit={handleSubmit}
         className={`flex flex-col space-y-4 w-full max-w-4xl mx-auto ${
@@ -653,7 +654,7 @@ const RegisterForm = ({
         <input
           required
           type="text"
-          placeholder="ex Mr. Somchai Jaidi"
+          placeholder="Ex. Mr. Somchai Jaidi"
           className="input input-bordered w-full"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -662,15 +663,15 @@ const RegisterForm = ({
         <input
           required
           type="tel"
-          placeholder="ex 081-901-xxxx"
+          placeholder="Ex. 081-901-xxxx"
           className="input input-bordered w-full"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <span className="text-xl">email (optional)</span>
+        <span className="text-xl">Email (optional)</span>
         <input
           type="email"
-          placeholder="ex steve@gmail.com"
+          placeholder="Ex. steve@gmail.com"
           className="input input-bordered w-full"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -751,14 +752,14 @@ const RegisterForm = ({
         <input
           required
           type="number"
-          placeholder="put in only numbers"
+          placeholder="Only numbers"
           className="input input-bordered w-full"
           value={payment_amount}
           onChange={(e) => setpayment_amount(e.target.value)}
           onWheel={(e) => e.currentTarget.blur()}
         />
 
-        <span className="text-xl">commemorable card</span>
+        <span className="text-xl">Commemorable card</span>
         <div className="flex justify-center w-full">
           <img
             src="/images/card123.jpg"
@@ -767,7 +768,7 @@ const RegisterForm = ({
           />
         </div>
         <span className="text-xl">
-          amount of card to receive (1 card for each 150 baht donated up to 3
+          Amount of cards to receive (1 card for each 150 baht donated up to 3
           cards)
         </span>
         <select
@@ -776,7 +777,7 @@ const RegisterForm = ({
           value={card}
           onChange={(e) => setCard(e.target.value)}
         >
-          <option value="">select amount</option>
+          <option value="">Select amount</option>
           <option value="0">0 card</option>
           <option value="1">1 card</option>
           <option value="2">2 cards</option>
@@ -789,14 +790,14 @@ const RegisterForm = ({
             className="w-full h-auto object-contain"
           />
         </div>
-        <span className="text-xl">commemorable shirts</span>
+        <span className="text-xl">Commemorable shirts (1 T-shirt for each 299 baht donated)</span>
         <div className="flex items-center space-x-4">
           <label>
             <input
               type="checkbox"
               checked={wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
-              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
             />
             I would like to receive shirts
           </label>
@@ -805,7 +806,7 @@ const RegisterForm = ({
               type="checkbox"
               checked={!wantsShirt}
               onChange={() => setWantsShirt(!wantsShirt)}
-              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
             />
             I do not want to receive shirts
           </label>
@@ -887,14 +888,14 @@ const RegisterForm = ({
           </div>
         )}
         <div className="space-y-4">
-          <span className="text-xl">payment method</span>
+          <span className="text-xl">Payment method</span>
           <select
             required
             className="select select-bordered w-full"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
-            <option value="">choose payment method</option>
+            <option value="">Choose payment method</option>
             <option value="QR code">QR code</option>
             <option value="Bank number">Bank number</option>
           </select>
@@ -946,17 +947,17 @@ const RegisterForm = ({
               onChange={() => setWantsReceipt(!wantsReceipt)}
               className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
             />
-            I don't want a receipt
+            <span className="ml-2 text-lg">I don't want a receipt</span>
           </label>
 </div>
 
 {/* Conditional Fields for Receipt */}
 {wantsReceipt && (
           <div className="space-y-4">
-            <span className="text-xl">national id</span>
+            <span className="text-xl">National ID</span>
             <input
               type="text"
-              placeholder="only enter numbers"
+              placeholder="Numbers only"
               className="input input-bordered w-full"
               value={nationalId}
               onChange={(e) => setNationalId(e.target.value)}
@@ -965,17 +966,17 @@ const RegisterForm = ({
               title="pls enter 13 digit for national id" // Tooltip for user guidance
             
             />
-            <span className="text-xl">name on receipt</span>
+            <span className="text-xl">Name on receipt</span>
             <input
               required
               type="text"
-              placeholder="enter full name"
+              placeholder="Enter full name"
               className="input input-bordered w-full"
               value={nameOnReceipt}
               onChange={(e) => setNameOnReceipt(e.target.value)}
             />
             <div className="space-y-4">
-          <span className="text-xl">address on receipt</span>
+          <span className="text-xl">Address on receipt</span>
           <input
             required
             type="text"
@@ -991,7 +992,7 @@ const RegisterForm = ({
             value={selectedProvince2}
             onChange={handleProvinceChange2}
           >
-            <option value="">select province</option>
+            <option value="">Select province</option>
             {provinces.map((province) => (
               <option key={province.id} value={province.id}>
                 {province.name_en}
@@ -1006,7 +1007,7 @@ const RegisterForm = ({
             onChange={handleDistrictChange2}
             disabled={!selectedProvince2}
           >
-            <option value="">select district</option>
+            <option value="">Select district</option>
             {filteredDistricts2.map((district) => (
               <option key={district.id} value={district.id}>
                 {district.name_en}
@@ -1021,7 +1022,7 @@ const RegisterForm = ({
             onChange={handleSubDistrictChange2}
             disabled={!selectedDistrict2}
           >
-            <option value="">select subdistrict</option>
+            <option value="">Select subdistrict</option>
             {filteredSubDistricts2.map((subDistrict) => (
               <option key={subDistrict.id} value={subDistrict.id}>
                 {subDistrict.name_en}
@@ -1036,7 +1037,7 @@ const RegisterForm = ({
             onChange={(e) => setPostalCode2(e.target.value)}
             disabled={!selectedSubDistrict2}
           >
-            <option value="">postal code</option>
+            <option value="">Postal code</option>
             {availablePostalCodes2.map((code) => (
               <option key={code} value={code}>
                 {code}
@@ -1048,11 +1049,15 @@ const RegisterForm = ({
 )}
         
         <button type="submit" className="btn btn-primary self-end">
-          submit →
+          Submit →
         </button>
       </form>
+      </div>
     </>
+    
   );
 };
+
+
 
 export default RegisterForm;

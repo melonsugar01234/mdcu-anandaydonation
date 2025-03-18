@@ -29,7 +29,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
           value={searchTrackingCode}
           onChange={(e) => setSearchTrackingCode(e.target.value)}
           placeholder="โปรดใส่รหัสติดตาม"
-          className={`input input-bordered flex-1 w-96 ${
+          className={`input input-bordered flex-1 w-full max-w-md ${
             language === "th" ? "" : "hidden"
           } `}
         />
@@ -38,7 +38,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
           value={searchTrackingCode}
           onChange={(e) => setSearchTrackingCode(e.target.value)}
           placeholder="Enter tracking code to search"
-          className={`input input-bordered flex-1 w-96 ${
+          className={`input input-bordered flex-1 w-full max-w-md ${
             language === "en" ? "" : "hidden"
           } `}
         />
@@ -54,7 +54,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
           } `} >ลืมรหัส</Link>
       <Link href="/forgotTrack" className={`underline ${
             language === "en" ? "" : "hidden"
-          } `} >forgot code</Link>
+          } `} >Forgot code</Link>
    </div>
    </>
   );
