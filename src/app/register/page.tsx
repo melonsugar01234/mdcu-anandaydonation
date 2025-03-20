@@ -38,8 +38,9 @@ const RegisterPage = () => {
               language === "th" ? "" : "hidden"
             }`}>
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-5xl font-bold mb-4">ลงทะเบียนบริจาคและสั่งซื้อเสื้อ</h1>
-          <div className="text-2xl mb-4 text-center">
+          <br/>
+          <h1 className="text-4xl font-bold mb-4 text-center">ลงทะเบียนบริจาคและสั่งซื้อเสื้อ</h1>
+          <div className="text-xl mb-4 text-center">
             <div>โครงการวันอานันทมหิดล คณะแพทยศาสตร์</div>
             <div>จุฬาลงกรณ์มหาวิทยาลัย ประจำปี พ.ศ. ๒๕๖๘</div>
           </div>
@@ -54,8 +55,9 @@ const RegisterPage = () => {
               language === "en" ? "" : "hidden"
             }`}>
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-5xl font-bold mb-4">Register for donation and ordering</h1>
-          <div className="text-2xl mb-4 text-center">
+          <br/>
+          <h1 className="text-4xl font-bold mb-4 text-center">Register for donation and ordering</h1>
+          <div className="text-xl mb-4 text-center">
             <div>Ananda Mahidol the Faculty of Medicine</div>
             <div>Chulalongkorn University year 2025</div>
           </div>

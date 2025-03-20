@@ -20,7 +20,7 @@ export default function DonationSuccess() {
       <div className={`container mx-auto p-4 flex-grow flex items-center justify-center ${
               language === "en" ? "" : "hidden"
             }`}>
-        <div className="text-center">
+        <div className="text-left">
           <h1 className="text-4xl font-bold mb-4">{trackingCode}</h1>
           <p>Name: {name}</p>
           <p>Phone: {phone}</p>
@@ -32,7 +32,7 @@ export default function DonationSuccess() {
       <div className={`container mx-auto p-4 flex-grow flex items-center justify-center ${
               language === "th" ? "" : "hidden"
             }`}>
-        <div className="text-center">
+        <div className="text-left">
           <h1 className="text-4xl font-bold mb-4">{trackingCode}</h1>
           <p>ชื่อ: {name}</p>
           <p>เบอร์โทร: {phone}</p>

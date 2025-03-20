@@ -49,7 +49,7 @@ export default function ForgotTrackPage() {
       <Navbar />
       <div className="container mx-auto p-4 flex-grow flex items-center justify-center">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-bold mb-4">
+          <h1 className="text-2xl font-bold mb-4 text-center">
             {language === "th"
               ? "ค้นหาจากชื่อและเบอร์โทร"
               : "Search by Name and Phone"}
