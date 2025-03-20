@@ -15,7 +15,10 @@ export default function Home() {
           language === "th" ? "" : "hidden"
         }`}
       >
-        <div className="w-full max-w-[1000px] mx-auto">
+        <div className="text-2xl text-center font-bold mt-10 bg-gradient-to-r from-yellow2025 to-orange2025 inline-block text-transparent bg-clip-text">
+          โครงการเข็มวันอานันทมหิดล 2568
+        </div>
+        <div className="w-full max-w-[750px] mx-auto">
           <img
             src="/images/2025logo.PNG"
             alt="banner_1"
@@ -33,7 +36,7 @@ export default function Home() {
           {" "}
           Facebook : ANAN DAY Instagram: @anan_day หรือบนเว็บไซต์นี้
         </h2>
-        <div className="w-full max-w-[1000px] mx-auto">
+        <div className="w-full max-w-[800px] mx-auto">
           <img
             src="/images/miles_for_heart.jpg"
             alt="miles_for_heart"
@@ -51,7 +54,7 @@ export default function Home() {
             </Link>
           </button>
         </Link>
-        <div className="w-full max-w-[1000px] mx-auto">
+        <div className="w-full max-w-[800px] mx-auto">
           <img
             src="/images/2025qr.jpg"
             alt="bookbank"
@@ -64,13 +67,13 @@ export default function Home() {
           </button>
         </Link>
         <div className="shadow-md p-7 rounded-xl border border-gray-300">
-          <h2 className="text-xl font-bold">
+          <h2 className="text-xl font-bold text-center">
             ขั้นตอนการขอรับเข็ม หรือเสื้อยืด ที่ระลึกวันอานันทมหิดล
           </h2>
-          <ol className="list-decimal list-inside">
+          <ol className="list-decimal list-inside marker:font-bold marker:text-xl font-bold">
             <li>
               กรอกข้อมูลการบริจาค
-              <ol className="list-decimal list-inside ml-4">
+              <ol className="list-decimal list-inside ml-4 marker:font-normal marker:text-base font-normal">
                 <li>จํานวนเงินที่ประสงค์จะบริจาค</li>
                 <li>
                   ระบุจํานวนเสื้อ หรือ เข็ม หรือ เสื้อและเข็ม
@@ -103,7 +106,10 @@ export default function Home() {
           language === "en" ? "" : "hidden"
         }`}
       >
-        <div className="w-full max-w-[1000px] mx-auto">
+        <div className="text-2xl text-center font-bold mt-10 bg-gradient-to-r from-yellow2025 to-orange2025 inline-block text-transparent bg-clip-text">
+          โครงการเข็มวันอานันทมหิดล 2568
+        </div>
+        <div className="w-full max-w-[750px] mx-auto">
           <img src="/images/2025logo.PNG" alt="banner_1" />
         </div>
         <div className="divider"></div>
@@ -117,7 +123,7 @@ export default function Home() {
           {" "}
           Facebook : ANAN DAY Instagram: @anan_day or on this website
         </h2>
-        <div className="w-full max-w-[1000px] mx-auto">
+        <div className="w-full max-w-[800px] mx-auto">
           <img
             src="/images/miles_for_heart.jpg"
             alt="miles_for_heart"
@@ -133,7 +139,7 @@ export default function Home() {
             Register for the virtual walk & run
           </Link>
         </button>
-        <div className="w-full max-w-[1000px] mx-auto">
+        <div className="w-full max-w-[800px] mx-auto">
           <img
             src="/images/2025qr.jpg"
             alt="bookbank"
@@ -144,13 +150,13 @@ export default function Home() {
           <Link href="/register">Register</Link>
         </button>
         <div className="shadow-md p-7 rounded-xl border border-gray-300">
-          <h2 className="text-xl font-bold mt-5">
+          <h2 className="text-xl font-bold text-center">
             How to request a card or t-shirt commemorating Ananda Mahidol
           </h2>
-          <ol className="list-decimal list-inside">
-            <li>
+          <ol className="list-decimal list-inside marker:font-bold marker:text-xl">
+            <li className="font-bold">
               Fill in donation information
-              <ol className="list-decimal list-inside ml-4">
+              <ol className="font-normal list-decimal list-inside ml-4 marker:font-normal marker:text-base">
                 <li>Donation amount</li>
                 <li>
                   Number of T-shirts or cards that the donor wants to receive in
@@ -168,8 +174,8 @@ export default function Home() {
                 <li>Note: Shipping is free</li>
               </ol>
             </li>
-            <li>Atttach donation proof(slip)</li>
-            <li>Press submit</li>
+            <li className="font-bold">Atttach donation proof(slip)</li>
+            <li className="font-bold">Press submit</li>
           </ol>
         </div>
         <p className="text-red-700">
