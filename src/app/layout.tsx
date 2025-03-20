@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Sarabun } from "next/font/google";
 import "./globals.css";
 
 import { Providers } from "./providers";
@@ -7,6 +8,13 @@ import { LanguageProvider } from "./context/LanguageContext";
 
 
 const inter = Inter({ subsets: ["latin"] });
+
+const sarabun = Sarabun({
+  variable: "--font-sarabun",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${sarabun.className}`}>
         <Providers>
           <LanguageProvider>{children}</LanguageProvider>
         </Providers>

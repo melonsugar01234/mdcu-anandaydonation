@@ -351,14 +351,27 @@ const RegisterForm = ({
           onChange={(e) => setpayment_amount(e.target.value)}
           onWheel={(e) => e.currentTarget.blur()}
         />
-
-        <div className="flex justify-center w-full">
+        <div className="flex w-full justify-center">
+          <div className="mx-auto w-1/4 h-auto">
+            <img src="/images/2025postcard1.JPG" alt="postcard_1" className="object-cover" />
+            <h1 className="text-center"><br/>แบบที่ 1</h1>
+          </div>
+          <div className="mx-auto w-1/4 h-auto">
+            <img src="/images/2025postcard2.JPG" alt="postcard_2" className="object-cover" />
+            <h1 className="text-center"><br/>แบบที่ 2</h1>
+          </div>
+          <div className="mx-auto w-1/4 h-auto">
+            <img src="/images/2025postcard3.JPG" alt="postcard_3" className="object-cover" />
+            <h1 className="text-center"><br/>แบบที่ 3</h1>
+          </div>
+        </div>
+        {/* <div className="flex justify-center w-full">
           <img
             src="/images/card123.jpg"
             alt="banner_1"
             className="w-full h-auto object-contain"
           />
-        </div>
+        </div> */}
         <span className="text-xl">เช็มที่ระลึก</span>
         <span className="text-xl">
           จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม
@@ -493,7 +506,7 @@ const RegisterForm = ({
             <option value="Bank number">Bank number</option>
           </select>
           <img
-            src="/images/donate qr.png"
+            src="/images/2025qr.jpg"
             alt="banner_1"
             className="w-full h-auto object-contain"
           />

@@ -10,12 +10,12 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className={`text-slate-900 flex flex-col items-center gap-4 p-4 bg-stone-100 ${
+      <div className={`text-slate-900 flex flex-col items-center gap-4 p-4 ${
               language === "th" ? "" : "hidden"
             }`}>
 
         <div className="w-full max-w-[1000px] mx-auto">
-          <img src="/images/banner_1.jpg" alt="banner_1" className="w-full h-auto object-cover" />
+          <img src="/images/2025logo.PNG" alt="banner_1" className="w-full h-auto object-cover" />
         </div>
         <div className="divider"></div>
         <h1 className="text-xl font-bold">
@@ -32,7 +32,7 @@ export default function Home() {
           <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" className="w-full h-auto object-cover" />
         </div>
         <Link href="https://thai.fit/c/mfhvr2024">
-        <button className="btn btn-wide bg-rose-800 text-white">
+        <button className="btn btn-wide bg-yellow2025 text-white">
         <Link
             href="https://thai.fit/c/mfhvr2024"
             rel="noopener noreferrer"
@@ -42,11 +42,11 @@ export default function Home() {
           </Link>
         </button>
         </Link>
-        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full mx-auto">
-          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-contain"/>
+        <div className="w-full max-w-[1000px] mx-auto">
+          <img src="/images/2025qr.jpg" alt="bookbank" className="w-full h-auto object-contain"/>
         </div>
         <Link href="/register">
-        <button className="btn btn-wide bg-rose-800 text-white">
+        <button className="btn btn-wide bg-yellow2025 text-white">
           <Link href="/register">ลงทะเบียน</Link>
         </button>
         </Link>
@@ -87,7 +87,7 @@ export default function Home() {
               language === "en" ? "" : "hidden"
             }`}>
         <div className="w-full max-w-[1000px] mx-auto">
-          <img src="/images/banner_1.jpg" alt="banner_1" />
+          <img src="/images/2025logo.PNG" alt="banner_1" />
         </div>
         <div className="divider"></div>
         <h1 className="text-xl font-bold">
@@ -103,7 +103,7 @@ export default function Home() {
         <div className="w-full max-w-[1000px] mx-auto">
           <img src="/images/miles_for_heart.jpg" alt="miles_for_heart" className="w-full h-auto object-cover" />
         </div>
-        <button className="btn btn-wide bg-rose-800 text-white">
+        <button className="btn btn-wide bg-yellow2025 text-white">
           <Link
             href="https://thai.fit/c/mfhvr2024"
             rel="noopener noreferrer"
@@ -113,9 +113,9 @@ export default function Home() {
           </Link>
         </button>
         <div className="w-full max-w-[1000px] mx-auto">
-          <img src="/images/bookbank.png" alt="bookbank" className="w-full h-auto object-contain"/>
+          <img src="/images/2025qr.jpg" alt="bookbank" className="w-full h-auto object-contain"/>
         </div>
-        <button className="btn btn-wide bg-rose-800 text-white">
+        <button className="btn btn-wide bg-yellow2025 text-white">
           <Link href="/register">Register</Link>
         </button>
         <h2 className="text-xl">
