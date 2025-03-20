@@ -17,9 +17,21 @@ export default function DonationSuccess() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className={`container mx-auto p-4 flex-grow flex items-center justify-center ${
-              language === "en" ? "" : "hidden"
-            }`}>
+      <div className="text-2xl text-center font-bold mt-10 bg-gradient-to-r from-yellow2025 to-orange2025 inline-block text-transparent bg-clip-text">
+        โครงการเข็มวันอานันทมหิดล 2568
+      </div>
+      <div className="w-full max-w-[500px] mx-auto">
+        <img
+          src="/images/2025logo.PNG"
+          alt="banner_1"
+          className="w-full h-auto object-cover"
+        />
+      </div>
+      <div
+        className={`container mx-auto flex-grow flex justify-center ${
+          language === "en" ? "" : "hidden"
+        }`}
+      >
         <div className="text-left">
           <h1 className="text-4xl font-bold mb-4">{trackingCode}</h1>
           <p>Name: {name}</p>
@@ -29,9 +41,11 @@ export default function DonationSuccess() {
           <p>Donation Amount: {payment_amount}</p>
         </div>
       </div>
-      <div className={`container mx-auto p-4 flex-grow flex items-center justify-center ${
-              language === "th" ? "" : "hidden"
-            }`}>
+      <div
+        className={`container mx-auto p-4 flex-grow flex justify-center ${
+          language === "th" ? "" : "hidden"
+        }`}
+      >
         <div className="text-left">
           <h1 className="text-4xl font-bold mb-4">{trackingCode}</h1>
           <p>ชื่อ: {name}</p>

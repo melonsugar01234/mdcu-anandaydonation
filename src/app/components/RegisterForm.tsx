@@ -361,7 +361,7 @@ const RegisterForm = ({
                 onChange={(e) => setpayment_amount(e.target.value)}
                 onWheel={(e) => e.currentTarget.blur()}
               />
-              <span className="text-lg">โปสการ์ดที่ระลึก</span>
+              <span className="text-lg">เข็มที่ระลึก</span>
               <div className="flex w-full justify-center">
                 <div className="mx-auto w-1/4 h-auto">
                   <img

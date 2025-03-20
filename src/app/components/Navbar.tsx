@@ -11,7 +11,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="navbar bg-yellow2025 text-white shadow-lg">
+      <div className="navbar bg-yellow2025 text-white shadow-lg sticky top-0 z-50">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -34,8 +34,8 @@ export default function Navbar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow text-base-content"
             >
-              <li>
-                <Link href="/">
+              <li className="my-2">
+                <Link href="/" className="text-lg">
                   <span className={language === "th" ? "" : "hidden"}>
                     หน้าหลัก
                   </span>
@@ -44,8 +44,8 @@ export default function Navbar() {
                   </span>
                 </Link>
               </li>
-              <li>
-                <Link href="/register">
+              <li className="my-2">
+                <Link href="/register" className="text-lg">
                   <span className={language === "th" ? "" : "hidden"}>
                     ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
                   </span>
@@ -54,8 +54,8 @@ export default function Navbar() {
                   </span>
                 </Link>
               </li>
-              <li>
-                <Link href="/track">
+              <li className="my-2">
+                <Link href="/track" className="text-lg">
                   <span className={language === "th" ? "" : "hidden"}>
                     ติดตามสถานะ
                   </span>
@@ -64,8 +64,8 @@ export default function Navbar() {
                   </span>
                 </Link>
               </li>
-              <li>
-              <button onClick={toggleLanguage} className="flex items-center space-x-2">
+              <li className="my-2">
+              <button onClick={toggleLanguage} className="flex items-center space-x-2 text-lg">
                     <img
                       src={language === "th" ? "/images/EN_icon.png" : "/images/TH_icon.png"}
                       alt={language === "th" ? "English Icon" : "Thai Icon"}
