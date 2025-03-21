@@ -22,6 +22,18 @@ export default function RegistrationCard({
 }: RegistrationCardProps) {
   const { language } = useLanguage(); // Get the language from context
 
+  function getShipmentStatusText(status: string | null) {
+    const statusMap: { [key: string]: string } = {
+      "0": "กำลังตรวจสอบ (Pending / Verifying)",
+      "1": "กำลังเตรียมของ (Preparing)",
+      "2": "จัดส่งแล้ว (Shipped)",
+      "3": "จัดส่งสำเร็จ (Delivered)",
+      "4": "เกิดข้อผิดพลาด (Error)",
+    };
+
+    return status ? statusMap[status] || "Unknown" : "Pending";
+  }
+
   // Function to format shirt data
   const formatShirtData = (shirtData: string) => {
     return shirtData
@@ -62,7 +74,8 @@ export default function RegistrationCard({
             <p>Name: {registration.name}</p>
             <p>Tracking Code: {registration.tracking_code}</p>
             <p>
-              Shipment Status: {registration.shipment_status || "Not shipped"}
+              Shipment Status:{" "}
+              {getShipmentStatusText(registration.shipment_status)}
             </p>
           </div>
 
@@ -99,7 +112,9 @@ export default function RegistrationCard({
             <h3 className="underline font-bold text-lg">ข้อมูลการจัดส่ง</h3>
             <p>ชื่อ: {registration.name}</p>
             <p>รหัสติดตาม: {registration.tracking_code}</p>
-            <p>สถานะจัดส่ง: {registration.shipment_status || "Not shipped"}</p>
+            <p>
+              สถานะจัดส่ง: {getShipmentStatusText(registration.shipment_status)}
+            </p>
           </div>
 
           <div>
@@ -118,7 +133,10 @@ export default function RegistrationCard({
           <div>
             <h3 className="underline font-bold text-lg">ข้อมูลบริจาค</h3>
             <p>
-              จำนวน: {`${registration.payment_amount} บาท` || "Not specified"}
+              จำนวน:{" "}
+              {registration.payment_amount
+                ? `${registration.payment_amount} บาท`
+                : "Not specified"}
             </p>
             <p>สถานะ: {registration.payment_status || "Pending"}</p>
           </div>
