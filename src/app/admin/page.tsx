@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import StatisticalData from "../components/StatisticalData";
+import AdminStatsTable from "../components/AdminStatsTable";
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -56,6 +57,7 @@ export default function AdminPage() {
     <div>
       <h2>Hello Admin</h2>
       {statistics && <StatisticalData statistics={statistics}  />}
+      {statistics && <AdminStatsTable statistics={statistics} />}
     </div>
   );
 }

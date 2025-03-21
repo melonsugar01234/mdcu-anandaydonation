@@ -37,7 +37,7 @@ export async function POST(req: NextApiRequest) {
       trackingCode = generateTrackingCode();
     } while (!(await isTrackingCodeUnique(trackingCode)));
 
-    let shipmentStatus = "อยู่ในขั้นตอนการจัดเตรียม"; // Default status
+    let shipmentStatus = "0"; // Default status
     if ((card === "0" || card === "") && (shirts === "")) {
       shipmentStatus = "ไม่มีคำสั่งซื้อ"; // No order status
     }
@@ -79,3 +79,14 @@ export async function POST(req: NextApiRequest) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const registers = await prisma.register.findMany();
+    return NextResponse.json(registers);
+  } catch (error) {
+    console.error("Error fetching register data:", error);
+    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+  }
+}
+
