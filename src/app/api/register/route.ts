@@ -25,7 +25,7 @@ export async function POST(req: NextApiRequest) {
   try {
     const { name, phone, email, home, payment_proof, payment_amount, payment_method, card, shirts, receipt, national_id, name_on_receipt, address_on_receipt} =
       await (req as any).json();
-    if (!name || !phone || !home || !payment_amount) {
+    if (!name || !phone || !home || !payment_amount || !payment_proof) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
