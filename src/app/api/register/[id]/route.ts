@@ -1,15 +1,17 @@
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 // Fetch a single registration by ID
-export async function GET(req: NextApiRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
+    if (!params?.id) throw new Error("Missing ID parameter.");
+
+    const id = Number(params.id);
     const register = await prisma.register.findUnique({
-      where: { id: Number(id) },
+      where: { id },
     });
 
     if (!register) {
@@ -23,20 +25,25 @@ export async function GET(req: NextApiRequest, { params }: { params: { id: strin
   }
 }
 
-// Update shipment status
-export async function PUT(req: NextApiRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+// Update shipment status or payment approval
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { shipment_status } = await (req as any).json();
+    if (!params?.id) throw new Error("Missing ID parameter.");
+
+    const id = Number(params.id);
+    const { shipment_status, payment_status } = await req.json();
 
     const updatedRegister = await prisma.register.update({
-      where: { id: Number(id) },
-      data: { shipment_status },
+      where: { id },
+      data: {
+        shipment_status: shipment_status ?? undefined, // Only update if provided
+        payment_status: payment_status ?? undefined, // Only update if provided
+      },
     });
 
     return NextResponse.json(updatedRegister);
   } catch (error) {
-    console.error("Error updating shipment status:", error);
-    return NextResponse.json({ error: "Failed to update shipment status" }, { status: 500 });
+    console.error("Error updating register:", error);
+    return NextResponse.json({ error: "Failed to update registration" }, { status: 500 });
   }
 }

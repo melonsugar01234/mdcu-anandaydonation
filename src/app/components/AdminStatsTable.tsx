@@ -67,7 +67,18 @@ export const columns: ColumnDef<Register>[] = [
       </Link>
     ),
   },
-  { accessorKey: "shipment_status", header: "สถานะ" },
+  { accessorKey: "shipment_status", header: "สถานะ",
+    cell: ({ row }) => {
+      const status = row.original.shipment_status;
+      const statusText = {
+        "0": "0 กำลังตรวจสอบ (Pending / Verifying)",
+        "1": "1 กำลังเตรียมของ (Preparing)",
+        "2": "2 จัดส่งแล้ว (Shipped)",
+        "3": "3 จัดส่งสำเร็จ (Delivered)",
+        "99": "99 เกิดข้อผิดพลาด (Error)",
+      };
+      return statusText[status as keyof typeof statusText] || "Unknown";
+    }, },
   { accessorKey: "name", header: "ชื่อ" },
   { accessorKey: "phone", header: "โทรศัพท์" },
 ];
