@@ -119,7 +119,7 @@ export default function Home() {
           <Link href="/register">Register</Link>
         </button>
         <h2 className="text-xl">
-          How to request a card or t-shirt commemorating Ananda Mahidol
+          How to request a card or T-shirt commemorating Ananda Mahidol
         </h2>
         <ol className="list-decimal list-inside">
           <li>

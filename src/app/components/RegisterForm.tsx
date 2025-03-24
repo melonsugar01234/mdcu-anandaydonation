@@ -226,7 +226,7 @@ const RegisterForm = ({
   };
 
   const addShirtOption = () => {
-    setShirts([...shirts, { size: "M", color: "white", amount: 1 }]);
+    setShirts([...shirts, { size: "xs", color: "white", amount: 1 }]);
   };
 
   const removeShirtOption = () => {
