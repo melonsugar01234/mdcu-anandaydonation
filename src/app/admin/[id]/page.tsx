@@ -25,16 +25,6 @@ interface Register {
   address_on_receipt: string | null;
 }
 
-function formatDate(timestamp: string) {
-  if (!timestamp) return "-";
-  const date = new Date(timestamp);
-  return (
-    date.toISOString().slice(0, 10) +
-    " @" +
-    date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
-  );
-}
-
 export default function AdminApprovePaymentPage() {
   const router = useRouter();
   const { id } = useParams();
@@ -97,7 +87,9 @@ export default function AdminApprovePaymentPage() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Failed to approve payment: ${response.status} - ${errorText}`);
+        throw new Error(
+          `Failed to approve payment: ${response.status} - ${errorText}`
+        );
       }
 
       const updatedRegister = await response.json();
@@ -121,7 +113,9 @@ export default function AdminApprovePaymentPage() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Failed to reject payment: ${response.status} - ${errorText}`);
+        throw new Error(
+          `Failed to reject payment: ${response.status} - ${errorText}`
+        );
       }
 
       const updatedRegister = await response.json();
@@ -133,8 +127,21 @@ export default function AdminApprovePaymentPage() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  const getShipmentStatusText = (status: string | null) => {
+    const statusText = {
+      "0": "0 (Verifying Payment)",
+      "1": "1 (Preparing)",
+      "2": "2 (Shipped)",
+      "3": "3 (Processing Receipt)",
+      "4": "4 (Receipt Shipped)",
+      "99": "99 (Error)",
+    };
+    return status
+      ? statusText[status as keyof typeof statusText] || "Unknown"
+      : "Pending";
+  };
 
+  if (loading) return <div>Loading...</div>;
   if (!register) return <div>No registration found.</div>;
 
   return (
@@ -147,59 +154,120 @@ export default function AdminApprovePaymentPage() {
           ← Go Back
         </button>
 
-        <h1 className="text-2xl font-bold text-center mb-6">User Information</h1>
-
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Registration Info
+        </h1>
         <div className="bg-white shadow-lg rounded-lg p-6">
-          <div className="space-y-4">
-            <p><strong>ID:</strong> {register.id}</p>
-            <p><strong>Name:</strong> {register.name}</p>
-            <p><strong>Phone:</strong> {register.phone}</p>
-            <p><strong>Email:</strong> {register.email}</p>
-            <p><strong>Home Address:</strong> {register.home}</p>
-            <p><strong>Tracking Code:</strong> {register.tracking_code}</p>
-            <p><strong>Created At:</strong> {formatDate(register.created_at)}</p>
-            <p><strong>Edited At:</strong> {formatDate(register.edited_at)}</p>
-            <p><strong>Shirts:</strong> {register.shirts}</p>
-            <p><strong>Shipment Status:</strong> {register.shipment_status}</p>
-            <p><strong>Payment Method:</strong> {register.payment_method}</p>
-            <p><strong>Payment Amount:</strong> {register.payment_amount}</p>
+          <p>
+            <strong>ID:</strong> {register.id}
+          </p>
+          <p>
+            <strong>Name:</strong> {register.name}
+          </p>
+          <p>
+            <strong>Phone:</strong> {register.phone}
+          </p>
+          <p>
+            <strong>Email:</strong> {register.email}
+          </p>
+          <p>
+            <strong>Address:</strong> {register.home}
+          </p>
+          <p>
+            <strong>Tracking Code:</strong> {register.tracking_code}
+          </p>
+        </div>
 
-            {register.payment_proof && (
-              <div>
-                <figure className="mb-4">
-                  <img
-                    src={register.payment_proof}
-                    alt="Payment proof"
-                    className="rounded-lg max-w-sm"
-                  />
-                </figure>
-              </div>
-            )}
+        <h2 className="text-xl font-bold mt-6">Orders Info</h2>
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p>
+            <strong>Pins:</strong> {register.card}
+          </p>
+          <p>
+            <strong>Shirts:</strong> {register.shirts}
+          </p>
+          <p>
+            <strong>Payment Method:</strong> {register.payment_method}
+          </p>
+          <p>
+            <strong>Payment Amount:</strong> {register.payment_amount} บาท
+          </p>
+          {register.payment_proof && (
+            <div>
+              <figure className="mb-4">
+                <img
+                  src={register.payment_proof}
+                  alt="Payment proof"
+                  className="rounded-lg max-w-sm"
+                />
+              </figure>
+            </div>
+          )}
+        </div>
 
-            <p><strong>Payment Status:</strong> {register.payment_status}</p>
-            <p><strong>Receipt:</strong> {register.receipt}</p>
-            <p><strong>National ID:</strong> {register.national_id}</p>
-            <p><strong>Name on Receipt:</strong> {register.name_on_receipt}</p>
-            <p><strong>Address on Receipt:</strong> {register.address_on_receipt}</p>
+        <h2 className="text-xl font-bold mt-6">Receipt</h2>
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p>
+            <strong>Receipt:</strong> {register.receipt}
+          </p>
+          <p>
+            <strong>National ID:</strong> {register.national_id}
+          </p>
+          <p>
+            <strong>Name on Receipt:</strong> {register.name_on_receipt}
+          </p>
+          <p>
+            <strong>Address on Receipt:</strong> {register.address_on_receipt}
+          </p>
+        </div>
 
-            <form onSubmit={handleStatusChange} className="mt-4">
-              <label className="block mb-2 font-bold">Update Shipment Status:</label>
+        <h2 className="text-xl font-bold mt-6">Status</h2>
+        <div className="bg-white shadow-lg rounded-lg p-6 space-y-6">
+          {/* Shipment Status */}
+          <div>
+            <p className="font-semibold text-lg">Shipment Status:</p>
+            <p className="mb-4">
+              {getShipmentStatusText(register.shipment_status)}
+            </p>
+            <form onSubmit={handleStatusChange} className="space-y-4">
+              <label className="block font-bold">Update Shipment Status:</label>
               <div className="space-y-2">
                 {[
-                  { value: "0", label: "0 กำลังตรวจสอบ (Pending / Verifying)" },
-                  { value: "1", label: "1 กำลังเตรียมของ (Preparing)" },
-                  { value: "2", label: "2 จัดส่งแล้ว (Shipped)" },
-                  { value: "3", label: "3 จัดส่งสำเร็จ (Delivered)" },
-                  { value: "99", label: "99 เกิดข้อผิดพลาด (Error)" },
+                  {
+                    value: "0",
+                    label:
+                      "0 กำลังตรวจสอบหลักฐานการโอนเงิน (Verifying Payment Proof)",
+                  },
+                  {
+                    value: "1",
+                    label:
+                      "1 กำลังจัดเตรียมเข็มฯ / เสื้อ (Preparing Pins / Shirts)",
+                  },
+                  {
+                    value: "2",
+                    label: "2 จัดส่งเข็มฯ / เสื้อ แล้ว (Shipped Pins / Shirts)",
+                  },
+                  {
+                    value: "3",
+                    label: "3 อยู่ระหว่างการออกใบเสร็จ (Processing Receipt)",
+                  },
+                  {
+                    value: "4",
+                    label: "4 จัดส่งใบเสร็จแล้ว (Receipt Shipped)",
+                  },
+                  { value: "99", label: "99 มีปัญหา (Error)" },
                 ].map((status) => (
-                  <label key={status.value} className="flex items-center space-x-2">
+                  <label
+                    key={status.value}
+                    className="flex items-center space-x-2"
+                  >
                     <input
                       type="radio"
                       name="shipment_status"
                       value={status.value}
                       checked={shipmentStatus === status.value}
                       onChange={(e) => setShipmentStatus(e.target.value)}
-                      className="form-radio"
+                      className="form-radio text-blue-500"
                     />
                     <span>{status.label}</span>
                   </label>
@@ -207,27 +275,33 @@ export default function AdminApprovePaymentPage() {
               </div>
               <button
                 type="submit"
-                className="mt-4 p-2 bg-blue-500 text-white rounded"
+                className="btn btn-info"
               >
                 Update Shipment Status
               </button>
             </form>
+          </div>
 
-            <div className="mt-6 space-x-4">
-              <button
-                onClick={handleApprovePayment}
-                className="w-full sm:w-auto p-2 bg-green-500 text-white rounded hover:bg-green-600"
-              >
-                Approve Payment Proof
-              </button>
+          {/* Payment Status */}
+          <div>
+            <p className="font-semibold text-lg">Payment Status:</p>
+            <p className="mb-4">{register.payment_status}</p>
+          </div>
 
-              <button
-                onClick={handleRejectPayment}
-                className="w-full sm:w-auto p-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Reject Payment Proof
-              </button>
-            </div>
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+            <button
+              onClick={handleApprovePayment}
+              className="btn btn-success"
+            >
+              Approve Payment Proof
+            </button>
+            <button
+              onClick={handleRejectPayment}
+              className="btn btn-warning"
+            >
+              Reject Payment Proof
+            </button>
           </div>
         </div>
       </div>
