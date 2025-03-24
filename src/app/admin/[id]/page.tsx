@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface Register {
   id: number;
@@ -26,6 +27,7 @@ interface Register {
 }
 
 export default function AdminApprovePaymentPage() {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const { id } = useParams();
   const [register, setRegister] = useState<Register | null>(null);
@@ -33,99 +35,58 @@ export default function AdminApprovePaymentPage() {
   const [shipmentStatus, setShipmentStatus] = useState("");
 
   useEffect(() => {
-    if (id) {
-      fetch(`/api/register/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setRegister(data);
-          setShipmentStatus(data.shipment_status || "");
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error fetching registration data:", err);
-          setLoading(false);
-        });
+    if (status === "loading") return;
+    if (status === "unauthenticated") {
+      router.push("/admin/login");
     }
-  }, [id]);
+  }, [status, router]);
 
-  const handleStatusChange = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (status !== "authenticated" || !id) return;
+    fetchRegisterData();
+  }, [status, id]);
+
+  const fetchRegisterData = async () => {
+    try {
+      const res = await fetch(`/api/register/${id}`);
+      if (!res.ok) throw new Error("Failed to fetch registration data");
+      const data = await res.json();
+      setRegister(data);
+      setShipmentStatus(data.shipment_status || "");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateRegister = async (updateData: Partial<Register>) => {
+    try {
+      const res = await fetch(`/api/register/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      });
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to update: ${res.status} - ${errorText}`);
+      }
+      const updatedRegister = await res.json();
+      setRegister(updatedRegister);
+      alert("Update successful!");
+    } catch (error) {
+      console.error(error);
+      alert("Update failed.");
+    }
+  };
+
+  const handleStatusChange = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await fetch(`/api/register/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ shipment_status: shipmentStatus }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `Failed to update status: ${response.status} - ${errorText}`
-        );
-      }
-
-      const updatedRegister = await response.json();
-      setRegister(updatedRegister);
-      alert("Shipment status updated successfully!");
-    } catch (error) {
-      console.error("Error updating shipment status:", error);
-      alert("Failed to update shipment status.");
-    }
+    updateRegister({ shipment_status: shipmentStatus });
   };
 
-  const handleApprovePayment = async () => {
-    try {
-      const response = await fetch(`/api/register/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ payment_status: "Approved" }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `Failed to approve payment: ${response.status} - ${errorText}`
-        );
-      }
-
-      const updatedRegister = await response.json();
-      setRegister(updatedRegister);
-      alert("Payment proof approved successfully!");
-    } catch (error) {
-      console.error("Error approving payment proof:", error);
-      alert("Failed to approve payment proof.");
-    }
-  };
-
-  const handleRejectPayment = async () => {
-    try {
-      const response = await fetch(`/api/register/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ payment_status: "Rejected" }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `Failed to reject payment: ${response.status} - ${errorText}`
-        );
-      }
-
-      const updatedRegister = await response.json();
-      setRegister(updatedRegister);
-      alert("Payment proof rejected successfully!");
-    } catch (error) {
-      console.error("Error rejecting payment proof:", error);
-      alert("Failed to reject payment proof.");
-    }
-  };
+  const handleApprovePayment = () => updateRegister({ payment_status: "Approved" });
+  const handleRejectPayment = () => updateRegister({ payment_status: "Rejected" });
 
   const getShipmentStatusText = (status: string | null) => {
     const statusText = {
@@ -136,9 +97,7 @@ export default function AdminApprovePaymentPage() {
       "4": "4 (Receipt Shipped)",
       "99": "99 (Error)",
     };
-    return status
-      ? statusText[status as keyof typeof statusText] || "Unknown"
-      : "Pending";
+    return status ? statusText[status as keyof typeof statusText] || "Unknown" : "Pending";
   };
 
   if (loading) return <div>Loading...</div>;
