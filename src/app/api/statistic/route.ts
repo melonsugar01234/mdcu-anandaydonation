@@ -40,7 +40,7 @@ export async function GET() {
 
     // Total commemorable card order from users with approved payment
     const totalCardOrdersApprovedData = await prisma.register.findMany({
-      where: { payment_status: "accepted" },
+      where: { payment_status: "Approved" },
     });
     const totalCardOrdersApproved = totalCardOrdersApprovedData.reduce(
       (sum, registration) => {
@@ -67,7 +67,7 @@ export async function GET() {
 
     // Total shirt orders with approved payment status
     const totalShirtOrdersApproved = await prisma.register.findMany({
-      where: { payment_status: "accepted" },
+      where: { payment_status: "Approved" },
     });
 
     const shirtCountsApproved: { [key: string]: number } = {};
