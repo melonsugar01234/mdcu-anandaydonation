@@ -85,8 +85,10 @@ export default function AdminApprovePaymentPage() {
     updateRegister({ shipment_status: shipmentStatus });
   };
 
-  const handleApprovePayment = () => updateRegister({ payment_status: "Approved" });
-  const handleRejectPayment = () => updateRegister({ payment_status: "Rejected" });
+  const handleApprovePayment = () =>
+    updateRegister({ payment_status: "Approved" });
+  const handleRejectPayment = () =>
+    updateRegister({ payment_status: "Rejected" });
 
   const getShipmentStatusText = (status: string | null) => {
     const statusText = {
@@ -97,7 +99,9 @@ export default function AdminApprovePaymentPage() {
       "4": "4 (Receipt Shipped)",
       "99": "99 (Error)",
     };
-    return status ? statusText[status as keyof typeof statusText] || "Unknown" : "Pending";
+    return status
+      ? statusText[status as keyof typeof statusText] || "Unknown"
+      : "Pending";
   };
 
   if (loading) return <div>Loading...</div>;
@@ -214,7 +218,7 @@ export default function AdminApprovePaymentPage() {
                     value: "4",
                     label: "4 จัดส่งใบเสร็จแล้ว (Receipt Shipped)",
                   },
-                  { value: "99", label: "99 มีปัญหา (Error)" },
+                  { value: "99", label: "เกิดข้อผิดพลาด (Error)" },
                 ].map((status) => (
                   <label
                     key={status.value}
@@ -232,10 +236,7 @@ export default function AdminApprovePaymentPage() {
                   </label>
                 ))}
               </div>
-              <button
-                type="submit"
-                className="btn btn-info"
-              >
+              <button type="submit" className="btn btn-info">
                 Update Shipment Status
               </button>
             </form>
@@ -249,16 +250,10 @@ export default function AdminApprovePaymentPage() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
-            <button
-              onClick={handleApprovePayment}
-              className="btn btn-success"
-            >
+            <button onClick={handleApprovePayment} className="btn btn-success">
               Approve Payment Proof
             </button>
-            <button
-              onClick={handleRejectPayment}
-              className="btn btn-warning"
-            >
+            <button onClick={handleRejectPayment} className="btn btn-warning">
               Reject Payment Proof
             </button>
           </div>

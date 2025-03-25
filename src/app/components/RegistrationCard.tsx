@@ -1,9 +1,12 @@
 "use client";
-import { useLanguage } from "../context/LanguageContext"; // Adjust the path as necessary
+import { useLanguage } from "../context/LanguageContext";
 
 interface Register {
   id: number;
   name: string;
+  phone: string;
+  email: string;
+  home: string;
   tracking_code: string;
   shirts: string;
   card: string;
@@ -11,6 +14,7 @@ interface Register {
   payment_amount: string;
   payment_proof: string;
   payment_status: string;
+  receipt: string;
 }
 
 interface RegistrationCardProps {
@@ -20,17 +24,17 @@ interface RegistrationCardProps {
 export default function RegistrationCard({
   registration,
 }: RegistrationCardProps) {
-  const { language } = useLanguage(); // Get the language from context
+  const { language } = useLanguage();
 
   function getShipmentStatusText(status: string | null) {
     const statusMap: { [key: string]: string } = {
-      "0": "กำลังตรวจสอบ (Pending / Verifying)",
-      "1": "กำลังเตรียมของ (Preparing)",
-      "2": "จัดส่งแล้ว (Shipped)",
-      "3": "จัดส่งสำเร็จ (Delivered)",
-      "4": "เกิดข้อผิดพลาด (Error)",
+      "0": "กำลังตรวจสอบหลักฐานการโอนเงิน (Verifying Payment Proof)",
+      "1": "กำลังจัดเตรียมเข็มฯ / เสื้อ (Preparing Pins / Shirts)",
+      "2": "จัดส่งเข็มฯ / เสื้อ แล้ว (Shipped Pins / Shirts)",
+      "3": "อยู่ระหว่างการออกใบเสร็จ (Processing Receipt)",
+      "4": "จัดส่งใบเสร็จแล้ว (Receipt Shipped)",
+      "99": "เกิดข้อผิดพลาด (Error)",
     };
-
     return status ? statusMap[status] || "Unknown" : "Pending";
   }
 
@@ -40,109 +44,201 @@ export default function RegistrationCard({
       .split(";")
       .map((shirt) => {
         const [size, color, amount] = shirt.split("-");
-        return `Size: ${size.toUpperCase()} Color: ${
-          color.charAt(0).toUpperCase() + color.slice(1)
-        } Amount: ${amount}`;
+        return `Size: ${size.toUpperCase()} | Color: ${color.charAt(0).toUpperCase() + color.slice(1)} | Amount: ${amount}`;
       })
-      .join(", "); // Join with a comma and space
+      .join("\n"); // Join with line breaks instead of commas
   };
 
+  // Calculate total cost for shirts
+  let totalShirtCount = 0;
+  let shirtTotal = 0;
+  if (registration.shirts) {
+    registration.shirts.split(";").forEach((shirt) => {
+      const [, , amount] = shirt.split("-");
+      totalShirtCount += parseInt(amount) || 0;
+    });
+    shirtTotal = totalShirtCount * 299;
+  }
+
+  // Calculate total cost for commemorative pins
+  const cardCount = registration.card ? parseInt(registration.card) || 0 : 0;
+  const cardTotal = cardCount * 150;
+
+  // Calculate the total amount
+  const totalAmount = parseFloat(registration.payment_amount) + shirtTotal + cardTotal;
+
   return (
-    <div className="card bg-base-100 shadow-xl">
-      <div className="card-body items-center text-center">
-        {registration.payment_proof && (
-          <figure className="mb-4">
-            <img
-              src={registration.payment_proof}
-              alt={`Payment proof`}
-              className="rounded-lg max-w-sm"
-            />
-          </figure>
-        )}
-
-        <h2 className="card-title">{registration.name}</h2>
-
-        <div
-          className={`space-y-4 w-full max-w-md ${
-            language === "en" ? "" : "hidden"
-          } `}
-        >
-          <div>
-            <h3 className="underline font-bold text-lg">
-              Tracking Information
-            </h3>
-            <p>Name: {registration.name}</p>
-            <p>Tracking Code: {registration.tracking_code}</p>
+    <div className="flex flex-col min-h-screen">
+      <div className="container mx-auto p-6 flex-grow flex items-center justify-center">
+        <div className="bg-white shadow-lg rounded-lg p-10 max-w-4xl w-full text-center border border-gray-200">
+          <h3 className="text-xl font-semibold text-center mb-4">
+            {language === "en" ? "Tracking Status" : "ติดตามสถานะ"}
+          </h3>
+          <div className="border p-4 rounded-lg bg-gray-100 text-center">
             <p>
-              Shipment Status:{" "}
-              {getShipmentStatusText(registration.shipment_status)}
+              <strong>
+                {language === "en" ? "Payment Status" : "สถานะการชำระเงิน"}:
+              </strong>{" "}
+              <span
+                className={`badge ${
+                  registration.payment_status === "Pending"
+                    ? "badge-neutral"
+                    : registration.payment_status === "Approved"
+                    ? "badge-success"
+                    : registration.payment_status === "Rejected"
+                    ? "badge-error"
+                    : ""
+                }`}
+              >
+                {registration.payment_status || "Pending"}
+              </span>
             </p>
+            <p>
+              <strong>
+                {language === "en" ? "Shipment Status" : "สถานะจัดส่ง"}:
+              </strong>{" "}
+              {registration.shipment_status === "99" ? (
+                <span className="badge badge-error">
+                  {language === "en"
+                    ? "เกิดข้อผิดพลาด (Error)"
+                    : "เกิดข้อผิดพลาด (Error)"}
+                </span>
+              ) : (
+                getShipmentStatusText(registration.shipment_status)
+              )}
+            </p>
+            {registration.shipment_status === "99" && (
+              <p className="text-red-600 mt-2">
+                {language === "en"
+                  ? "Please re-register or contact support via LINE ID: prmdcu or ANANDAY's Facebook page."
+                  : "กรุณาลงทะเบียนใหม่หรือติดต่อเจ้าหน้าที่ผ่าน LINE ID: prmdcu หรือ แฟนเพจ ANANDAY"}
+              </p>
+            )}
           </div>
 
-          <div>
-            <h3 className="underline font-bold text-lg">Order Details</h3>
-            <p>
-              Shirts:{" "}
-              {registration.shirts
-                ? formatShirtData(registration.shirts)
-                : "Not selected"}
-            </p>
-            <p>Card: {registration.card || "Not selected"}</p>
-          </div>
-
-          <div>
-            <h3 className="underline font-bold text-lg">
-              Donation Information
-            </h3>
-            <p>
-              Amount: {`${registration.payment_amount} บาท` || "Not specified"}
-            </p>
-            <p>Status: {registration.payment_status || "Pending"}</p>
-          </div>
-
-          {/* ID */}
-          <div className="text-xs text-gray-500">ID: {registration.id}</div>
-        </div>
-        <div
-          className={`space-y-4 w-full max-w-md ${
-            language === "th" ? "" : "hidden"
-          } `}
-        >
-          <div>
-            <h3 className="underline font-bold text-lg">ข้อมูลการจัดส่ง</h3>
-            <p>ชื่อ: {registration.name}</p>
-            <p>รหัสติดตาม: {registration.tracking_code}</p>
-            <p>
-              สถานะจัดส่ง: {getShipmentStatusText(registration.shipment_status)}
-            </p>
-          </div>
-
-          <div>
-            <h3 className="underline font-bold text-lg">
-              รายละเอียดคำสั่งซื้อ
+          {/* Personal Information */}
+          <div className="mt-6 text-left">
+            <h3 className="text-lg font-semibold">
+              {language === "en" ? "Personal Information" : "ข้อมูลส่วนตัว"}
             </h3>
             <p>
-              เสื้อที่สั่ง:{" "}
-              {registration.shirts
-                ? formatShirtData(registration.shirts)
-                : "Not selected"}
+              <strong>{language === "en" ? "Name" : "ชื่อ-นามสกุล"}:</strong>{" "}
+              {registration.name}
             </p>
-            <p>เข็มที่ระลึก: {`${registration.card} เข็ม` || "Not selected"}</p>
-          </div>
-
-          <div>
-            <h3 className="underline font-bold text-lg">ข้อมูลบริจาค</h3>
             <p>
-              จำนวน:{" "}
-              {registration.payment_amount
-                ? `${registration.payment_amount} บาท`
-                : "Not specified"}
+              <strong>{language === "en" ? "Phone" : "โทรศัพท์"}:</strong>{" "}
+              {registration.phone}
             </p>
-            <p>สถานะ: {registration.payment_status || "Pending"}</p>
+            <p>
+              <strong>{language === "en" ? "Email" : "อีเมล"}:</strong>{" "}
+              {registration.email}
+            </p>
+            <p>
+              <strong>
+                {language === "en" ? "Shipping Address" : "ที่อยู่จัดส่ง"}:
+              </strong>{" "}
+              {registration.home}
+            </p>
           </div>
 
-          {/* ID */}
-          <div className="text-xs text-gray-500">ID: {registration.id}</div>
+          {/* Donation Information */}
+          <div className="mt-6 text-left">
+            <h3 className="text-lg font-semibold">
+              {language === "en" ? "Donation Information" : "ข้อมูลบริจาค"}
+            </h3>
+            <p>
+              <strong>
+                {language === "en" ? "Donation Amount" : "จำนวนเงินที่บริจาค"}:
+              </strong>{" "}
+              {registration.payment_amount} {language === "en" ? "THB" : "บาท"}
+            </p>
+            <p>
+              <strong>
+                {language === "en" ? "Receipt Request" : "ต้องการรับใบเสร็จ"}:
+              </strong>{" "}
+              {registration.receipt === "yes" ? "✅" : "❌"}
+            </p>
+          </div>
+
+          {/* Order Details Table */}
+          <div className="mt-6 text-left">
+            <h3 className="text-lg font-semibold">
+              {language === "en" ? "Order Details" : "รายละเอียดคำสั่งซื้อ"}
+            </h3>
+            <table className="w-full mt-2 border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border p-2">
+                    {language === "en" ? "Item" : "รายการ"}
+                  </th>
+                  <th className="border p-2">
+                    {language === "en" ? "Quantity" : "จำนวน"}
+                  </th>
+                  <th className="border p-2">
+                    {language === "en" ? "Price (THB)" : "ราคา (บาท)"}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border p-2">
+                    {language === "en" ? "Donation" : "ค่าบริจาค"}
+                  </td>
+                  <td className="border p-2">-</td>
+                  <td className="border p-2">{registration.payment_amount}</td>
+                </tr>
+                <tr>
+                  <td className="border p-2">
+                    {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
+                  </td>
+                  <td className="border p-2">{cardCount}</td>
+                  <td className="border p-2">{cardTotal}</td>
+                </tr>
+                <tr>
+                  <td className="border p-2">
+                    {language === "en" ? "Shirt" : "เสื้อ"}
+                  </td>
+                  <td className="border p-2">{totalShirtCount}</td>
+                  <td className="border p-2">{shirtTotal}</td>
+                </tr>
+                <tr className="font-bold bg-gray-100">
+                  <td className="border p-2">
+                    {language === "en" ? "Total" : "รวม"}
+                  </td>
+                  <td className="border p-2">-</td>
+                  <td className="border p-2">{totalAmount}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Shirt Details */}
+          {registration.shirts && (
+            <div className="mt-6 text-left">
+              <h3 className="text-lg font-semibold">
+                {language === "en" ? "Shirt Details" : "รายละเอียดเสื้อ"}
+              </h3>
+              <pre className="text-gray-700 whitespace-pre-wrap">
+                {formatShirtData(registration.shirts)}
+              </pre>
+            </div>
+          )}
+
+          {/* Payment Proof Image */}
+          {registration.payment_proof && (
+            <div className="mt-6 text-left">
+              <h3 className="text-lg font-semibold">
+                {language === "en" ? "Payment Proof" : "หลักฐานการชำระเงิน"}
+              </h3>
+              <figure className="mt-2">
+                <img
+                  src={registration.payment_proof}
+                  alt="Payment Proof"
+                  className="rounded-lg max-w-full"
+                />
+              </figure>
+            </div>
+          )}
         </div>
       </div>
     </div>
