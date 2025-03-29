@@ -10,7 +10,7 @@ export async function GET() {
 
     // Donators without order
     const donatorsWithoutOrder = await prisma.register.count({
-      where: { shipment_status: "ไม่มีคำสั่งซื้อ" },
+      where: { shipment_status: "5" },
     });
 
     // Donators with shirt order
@@ -44,7 +44,7 @@ export async function GET() {
       return sum + payValue;
     }, 0);
     const totalMoneyApprovedData = await prisma.register.findMany({
-      where: { payment_status: "accepted" },
+      where: { payment_status: "Approved" },
     });
     const totalMoneyApproved = totalMoneyApprovedData.reduce((sum, registration) => {
       const payValue = parseFloat(registration.payment_amount|| "0") || 0; // Convert string to number, default to 0 if null
@@ -77,7 +77,7 @@ export async function GET() {
     );
 
     const totalCardwithboxOrdersApprovedData = await prisma.register.findMany({
-      where: { payment_status: "accepted" },
+      where: { payment_status: "Approved" },
     });
     const totalCardwithboxOrdersApproved = totalCardwithboxOrdersApprovedData.reduce(
       (sum, registration) => {

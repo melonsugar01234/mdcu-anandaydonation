@@ -200,8 +200,8 @@ export default function AdminApprovePaymentPage() {
                   { value: "1", label: "1 กำลังเตรียมของ (Preparing)" },
                   { value: "2", label: "2 จัดส่งเข็มฯ / เสื้อเเล้ว (Shipped)" },
                   { value: "3", label: "3 อยู่ระหว่างออกใบเสร็จ (Processing Receipt)" },
-                  { value: "4", label: "4 ไม่มีคำสั่งซื้อ (No order)" },
-                  { value: "5", label: "5 จัดส่งใบเสร็จแล้ว (Receipt Shipped)"},
+                  { value: "4", label: "5 จัดส่งใบเสร็จแล้ว (Receipt Shipped)"},
+                  { value: "5", label: "4 ไม่มีคำสั่งซื้อ (No order)" },
                   { value: "99", label: "99 เกิดข้อผิดพลาด (Error)" },
 
                 ].map((status) => (

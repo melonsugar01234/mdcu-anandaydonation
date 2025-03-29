@@ -39,7 +39,7 @@ export async function POST(req: NextApiRequest) {
 
     let shipmentStatus = "0"; // Default status
     if ((card === 0 || card === "") && (shirts === "") && (cardwithbox === 0 || cardwithbox === "")) {
-      shipmentStatus = "4"; // No order status
+      shipmentStatus = "5"; // No order status
     }
 
     const newRegister = await prisma.register.create({
