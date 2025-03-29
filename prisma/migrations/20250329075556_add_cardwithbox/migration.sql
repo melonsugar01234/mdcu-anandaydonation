@@ -9,6 +9,7 @@ CREATE TABLE "Register" (
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "edited_at" DATETIME NOT NULL,
     "card" INTEGER,
+    "cardwithbox" INTEGER,
     "shirts" TEXT,
     "shipment_status" TEXT,
     "payment_method" TEXT,

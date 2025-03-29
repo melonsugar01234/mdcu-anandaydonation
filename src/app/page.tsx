@@ -17,6 +17,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
+      
       <div
         className={`text-slate-900 flex flex-col items-center gap-4 p-4 bg-stone-100 ${
           clientLanguage === "th" ? "" : "hidden"

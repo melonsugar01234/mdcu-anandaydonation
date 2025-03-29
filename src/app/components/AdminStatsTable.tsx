@@ -75,6 +75,7 @@ export const columns: ColumnDef<Register>[] = [
         "1": "1 กำลังเตรียมของ (Preparing)",
         "2": "2 จัดส่งแล้ว (Shipped)",
         "3": "3 จัดส่งสำเร็จ (Delivered)",
+        "4": "4 ไม่มีคำสั่งซื้อ (No order)",
         "99": "99 เกิดข้อผิดพลาด (Error)",
       };
       return statusText[status as keyof typeof statusText] || "Unknown";

@@ -10,11 +10,33 @@ interface RegisterFormProps {
   subDistricts: SubDistrict[];
 }
 
+const images = [
+  { src: '/images/1.jpg', alt: 'Image 1' },
+  { src: '/images/2.jpg', alt: 'Image 2' },
+  { src: '/images/3.jpg', alt: 'Image 3' },
+];
 const RegisterForm = ({
   provinces,
   districts,
   subDistricts,
 }: RegisterFormProps) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [shirts, setShirts] = useState<
+    { size: string; color: string; amount: number }[]
+  >([]);
+  const [card, setCard] = useState<string>("");
+  const [cardwithbox, setCardwithbox] = useState<string>("");
+ 
+  const calculateTotalShirtCost = () => {
+    const totalShirts = shirts.reduce((total, shirt) => total + shirt.amount, 0);
+    return totalShirts * 350; // Each shirt costs 350
+  };
+  const calculateTotalCardCost = () => {
+    const totalCards = parseInt(card) || 0; // Each card costs 150
+    const totalCardWithBox = parseInt(cardwithbox) || 0; // Each card with box costs 250
+    return (totalCards * 150) + (totalCardWithBox * 250); // Total cost calculation
+  };
+  const totalCost = calculateTotalShirtCost() + calculateTotalCardCost();
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
   const [selectedSubDistrict, setSelectedSubDistrict] = useState<string>("");
@@ -37,12 +59,9 @@ const RegisterForm = ({
   const [paymentProof, setPaymentProof] = useState<string>("");
   const [payment_amount, setpayment_amount] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>(""); // New state for payment method
-  const [card, setCard] = useState<string>("");
-  const [wantsShirt, setWantsShirt] = useState<boolean>(false);
-  const [shirts, setShirts] = useState<
-    { size: string; color: string; amount: number }[]
-  >([]);
-  const [wantsReceipt, setWantsReceipt] = useState<boolean>(false);
+const [wantsShirt, setWantsShirt] = useState<boolean>(true);
+  
+  const [wantsReceipt, setWantsReceipt] = useState<boolean>(true);
   const [nationalId, setNationalId] = useState<string>("");
   const [nameOnReceipt, setNameOnReceipt] = useState<string>("");
   const { language } = useLanguage();
@@ -191,6 +210,7 @@ const RegisterForm = ({
           payment_proof: paymentProof,
           payment_amount,
           card : parseInt(card),
+          cardwithbox : parseInt(cardwithbox),
           shirts: shirtData,
           receipt: wantsReceipt ? "yes" : "no",
           payment_method: paymentMethod,
@@ -248,7 +268,7 @@ const RegisterForm = ({
           required
           type="text"
           placeholder="เช่น นายสมชาย ใจดี"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -257,7 +277,7 @@ const RegisterForm = ({
           required
           type="tel"
           placeholder="เช่น 081-901-xxxx"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
@@ -265,7 +285,7 @@ const RegisterForm = ({
         <input
           type="email"
           placeholder="เช่น steve@gmail.com"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -278,12 +298,12 @@ const RegisterForm = ({
             placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
             value={addressDetail}
             onChange={(e) => setAddressDetail(e.target.value)}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white"
           />
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedProvince}
             onChange={handleProvinceChange}
           >
@@ -297,7 +317,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedDistrict}
             onChange={handleDistrictChange}
             disabled={!selectedProvince}
@@ -312,7 +332,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedSubDistrict}
             onChange={handleSubDistrictChange}
             disabled={!selectedDistrict}
@@ -327,7 +347,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
             disabled={!selectedSubDistrict}
@@ -346,36 +366,61 @@ const RegisterForm = ({
           required
           type="number"
           placeholder="ใส่แค่ตัวเลข"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={payment_amount}
           onChange={(e) => setpayment_amount(e.target.value)}
           onWheel={(e) => e.currentTarget.blur()}
         />
 
-        <div className="flex justify-center w-full">
+        
+        <div className="flex justify-center space-x-4">
+      {images.map((image, index) => (
+        <div
+          key={index}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+          className={`transition-transform duration-300 ease-in-out ${
+            hoveredIndex === index ? 'scale-110' : 'scale-90'
+          }`}
+        >
           <img
-            src="/images/card123.jpg"
-            alt="banner_1"
-            className="w-full h-auto object-contain"
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-auto object-cover" // Make the image fill the width of the container
           />
         </div>
+      ))}
+    </div>
+    <img
+            src="/images/thaipin.jpg"
+            alt="thaipin"
+            className="w-full h-auto object-contain"
+          />
         <span className="text-xl">เช็มที่ระลึก</span>
         <span className="text-xl">
-          จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม
-          สูงสุด 3 เข็ม)
+          จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม)
         </span>
-        <select
+        <input
           required
-          className="select select-bordered w-full"
+          type="number"
+          className="input input-bordered w-full bg-white"
           value={card}
           onChange={(e) => setCard(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
         >
-          <option value="">เลือกจำนวนเข็ม</option>
-          <option value="0">0 เข็ม</option>
-          <option value="1">1 เข็ม</option>
-          <option value="2">2 เข็ม</option>
-          <option value="3">3 เข็ม</option>
-        </select>
+        </input>
+        <span className="text-xl">
+          ชุดเข็มพร้อมกล่อง (เงินบริจาค 250 ต่อ 1 ชุด)
+        </span>
+        <input
+          required
+          type="number"
+          className="input input-bordered w-full bg-white"
+          value={cardwithbox}
+          onChange={(e) => setCardwithbox(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        >
+        </input>
         <div className="flex justify-center w-full">
           <img
             src="/images/shirt.jpg"
@@ -383,7 +428,7 @@ const RegisterForm = ({
             className="w-full h-auto object-contain"
           />
         </div>
-        <span className="text-xl">เสื้อที่ระลึก (เงินบริจาค 299 บาทต่อเสื้อ 1 ตัว)</span>
+        <span className="text-xl">เสื้อที่ระลึก (เงินบริจาค 350 บาทต่อเสื้อ 1 ตัว)</span>
         <div className="flex items-center space-x-4">
           <label>
             <input
@@ -417,7 +462,7 @@ const RegisterForm = ({
                       )
                     )
                   }
-                  className="select select-bordered"
+                  className="select select-bordered bg-white"
                 >
                   <option value="xs">XS</option>
                   <option value="s">S</option>
@@ -436,7 +481,7 @@ const RegisterForm = ({
                       )
                     )
                   }
-                  className="select select-bordered"
+                  className="select select-bordered bg-white"
                 >
                   <option value="white">White</option>
                   <option value="red">Red</option>
@@ -452,7 +497,7 @@ const RegisterForm = ({
                       )
                     )
                   }
-                  className="select select-bordered"
+                  className="select select-bordered bg-white"
                 >
                   {[...Array(7)].map((_, i) => (
                     <option key={i} value={i + 1}>
@@ -466,14 +511,14 @@ const RegisterForm = ({
               <button
                 type="button"
                 onClick={addShirtOption}
-                className="btn btn-secondary"
+            className="btn text-slate-950 bg-amber-400"
               >
                 เพิ่มเสื้อ
               </button>
               <button
                 type="button"
                 onClick={removeShirtOption}
-                className="btn btn-secondary"
+               className="btn text-slate-950 bg-amber-400"
               >
                 เอาออก
               </button>
@@ -484,7 +529,7 @@ const RegisterForm = ({
           <span className="text-xl">วิธีการบริจาค</span>
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
@@ -493,7 +538,7 @@ const RegisterForm = ({
             <option value="Bank number">Bank number</option>
           </select>
           <img
-            src="/images/donate qr.png"
+            src="/images/newpayQR.png"
             alt="banner_1"
             className="w-full h-auto object-contain"
           />
@@ -508,7 +553,7 @@ const RegisterForm = ({
             type="file"
             accept="image/jpeg,image/png"
             onChange={handleImageUpload}
-            className="file-input file-input-bordered w-full"
+            className="file-input file-input-bordered w-full bg-white"
           />
           {paymentProof && (
             <div className="mt-2">
@@ -550,7 +595,7 @@ const RegisterForm = ({
             <input
               type="text"
               placeholder="ใส่แค่ตัวเลข"
-              className="input input-bordered w-full mb-4"
+              className="input input-bordered w-full mb-4 bg-white"
               value={nationalId}
               onChange={(e) => setNationalId(e.target.value)}
               maxLength={13} // Limit input to 13 characters
@@ -562,7 +607,7 @@ const RegisterForm = ({
               required
               type="text"
               placeholder="เช่น นายสมชาย ใจดี"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-white"
               value={nameOnReceipt}
               onChange={(e) => setNameOnReceipt(e.target.value)}
             />
@@ -574,12 +619,12 @@ const RegisterForm = ({
                 placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
                 value={addressDetail2}
                 onChange={(e) => setAddressDetail2(e.target.value)}
-                className="input input-bordered w-full"
+                className="input input-bordered w-full bg-white"
               />
 
               <select
                 required
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white"
                 value={selectedProvince2}
                 onChange={handleProvinceChange2}
               >
@@ -593,7 +638,7 @@ const RegisterForm = ({
 
               <select
                 required
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white"
                 value={selectedDistrict2}
                 onChange={handleDistrictChange2}
                 disabled={!selectedProvince2}
@@ -608,7 +653,7 @@ const RegisterForm = ({
 
               <select
                 required
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white"
                 value={selectedSubDistrict2}
                 onChange={handleSubDistrictChange2}
                 disabled={!selectedDistrict2}
@@ -623,7 +668,7 @@ const RegisterForm = ({
 
               <select
                 required
-                className="select select-bordered w-full"
+                className="select select-bordered w-full bg-white"
                 value={postalCode2}
                 onChange={(e) => setPostalCode2(e.target.value)}
                 disabled={!selectedSubDistrict2}
@@ -638,10 +683,21 @@ const RegisterForm = ({
             </div>
           </div>
         )}
+        <span className="text-xl">ราคาเสื้อ: {calculateTotalShirtCost()} บาท</span>
+        <span className="text-xl">ราคาเข็ม: {calculateTotalCardCost()} บาท</span>
+        <span className="text-xl">ราคารวม: {calculateTotalShirtCost() + calculateTotalCardCost()} บาท , จำนวนเงินที่บริจาค {payment_amount}</span>
 
-        <button type="submit" className="btn btn-primary self-end">
-          ยืนยัน →
+        <button 
+          type="submit" 
+          className="btn btn-primary self-end" 
+          disabled={parseFloat(payment_amount) < totalCost} // Disable if payment_amount is less than totalCost
+        >          ยืนยัน →
         </button>
+        {parseFloat(payment_amount) < totalCost && (
+            <p className="flex justify-end text-red-500 text-sm">
+              จำนวนเงินที่บริจาคต้องมากกว่าหรือเท่ากับราคารวม
+            </p>
+          )}
       </form>
       {/* english edit */}
       <form
@@ -656,7 +712,7 @@ const RegisterForm = ({
           required
           type="text"
           placeholder="Ex. Mr. Somchai Jaidi"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -665,7 +721,7 @@ const RegisterForm = ({
           required
           type="tel"
           placeholder="Ex. 081-901-xxxx"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
@@ -673,7 +729,7 @@ const RegisterForm = ({
         <input
           type="email"
           placeholder="Ex. steve@gmail.com"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -686,12 +742,12 @@ const RegisterForm = ({
             placeholder="House number, Village/building, Road"
             value={addressDetail}
             onChange={(e) => setAddressDetail(e.target.value)}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white"
           />
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedProvince}
             onChange={handleProvinceChange}
           >
@@ -705,7 +761,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedDistrict}
             onChange={handleDistrictChange}
             disabled={!selectedProvince}
@@ -720,7 +776,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedSubDistrict}
             onChange={handleSubDistrictChange}
             disabled={!selectedDistrict}
@@ -735,7 +791,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
             disabled={!selectedSubDistrict}
@@ -754,36 +810,64 @@ const RegisterForm = ({
           required
           type="number"
           placeholder="Only numbers"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full bg-white"
           value={payment_amount}
           onChange={(e) => setpayment_amount(e.target.value)}
           onWheel={(e) => e.currentTarget.blur()}
         />
 
         <span className="text-xl">Commemorable card</span>
-        <div className="flex justify-center w-full">
+       
+        <div className="flex justify-center space-x-4">
+      {images.map((image, index) => (
+        <div
+          key={index}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+          className={`transition-transform duration-300 ease-in-out ${
+            hoveredIndex === index ? 'scale-110' : 'scale-90'
+          }`}
+        >
           <img
-            src="/images/card123.jpg"
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-auto object-cover" // Make the image fill the width of the container
+          />
+        </div>
+           ))}
+                   </div>
+
+            <div className="flex justify-center w-full">
+          <img
+            src="/images/enpin.jpg"
             alt="banner_1"
             className="w-full h-auto object-contain"
           />
         </div>
         <span className="text-xl">
-          Amount of cards to receive (1 card for each 150 baht donated up to 3
-          cards)
+          Amount of memorial cards to receive (1 card for each 150 baht donated)
         </span>
-        <select
+        <input
           required
-          className="select select-bordered w-full"
+          type="number"
+          className="input input-bordered w-full bg-white"
           value={card}
           onChange={(e) => setCard(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
         >
-          <option value="">Select amount</option>
-          <option value="0">0 card</option>
-          <option value="1">1 card</option>
-          <option value="2">2 cards</option>
-          <option value="3">3 cards</option>
-        </select>
+        </input>
+        <span className="text-xl">
+          Amount of memorial cards with box to receive (1 set for each 250 baht donated)
+        </span>
+        <input
+          required
+          type="number"
+          className="input input-bordered w-full bg-white"
+          value={cardwithbox}
+          onChange={(e) => setCardwithbox(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        >
+        </input>
         <div className="flex justify-center w-full">
           <img
             src="/images/shirt.jpg"
@@ -791,7 +875,7 @@ const RegisterForm = ({
             className="w-full h-auto object-contain"
           />
         </div>
-        <span className="text-xl">Commemorable shirts (1 T-shirt for each 299 baht donated)</span>
+        <span className="text-xl">Commemorable shirts (1 T-shirt for each 350 baht donated)</span>
         <div className="flex items-center space-x-4">
           <label>
             <input
@@ -825,7 +909,7 @@ const RegisterForm = ({
                       )
                     )
                   }
-                  className="select select-bordered"
+                  className="select select-bordered bg-white"
                 >
                   <option value="xs">XS</option>
                   <option value="s">S</option>
@@ -844,7 +928,7 @@ const RegisterForm = ({
                       )
                     )
                   }
-                  className="select select-bordered"
+                  className="select select-bordered bg-white"
                 >
                   <option value="white">White</option>
                   <option value="red">Red</option>
@@ -860,7 +944,7 @@ const RegisterForm = ({
                       )
                     )
                   }
-                  className="select select-bordered"
+                  className="select select-bordered bg-white"
                 >
                   {[...Array(7)].map((_, i) => (
                     <option key={i} value={i + 1}>
@@ -874,14 +958,14 @@ const RegisterForm = ({
               <button
                 type="button"
                 onClick={addShirtOption}
-                className="btn btn-secondary"
+                className="btn text-slate-950 bg-amber-400"
               >
                 Add Shirt
               </button>
               <button
                 type="button"
                 onClick={removeShirtOption}
-                className="btn btn-secondary"
+                className="btn text-slate-950 bg-amber-400"
               >
                 Remove Shirt
               </button>
@@ -892,7 +976,7 @@ const RegisterForm = ({
           <span className="text-xl">Payment method</span>
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
@@ -901,7 +985,7 @@ const RegisterForm = ({
             <option value="Bank number">Bank number</option>
           </select>
           <img
-            src="/images/donate qr.png"
+            src="/images/newpayQR.png"
             alt="banner_1"
             className="w-full h-auto object-contain"
           />
@@ -916,7 +1000,7 @@ const RegisterForm = ({
             type="file"
             accept="image/jpeg,image/png"
             onChange={handleImageUpload}
-            className="file-input file-input-bordered w-full"
+            className="file-input file-input-bordered w-full bg-white"
           />
           {paymentProof && (
             <div className="mt-2">
@@ -958,7 +1042,7 @@ const RegisterForm = ({
             <input
               type="text"
               placeholder="Numbers only"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-white"
               value={nationalId}
               onChange={(e) => setNationalId(e.target.value)}
               maxLength={13} // Limit input to 13 characters
@@ -970,7 +1054,7 @@ const RegisterForm = ({
               required
               type="text"
               placeholder="Enter full name"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-white"
               value={nameOnReceipt}
               onChange={(e) => setNameOnReceipt(e.target.value)}
             />
@@ -982,12 +1066,12 @@ const RegisterForm = ({
             placeholder="House number, Village/building, Road"
             value={addressDetail2}
             onChange={(e) => setAddressDetail2(e.target.value)}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-white"
           />
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedProvince2}
             onChange={handleProvinceChange2}
           >
@@ -1001,7 +1085,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedDistrict2}
             onChange={handleDistrictChange2}
             disabled={!selectedProvince2}
@@ -1016,7 +1100,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={selectedSubDistrict2}
             onChange={handleSubDistrictChange2}
             disabled={!selectedDistrict2}
@@ -1031,7 +1115,7 @@ const RegisterForm = ({
 
           <select
             required
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-white"
             value={postalCode2}
             onChange={(e) => setPostalCode2(e.target.value)}
             disabled={!selectedSubDistrict2}
@@ -1046,10 +1130,21 @@ const RegisterForm = ({
         </div>
           </div>
         )}
+        <span className="text-xl">Total Cost of Shirt Orders: {calculateTotalShirtCost()} baht</span>
+        <span className="text-xl">Total Cost of Cards: {calculateTotalCardCost()} baht</span>
+        <span className="text-xl">Total Cost: {calculateTotalShirtCost() + calculateTotalCardCost()} baht , total money donated {payment_amount} baht</span>
 
-        <button type="submit" className="btn btn-primary self-end">
-          Submit →
+        <button 
+          type="submit" 
+          className="btn btn-primary self-end" 
+          disabled={parseFloat(payment_amount) < totalCost} // Disable if payment_amount is less than totalCost
+        >          Submit →
         </button>
+        {parseFloat(payment_amount) < totalCost && (
+            <p className="flex justify-end text-red-500 text-sm">
+              money donated must be greater than or equal to the total cost
+            </p>
+          )}
       </form>
       </div>
     </>

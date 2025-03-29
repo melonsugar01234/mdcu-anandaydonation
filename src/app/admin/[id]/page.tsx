@@ -190,6 +190,7 @@ export default function AdminApprovePaymentPage() {
                   { value: "1", label: "1 กำลังเตรียมของ (Preparing)" },
                   { value: "2", label: "2 จัดส่งแล้ว (Shipped)" },
                   { value: "3", label: "3 จัดส่งสำเร็จ (Delivered)" },
+                  { value: "4", label: "4 ไม่มีคำสั่งซื้อ (No order)" },
                   { value: "99", label: "99 เกิดข้อผิดพลาด (Error)" },
                 ].map((status) => (
                   <label key={status.value} className="flex items-center space-x-2">
