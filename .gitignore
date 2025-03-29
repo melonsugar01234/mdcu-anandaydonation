@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 prisma/file.db
+prisma/migrations/20250318110828_pnpm_dev/migration.sql
+prisma/file.db
+*.db

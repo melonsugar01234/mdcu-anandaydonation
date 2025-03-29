@@ -18,6 +18,7 @@ model Register {
     created_at         DateTime @default(now())
     edited_at          DateTime @updatedAt
     card               Int?
+    cardwithbox        Int?
     shirts             String?
     shipment_status    String?
     payment_method     String?

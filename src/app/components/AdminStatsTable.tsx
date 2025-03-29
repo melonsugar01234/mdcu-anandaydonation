@@ -79,7 +79,8 @@ export const columns: ColumnDef<Register>[] = [
         "1": "1 (Preparing)",
         "2": "2 (Shipped)",
         "3": "3 (Processing Receipt)",
-        "4": "4 (Receipt Shipped)",
+        "4": "4 (No order)",
+        "5": "5 (Receipt Shipped)",
         "99": "99 (Error)",
       };
       return statusText[status as keyof typeof statusText] || "Unknown";

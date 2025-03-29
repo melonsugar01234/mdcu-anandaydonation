@@ -34,7 +34,13 @@ const RegisterPage = () => {
   return (
     <>
       <Navbar />
-      <div className={`container mx-auto p-4 ${
+      <div className=" bg-stone-100 text-slate-950">
+      <img
+            src="/images/Logo2.png"
+            alt="logo"
+            className="w-1/2 h-auto object-cover mx-auto block"
+            />
+      <div className={`container mx-auto p-4  bg-stone-100 ${
               language === "th" ? "" : "hidden"
             }`}>
         <div className="flex flex-col items-center justify-center min-h-screen">
@@ -50,7 +56,7 @@ const RegisterPage = () => {
           />
         </div>
       </div>
-      <div className={`container mx-auto p-4 ${
+      <div className={`container mx-auto p-4 bg-stone-100 ${
               language === "en" ? "" : "hidden"
             }`}>
         <div className="flex flex-col items-center justify-center min-h-screen">
@@ -65,6 +71,7 @@ const RegisterPage = () => {
             subDistricts={subDistricts}
           />
         </div>
+      </div>
       </div>
       <Footer />
     </>

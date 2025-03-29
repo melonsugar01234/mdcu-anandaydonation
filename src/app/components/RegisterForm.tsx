@@ -10,11 +10,33 @@ interface RegisterFormProps {
   subDistricts: SubDistrict[];
 }
 
+const images = [
+  { src: '/images/1.jpg', alt: 'Image 1' },
+  { src: '/images/2.jpg', alt: 'Image 2' },
+  { src: '/images/3.jpg', alt: 'Image 3' },
+];
 const RegisterForm = ({
   provinces,
   districts,
   subDistricts,
 }: RegisterFormProps) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [shirts, setShirts] = useState<
+    { size: string; color: string; amount: number }[]
+  >([]);
+  const [card, setCard] = useState<string>("");
+  const [cardwithbox, setCardwithbox] = useState<string>("");
+ 
+  const calculateTotalShirtCost = () => {
+    const totalShirts = shirts.reduce((total, shirt) => total + shirt.amount, 0);
+    return totalShirts * 350; // Each shirt costs 350
+  };
+  const calculateTotalCardCost = () => {
+    const totalCards = parseInt(card) || 0; // Each card costs 150
+    const totalCardWithBox = parseInt(cardwithbox) || 0; // Each card with box costs 250
+    return (totalCards * 150) + (totalCardWithBox * 250); // Total cost calculation
+  };
+  const totalCost = calculateTotalShirtCost() + calculateTotalCardCost();
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
   const [selectedSubDistrict, setSelectedSubDistrict] = useState<string>("");
@@ -37,12 +59,9 @@ const RegisterForm = ({
   const [paymentProof, setPaymentProof] = useState<string>("");
   const [payment_amount, setpayment_amount] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>(""); // New state for payment method
-  const [card, setCard] = useState<string>("");
-  const [wantsShirt, setWantsShirt] = useState<boolean>(false);
-  const [shirts, setShirts] = useState<
-    { size: string; color: string; amount: number }[]
-  >([]);
-  const [wantsReceipt, setWantsReceipt] = useState<boolean>(false);
+const [wantsShirt, setWantsShirt] = useState<boolean>(true);
+  
+  const [wantsReceipt, setWantsReceipt] = useState<boolean>(true);
   const [nationalId, setNationalId] = useState<string>("");
   const [nameOnReceipt, setNameOnReceipt] = useState<string>("");
   const { language } = useLanguage();
@@ -224,7 +243,8 @@ const RegisterForm = ({
           home: fullAddress,
           payment_proof: paymentProof,
           payment_amount,
-          card: parseInt(card),
+          card : parseInt(card),
+          cardwithbox : parseInt(cardwithbox),
           shirts: shirtData,
           receipt: wantsReceipt ? "yes" : "no",
           payment_method: paymentMethod,
@@ -269,302 +289,316 @@ const RegisterForm = ({
 
   return (
     <>
-      <div className="px-2">
-        <form
-          onSubmit={handleSubmit}
-          className={`flex flex-col space-y-4 w-full max-w-4xl mx-auto ${
-            language === "th" ? "" : "hidden"
-          }`}
-        >
-          <div className="text-3xl text-center">ผู้บริจาค</div>
-          <span className="text-xl">ชื่อ-นามสกุล</span>
+    <div className="px-2">
+      <form
+        onSubmit={handleSubmit}
+        className={`flex flex-col space-y-4 w-full max-w-4xl mx-auto ${
+          language === "th" ? "" : "hidden"
+        }`}
+      >
+        <div className="text-3xl text-center">ผู้บริจาค</div>
+        <span className="text-xl">ชื่อ-นามสกุล</span>
+        <input
+          required
+          type="text"
+          placeholder="เช่น นายสมชาย ใจดี"
+          className="input input-bordered w-full bg-white"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <span className="text-xl">เบอร์โทรศัพท์</span>
+        <input
+          required
+          type="tel"
+          placeholder="เช่น 081-901-xxxx"
+          className="input input-bordered w-full bg-white"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <span className="text-xl">Email (ถ้ามี)</span>
+        <input
+          type="email"
+          placeholder="เช่น steve@gmail.com"
+          className="input input-bordered w-full bg-white"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <div className="space-y-4">
+          <span className="text-xl">ที่อยู่จัดส่ง</span>
           <input
             required
             type="text"
-            placeholder="เช่น นายสมชาย ใจดี"
-            className="input input-bordered w-full"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <span className="text-xl">เบอร์โทรศัพท์</span>
-          <input
-            required
-            type="tel"
-            placeholder="เช่น 081-901-xxxx"
-            className="input input-bordered w-full"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <span className="text-xl">Email (ถ้ามี)</span>
-          <input
-            type="email"
-            placeholder="เช่น steve@gmail.com"
-            className="input input-bordered w-full"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
+            value={addressDetail}
+            onChange={(e) => setAddressDetail(e.target.value)}
+            className="input input-bordered w-full bg-white"
           />
 
-          <div className="space-y-4">
-            <span className="text-xl">ที่อยู่จัดส่ง</span>
-            <input
-              required
-              type="text"
-              placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
-              value={addressDetail}
-              onChange={(e) => setAddressDetail(e.target.value)}
-              className="input input-bordered w-full"
-            />
-
-            <select
-              required
-              className="select select-bordered w-full"
-              value={selectedProvince}
-              onChange={handleProvinceChange}
-            >
-              <option value="">เลือกจังหวัด</option>
-              {provinces.map((province) => (
-                <option key={province.id} value={province.id}>
-                  {province.name_th}
-                </option>
-              ))}
-            </select>
-
-            <select
-              required
-              className="select select-bordered w-full"
-              value={selectedDistrict}
-              onChange={handleDistrictChange}
-              disabled={!selectedProvince}
-            >
-              <option value="">เลือกอำเภอ/เขต</option>
-              {filteredDistricts.map((district) => (
-                <option key={district.id} value={district.id}>
-                  {district.name_th}
-                </option>
-              ))}
-            </select>
-
-            <select
-              required
-              className="select select-bordered w-full"
-              value={selectedSubDistrict}
-              onChange={handleSubDistrictChange}
-              disabled={!selectedDistrict}
-            >
-              <option value="">เลือกตำบล/แขวง</option>
-              {filteredSubDistricts.map((subDistrict) => (
-                <option key={subDistrict.id} value={subDistrict.id}>
-                  {subDistrict.name_th}
-                </option>
-              ))}
-            </select>
-
-            <select
-              required
-              className="select select-bordered w-full"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-              disabled={!selectedSubDistrict}
-            >
-              <option value="">เลือกรหัสไปรษณีย์</option>
-              {availablePostalCodes.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="text-3xl text-center">ข้อมูลการบริจาค</div>
-          <span className="text-xl">จำนวนเงินที่ต้องการบริจาค</span>
-          <input
-            required
-            type="number"
-            placeholder="ใส่แค่ตัวเลข"
-            className="input input-bordered w-full"
-            value={payment_amount}
-            onChange={handlePaymentAmountChange}
-            onWheel={(e) => e.currentTarget.blur()}
-          />
-
-          <div className="flex justify-center w-full">
-            <img
-              src="/images/card123.jpg"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
-            />
-          </div>
-          <span className="text-xl">เช็มที่ระลึก</span>
-          <span className="text-xl">
-            จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม
-            สูงสุด 3 เข็ม)
-          </span>
           <select
             required
-            className="select select-bordered w-full"
-            value={card}
-            onChange={(e) =>
-              setCard(validateCardSelection(payment_amount, e.target.value))
-            }
-            disabled={parseInt(payment_amount) < 150}
+            className="select select-bordered w-full bg-white"
+            value={selectedProvince}
+            onChange={handleProvinceChange}
           >
-            <option value="">เลือกจำนวนเข็ม</option>
-            <option value="0">0 เข็ม</option>
-            {parseInt(payment_amount) >= 150 && (
-              <option value="1">1 เข็ม</option>
-            )}
-            {parseInt(payment_amount) >= 300 && (
-              <option value="2">2 เข็ม</option>
-            )}
-            {parseInt(payment_amount) >= 450 && (
-              <option value="3">3 เข็ม</option>
-            )}
+            <option value="">เลือกจังหวัด</option>
+            {provinces.map((province) => (
+              <option key={province.id} value={province.id}>
+                {province.name_th}
+              </option>
+            ))}
           </select>
-          <div className="flex justify-center w-full">
-            <img
-              src="/images/shirt.jpg"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
+
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={selectedDistrict}
+            onChange={handleDistrictChange}
+            disabled={!selectedProvince}
+          >
+            <option value="">เลือกอำเภอ/เขต</option>
+            {filteredDistricts.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name_th}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={selectedSubDistrict}
+            onChange={handleSubDistrictChange}
+            disabled={!selectedDistrict}
+          >
+            <option value="">เลือกตำบล/แขวง</option>
+            {filteredSubDistricts.map((subDistrict) => (
+              <option key={subDistrict.id} value={subDistrict.id}>
+                {subDistrict.name_th}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={postalCode}
+            onChange={(e) => setPostalCode(e.target.value)}
+            disabled={!selectedSubDistrict}
+          >
+            <option value="">เลือกรหัสไปรษณีย์</option>
+            {availablePostalCodes.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="text-3xl text-center">ข้อมูลการบริจาค</div>
+        <span className="text-xl">จำนวนเงินที่ต้องการบริจาค</span>
+        <input
+          required
+          type="number"
+          placeholder="ใส่แค่ตัวเลข"
+          className="input input-bordered w-full bg-white"
+          value={payment_amount}
+          onChange={(e) => setpayment_amount(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        />
+
+        
+        <div className="flex justify-center space-x-4">
+      {images.map((image, index) => (
+        <div
+          key={index}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+          className={`transition-transform duration-300 ease-in-out ${
+            hoveredIndex === index ? 'scale-110' : 'scale-90'
+          }`}
+        >
+          <img
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-auto object-cover" // Make the image fill the width of the container
+          />
+        </div>
+      ))}
+    </div>
+    <img
+            src="/images/thaipin.jpg"
+            alt="thaipin"
+            className="w-full h-auto object-contain"
+          />
+        <span className="text-xl">เช็มที่ระลึก</span>
+        <span className="text-xl">
+          จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม)
+        </span>
+        <input
+          required
+          type="number"
+          className="input input-bordered w-full bg-white"
+          value={card}
+          onChange={(e) => setCard(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        >
+        </input>
+        <span className="text-xl">
+          ชุดเข็มพร้อมกล่อง (เงินบริจาค 250 ต่อ 1 ชุด)
+        </span>
+        <input
+          required
+          type="number"
+          className="input input-bordered w-full bg-white"
+          value={cardwithbox}
+          onChange={(e) => setCardwithbox(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        >
+        </input>
+        <div className="flex justify-center w-full">
+          <img
+            src="/images/shirt.jpg"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <span className="text-xl">เสื้อที่ระลึก (เงินบริจาค 350 บาทต่อเสื้อ 1 ตัว)</span>
+        <div className="flex items-center space-x-4">
+          <label>
+            <input
+              type="checkbox"
+              checked={wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
             />
-          </div>
-          <span className="text-xl">
-            เสื้อที่ระลึก (เงินบริจาค 299 บาทต่อเสื้อ 1 ตัว)
-          </span>
-          <div className="flex items-center space-x-4">
-            <label>
-              <input
-                type="checkbox"
-                checked={wantsShirt}
-                onChange={() => setWantsShirt(!wantsShirt)}
-                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
-              />
-              ต้องการรับเสื้อ
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={!wantsShirt}
-                onChange={() => setWantsShirt(!wantsShirt)}
-                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
-              />
-              ไม่ต้องการรับเสื้อ
-            </label>
-          </div>
-          {wantsShirt && (
-            <div className="space-y-4">
-              {shirts.map((shirt, index) => (
-                <div key={index} className="flex space-x-4">
-                  <select
-                    value={shirt.size}
-                    onChange={(e) =>
-                      setShirts(
-                        shirts.map((s, i) =>
-                          i === index ? { ...s, size: e.target.value } : s
-                        )
+            ต้องการรับเสื้อ
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={!wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
+            />
+            ไม่ต้องการรับเสื้อ
+          </label>
+        </div>
+        {wantsShirt && (
+          <div className="space-y-4">
+            {shirts.map((shirt, index) => (
+              <div key={index} className="flex space-x-4">
+                <select
+                  value={shirt.size}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, size: e.target.value } : s
                       )
-                    }
-                    className="select select-bordered"
-                  >
-                    <option value="xs">XS</option>
-                    <option value="s">S</option>
-                    <option value="m">M</option>
-                    <option value="l">L</option>
-                    <option value="xl">XL</option>
-                    <option value="2xl">2XL</option>
-                    <option value="3xl">3XL</option>
-                  </select>
-                  <select
-                    value={shirt.color}
-                    onChange={(e) =>
-                      setShirts(
-                        shirts.map((s, i) =>
-                          i === index ? { ...s, color: e.target.value } : s
-                        )
-                      )
-                    }
-                    className="select select-bordered"
-                  >
-                    <option value="white">White</option>
-                    <option value="red">Red</option>
-                  </select>
-                  <select
-                    value={shirt.amount}
-                    onChange={(e) =>
-                      setShirts(
-                        shirts.map((s, i) =>
-                          i === index
-                            ? { ...s, amount: parseInt(e.target.value) }
-                            : s
-                        )
-                      )
-                    }
-                    className="select select-bordered"
-                  >
-                    {[...Array(7)].map((_, i) => (
-                      <option key={i} value={i + 1}>
-                        {i + 1}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
-              <div className="flex space-x-4">
-                <button
-                  type="button"
-                  onClick={addShirtOption}
-                  className="btn btn-secondary"
+                    )
+                  }
+                  className="select select-bordered bg-white"
                 >
-                  เพิ่มเสื้อ
-                </button>
-                <button
-                  type="button"
-                  onClick={removeShirtOption}
-                  className="btn btn-secondary"
+                  <option value="xs">XS</option>
+                  <option value="s">S</option>
+                  <option value="m">M</option>
+                  <option value="l">L</option>
+                  <option value="xl">XL</option>
+                  <option value="2xl">2XL</option>
+                  <option value="3xl">3XL</option>
+                </select>
+                <select
+                  value={shirt.color}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, color: e.target.value } : s
+                      )
+                    )
+                  }
+                  className="select select-bordered bg-white"
                 >
-                  เอาออก
-                </button>
+                  <option value="white">White</option>
+                  <option value="red">Red</option>
+                </select>
+                <select
+                  value={shirt.amount}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index
+                          ? { ...s, amount: parseInt(e.target.value) }
+                          : s
+                      )
+                    )
+                  }
+                  className="select select-bordered bg-white"
+                >
+                  {[...Array(7)].map((_, i) => (
+                    <option key={i} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
               </div>
+            ))}
+            <div className="flex space-x-4">
+              <button
+                type="button"
+                onClick={addShirtOption}
+            className="btn text-slate-950 bg-amber-400"
+              >
+                เพิ่มเสื้อ
+              </button>
+              <button
+                type="button"
+                onClick={removeShirtOption}
+               className="btn text-slate-950 bg-amber-400"
+              >
+                เอาออก
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="space-y-4">
+          <span className="text-xl">วิธีการบริจาค</span>
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          >
+            <option value="">เลือกวิธีการบริจาค</option>
+            <option value="QR code">QR code</option>
+            <option value="Bank number">Bank number</option>
+          </select>
+          <img
+            src="/images/newpayQR.png"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text text-xl">
+              หลักฐานการชำระเงิน (ไฟล์ .jpg, .png ขนาดไม่เกิน 5MB)
+            </span>
+          </label>
+          <input
+            type="file"
+            accept="image/jpeg,image/png"
+            onChange={handleImageUpload}
+            className="file-input file-input-bordered w-full bg-white"
+          />
+          {paymentProof && (
+            <div className="mt-2">
+              <img
+                src={paymentProof}
+                alt="Payment proof preview"
+                className="w-full rounded-lg shadow-lg"
+              />
             </div>
           )}
-          <div className="space-y-4">
-            <span className="text-xl">วิธีการบริจาค</span>
-            <select
-              required
-              className="select select-bordered w-full"
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            >
-              <option value="">เลือกวิธีการบริจาค</option>
-              <option value="QR code">QR code</option>
-              <option value="Bank number">Bank number</option>
-            </select>
-            <img
-              src="/images/donate qr.png"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
-            />
-          </div>
-          <div className="form-control w-full">
-            <label className="label">
-              <span className="label-text text-xl">
-                หลักฐานการชำระเงิน (ไฟล์ .jpg, .png ขนาดไม่เกิน 5MB)
-              </span>
-            </label>
-            <input
-              type="file"
-              accept="image/jpeg,image/png"
-              onChange={handleImageUpload}
-              className="file-input file-input-bordered w-full"
-            />
-            {paymentProof && (
-              <div className="mt-2">
-                <img
-                  src={paymentProof}
-                  alt="Payment proof preview"
-                  className="w-full rounded-lg shadow-lg"
-                />
-              </div>
-            )}
-          </div>
+        </div>
 
           {/* Receipt Checkbox */}
           <div className="flex items-center space-x-4">
@@ -588,402 +622,430 @@ const RegisterForm = ({
             </label>
           </div>
 
-          {/* Conditional Fields for Receipt */}
-          {wantsReceipt && (
-            <div className="space-y-4">
-              <span className="text-xl">หมายเลขประจำตัวประชาชน</span>
-              <input
-                type="text"
-                placeholder="ใส่แค่ตัวเลข"
-                className="input input-bordered w-full mb-4"
-                value={nationalId}
-                onChange={(e) => setNationalId(e.target.value)}
-                maxLength={13} // Limit input to 13 characters
-                pattern="\d{13}" // Ensure only 13 digits are allowed
-                title="หมายเลขประจำตัวประชาชนต้องมี 13 หลัก" // Tooltip for user guidance
-              />
-              <span className="text-xl">ชื่อ-นามสกุลในใบเสร็จ</span>
-              <input
-                required
-                type="text"
-                placeholder="เช่น นายสมชาย ใจดี"
-                className="input input-bordered w-full"
-                value={nameOnReceipt}
-                onChange={(e) => setNameOnReceipt(e.target.value)}
-              />
-              <div className="space-y-4">
-                <span className="text-xl">ที่อยู่ในใบเสร็จ</span>
-                <input
-                  required
-                  type="text"
-                  placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
-                  value={addressDetail2}
-                  onChange={(e) => setAddressDetail2(e.target.value)}
-                  className="input input-bordered w-full"
-                />
-
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={selectedProvince2}
-                  onChange={handleProvinceChange2}
-                >
-                  <option value="">เลือกจังหวัด</option>
-                  {provinces.map((province) => (
-                    <option key={province.id} value={province.id}>
-                      {province.name_th}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={selectedDistrict2}
-                  onChange={handleDistrictChange2}
-                  disabled={!selectedProvince2}
-                >
-                  <option value="">เลือกอำเภอ/เขต</option>
-                  {filteredDistricts2.map((district) => (
-                    <option key={district.id} value={district.id}>
-                      {district.name_th}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={selectedSubDistrict2}
-                  onChange={handleSubDistrictChange2}
-                  disabled={!selectedDistrict2}
-                >
-                  <option value="">เลือกตำบล/แขวง</option>
-                  {filteredSubDistricts2.map((subDistrict) => (
-                    <option key={subDistrict.id} value={subDistrict.id}>
-                      {subDistrict.name_th}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={postalCode2}
-                  onChange={(e) => setPostalCode2(e.target.value)}
-                  disabled={!selectedSubDistrict2}
-                >
-                  <option value="">เลือกรหัสไปรษณีย์</option>
-                  {availablePostalCodes2.map((code) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          )}
-
-          <button type="submit" className="btn btn-primary self-end">
-            ยืนยัน →
-          </button>
-        </form>
-        {/* english edit */}
-        <form
-          onSubmit={handleSubmit}
-          className={`flex flex-col space-y-4 w-full max-w-4xl mx-auto ${
-            language === "en" ? "" : "hidden"
-          }`}
-        >
-          <div className="text-3xl text-center">Profile Information</div>
-          <span className="text-xl">Name</span>
-          <input
-            required
-            type="text"
-            placeholder="Ex. Mr. Somchai Jaidi"
-            className="input input-bordered w-full"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <span className="text-xl">Phone number</span>
-          <input
-            required
-            type="tel"
-            placeholder="Ex. 081-901-xxxx"
-            className="input input-bordered w-full"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <span className="text-xl">Email (optional)</span>
-          <input
-            type="email"
-            placeholder="Ex. steve@gmail.com"
-            className="input input-bordered w-full"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
+        {/* Conditional Fields for Receipt */}
+        {wantsReceipt && (
           <div className="space-y-4">
-            <span className="text-xl">Address for shiping</span>
+            <span className="text-xl">หมายเลขประจำตัวประชาชน</span>
+            <input
+              type="text"
+              placeholder="ใส่แค่ตัวเลข"
+              className="input input-bordered w-full mb-4 bg-white"
+              value={nationalId}
+              onChange={(e) => setNationalId(e.target.value)}
+              maxLength={13} // Limit input to 13 characters
+              pattern="\d{13}" // Ensure only 13 digits are allowed
+              title="หมายเลขประจำตัวประชาชนต้องมี 13 หลัก" // Tooltip for user guidance
+            />
+            <span className="text-xl">ชื่อ-นามสกุลในใบเสร็จ</span>
             <input
               required
               type="text"
-              placeholder="House number, Village/building, Road"
-              value={addressDetail}
-              onChange={(e) => setAddressDetail(e.target.value)}
-              className="input input-bordered w-full"
+              placeholder="เช่น นายสมชาย ใจดี"
+              className="input input-bordered w-full bg-white"
+              value={nameOnReceipt}
+              onChange={(e) => setNameOnReceipt(e.target.value)}
             />
+            <div className="space-y-4">
+              <span className="text-xl">ที่อยู่ในใบเสร็จ</span>
+              <input
+                required
+                type="text"
+                placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
+                value={addressDetail2}
+                onChange={(e) => setAddressDetail2(e.target.value)}
+                className="input input-bordered w-full bg-white"
+              />
 
-            <select
-              required
-              className="select select-bordered w-full"
-              value={selectedProvince}
-              onChange={handleProvinceChange}
-            >
-              <option value="">Select province</option>
-              {provinces.map((province) => (
-                <option key={province.id} value={province.id}>
-                  {province.name_en}
-                </option>
-              ))}
-            </select>
+              <select
+                required
+                className="select select-bordered w-full bg-white"
+                value={selectedProvince2}
+                onChange={handleProvinceChange2}
+              >
+                <option value="">เลือกจังหวัด</option>
+                {provinces.map((province) => (
+                  <option key={province.id} value={province.id}>
+                    {province.name_th}
+                  </option>
+                ))}
+              </select>
 
-            <select
-              required
-              className="select select-bordered w-full"
-              value={selectedDistrict}
-              onChange={handleDistrictChange}
-              disabled={!selectedProvince}
-            >
-              <option value="">Select district</option>
-              {filteredDistricts.map((district) => (
-                <option key={district.id} value={district.id}>
-                  {district.name_en}
-                </option>
-              ))}
-            </select>
+              <select
+                required
+                className="select select-bordered w-full bg-white"
+                value={selectedDistrict2}
+                onChange={handleDistrictChange2}
+                disabled={!selectedProvince2}
+              >
+                <option value="">เลือกอำเภอ/เขต</option>
+                {filteredDistricts2.map((district) => (
+                  <option key={district.id} value={district.id}>
+                    {district.name_th}
+                  </option>
+                ))}
+              </select>
 
-            <select
-              required
-              className="select select-bordered w-full"
-              value={selectedSubDistrict}
-              onChange={handleSubDistrictChange}
-              disabled={!selectedDistrict}
-            >
-              <option value="">Select subdistrict</option>
-              {filteredSubDistricts.map((subDistrict) => (
-                <option key={subDistrict.id} value={subDistrict.id}>
-                  {subDistrict.name_en}
-                </option>
-              ))}
-            </select>
+              <select
+                required
+                className="select select-bordered w-full bg-white"
+                value={selectedSubDistrict2}
+                onChange={handleSubDistrictChange2}
+                disabled={!selectedDistrict2}
+              >
+                <option value="">เลือกตำบล/แขวง</option>
+                {filteredSubDistricts2.map((subDistrict) => (
+                  <option key={subDistrict.id} value={subDistrict.id}>
+                    {subDistrict.name_th}
+                  </option>
+                ))}
+              </select>
 
-            <select
-              required
-              className="select select-bordered w-full"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-              disabled={!selectedSubDistrict}
-            >
-              <option value="">Postal code</option>
-              {availablePostalCodes.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
-            </select>
+              <select
+                required
+                className="select select-bordered w-full bg-white"
+                value={postalCode2}
+                onChange={(e) => setPostalCode2(e.target.value)}
+                disabled={!selectedSubDistrict2}
+              >
+                <option value="">เลือกรหัสไปรษณีย์</option>
+                {availablePostalCodes2.map((code) => (
+                  <option key={code} value={code}>
+                    {code}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="text-3xl text-center">Donation</div>
-          <span className="text-xl">Donation amount</span>
+        )}
+        <span className="text-xl">ราคาเสื้อ: {calculateTotalShirtCost()} บาท</span>
+        <span className="text-xl">ราคาเข็ม: {calculateTotalCardCost()} บาท</span>
+        <span className="text-xl">ราคารวม: {calculateTotalShirtCost() + calculateTotalCardCost()} บาท , จำนวนเงินที่บริจาค {payment_amount}</span>
+
+        <button 
+          type="submit" 
+          className="btn btn-primary self-end" 
+          disabled={parseFloat(payment_amount) < totalCost} // Disable if payment_amount is less than totalCost
+        >          ยืนยัน →
+        </button>
+        {parseFloat(payment_amount) < totalCost && (
+            <p className="flex justify-end text-red-500 text-sm">
+              จำนวนเงินที่บริจาคต้องมากกว่าหรือเท่ากับราคารวม
+            </p>
+          )}
+      </form>
+      {/* english edit */}
+      <form
+        onSubmit={handleSubmit}
+        className={`flex flex-col space-y-4 w-full max-w-4xl mx-auto ${
+          language === "en" ? "" : "hidden"
+        }`}
+      >
+        <div className="text-3xl text-center">Profile Information</div>
+        <span className="text-xl">Name</span>
+        <input
+          required
+          type="text"
+          placeholder="Ex. Mr. Somchai Jaidi"
+          className="input input-bordered w-full bg-white"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <span className="text-xl">Phone number</span>
+        <input
+          required
+          type="tel"
+          placeholder="Ex. 081-901-xxxx"
+          className="input input-bordered w-full bg-white"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <span className="text-xl">Email (optional)</span>
+        <input
+          type="email"
+          placeholder="Ex. steve@gmail.com"
+          className="input input-bordered w-full bg-white"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <div className="space-y-4">
+          <span className="text-xl">Address for shiping</span>
           <input
             required
-            type="number"
-            placeholder="Only numbers"
-            className="input input-bordered w-full"
-            value={payment_amount}
-            onChange={handlePaymentAmountChange}
-            onWheel={(e) => e.currentTarget.blur()}
+            type="text"
+            placeholder="House number, Village/building, Road"
+            value={addressDetail}
+            onChange={(e) => setAddressDetail(e.target.value)}
+            className="input input-bordered w-full bg-white"
           />
 
-          <span className="text-xl">Commemorable card</span>
-          <div className="flex justify-center w-full">
-            <img
-              src="/images/card123.jpg"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
-            />
-          </div>
-          <span className="text-xl">
-            Amount of cards to receive (1 card for each 150 baht donated up to 3
-            cards)
-          </span>
           <select
             required
-            className="select select-bordered w-full"
-            value={card}
-            onChange={(e) =>
-              setCard(validateCardSelection(payment_amount, e.target.value))
-            }
-            disabled={parseInt(payment_amount) < 150}
+            className="select select-bordered w-full bg-white"
+            value={selectedProvince}
+            onChange={handleProvinceChange}
           >
-            <option value="">Select amount</option>
-            <option value="0">0 card</option>
-            {parseInt(payment_amount) >= 150 && (
-              <option value="1">1 card</option>
-            )}
-            {parseInt(payment_amount) >= 300 && (
-              <option value="2">2 cards</option>
-            )}
-            {parseInt(payment_amount) >= 450 && (
-              <option value="3">3 cards</option>
-            )}
+            <option value="">Select province</option>
+            {provinces.map((province) => (
+              <option key={province.id} value={province.id}>
+                {province.name_en}
+              </option>
+            ))}
           </select>
-          <div className="flex justify-center w-full">
-            <img
-              src="/images/shirt.jpg"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
+
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={selectedDistrict}
+            onChange={handleDistrictChange}
+            disabled={!selectedProvince}
+          >
+            <option value="">Select district</option>
+            {filteredDistricts.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name_en}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={selectedSubDistrict}
+            onChange={handleSubDistrictChange}
+            disabled={!selectedDistrict}
+          >
+            <option value="">Select subdistrict</option>
+            {filteredSubDistricts.map((subDistrict) => (
+              <option key={subDistrict.id} value={subDistrict.id}>
+                {subDistrict.name_en}
+              </option>
+            ))}
+          </select>
+
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={postalCode}
+            onChange={(e) => setPostalCode(e.target.value)}
+            disabled={!selectedSubDistrict}
+          >
+            <option value="">Postal code</option>
+            {availablePostalCodes.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="text-3xl text-center">Donation</div>
+        <span className="text-xl">Donation amount</span>
+        <input
+          required
+          type="number"
+          placeholder="Only numbers"
+          className="input input-bordered w-full bg-white"
+          value={payment_amount}
+          onChange={(e) => setpayment_amount(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        />
+
+        <span className="text-xl">Commemorable card</span>
+       
+        <div className="flex justify-center space-x-4">
+      {images.map((image, index) => (
+        <div
+          key={index}
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
+          className={`transition-transform duration-300 ease-in-out ${
+            hoveredIndex === index ? 'scale-110' : 'scale-90'
+          }`}
+        >
+          <img
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-auto object-cover" // Make the image fill the width of the container
+          />
+        </div>
+           ))}
+                   </div>
+
+            <div className="flex justify-center w-full">
+          <img
+            src="/images/enpin.jpg"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <span className="text-xl">
+          Amount of memorial cards to receive (1 card for each 150 baht donated)
+        </span>
+        <input
+          required
+          type="number"
+          className="input input-bordered w-full bg-white"
+          value={card}
+          onChange={(e) => setCard(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        >
+        </input>
+        <span className="text-xl">
+          Amount of memorial cards with box to receive (1 set for each 250 baht donated)
+        </span>
+        <input
+          required
+          type="number"
+          className="input input-bordered w-full bg-white"
+          value={cardwithbox}
+          onChange={(e) => setCardwithbox(e.target.value)}
+          onWheel={(e) => e.currentTarget.blur()}
+        >
+        </input>
+        <div className="flex justify-center w-full">
+          <img
+            src="/images/shirt.jpg"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <span className="text-xl">Commemorable shirts (1 T-shirt for each 350 baht donated)</span>
+        <div className="flex items-center space-x-4">
+          <label>
+            <input
+              type="checkbox"
+              checked={wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
             />
-          </div>
-          <span className="text-xl">
-            Commemorable shirts (1 T-shirt for each 299 baht donated)
-          </span>
-          <div className="flex items-center space-x-4">
-            <label>
-              <input
-                type="checkbox"
-                checked={wantsShirt}
-                onChange={() => setWantsShirt(!wantsShirt)}
-                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
-              />
-              I would like to receive shirts
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={!wantsShirt}
-                onChange={() => setWantsShirt(!wantsShirt)}
-                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
-              />
-              I do not want to receive shirts
-            </label>
-          </div>
-          {wantsShirt && (
-            <div className="space-y-4">
-              {shirts.map((shirt, index) => (
-                <div key={index} className="flex space-x-4">
-                  <select
-                    value={shirt.size}
-                    onChange={(e) =>
-                      setShirts(
-                        shirts.map((s, i) =>
-                          i === index ? { ...s, size: e.target.value } : s
-                        )
+            I would like to receive shirts
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={!wantsShirt}
+              onChange={() => setWantsShirt(!wantsShirt)}
+              className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out mr-2"
+            />
+            I do not want to receive shirts
+          </label>
+        </div>
+        {wantsShirt && (
+          <div className="space-y-4">
+            {shirts.map((shirt, index) => (
+              <div key={index} className="flex space-x-4">
+                <select
+                  value={shirt.size}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, size: e.target.value } : s
                       )
-                    }
-                    className="select select-bordered"
-                  >
-                    <option value="xs">XS</option>
-                    <option value="s">S</option>
-                    <option value="m">M</option>
-                    <option value="l">L</option>
-                    <option value="xl">XL</option>
-                    <option value="2xl">2XL</option>
-                    <option value="3xl">3XL</option>
-                  </select>
-                  <select
-                    value={shirt.color}
-                    onChange={(e) =>
-                      setShirts(
-                        shirts.map((s, i) =>
-                          i === index ? { ...s, color: e.target.value } : s
-                        )
-                      )
-                    }
-                    className="select select-bordered"
-                  >
-                    <option value="white">White</option>
-                    <option value="red">Red</option>
-                  </select>
-                  <select
-                    value={shirt.amount}
-                    onChange={(e) =>
-                      setShirts(
-                        shirts.map((s, i) =>
-                          i === index
-                            ? { ...s, amount: parseInt(e.target.value) }
-                            : s
-                        )
-                      )
-                    }
-                    className="select select-bordered"
-                  >
-                    {[...Array(7)].map((_, i) => (
-                      <option key={i} value={i + 1}>
-                        {i + 1}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
-              <div className="flex space-x-4">
-                <button
-                  type="button"
-                  onClick={addShirtOption}
-                  className="btn btn-secondary"
+                    )
+                  }
+                  className="select select-bordered bg-white"
                 >
-                  Add Shirt
-                </button>
-                <button
-                  type="button"
-                  onClick={removeShirtOption}
-                  className="btn btn-secondary"
+                  <option value="xs">XS</option>
+                  <option value="s">S</option>
+                  <option value="m">M</option>
+                  <option value="l">L</option>
+                  <option value="xl">XL</option>
+                  <option value="2xl">2XL</option>
+                  <option value="3xl">3XL</option>
+                </select>
+                <select
+                  value={shirt.color}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index ? { ...s, color: e.target.value } : s
+                      )
+                    )
+                  }
+                  className="select select-bordered bg-white"
                 >
-                  Remove Shirt
-                </button>
+                  <option value="white">White</option>
+                  <option value="red">Red</option>
+                </select>
+                <select
+                  value={shirt.amount}
+                  onChange={(e) =>
+                    setShirts(
+                      shirts.map((s, i) =>
+                        i === index
+                          ? { ...s, amount: parseInt(e.target.value) }
+                          : s
+                      )
+                    )
+                  }
+                  className="select select-bordered bg-white"
+                >
+                  {[...Array(7)].map((_, i) => (
+                    <option key={i} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
               </div>
+            ))}
+            <div className="flex space-x-4">
+              <button
+                type="button"
+                onClick={addShirtOption}
+                className="btn text-slate-950 bg-amber-400"
+              >
+                Add Shirt
+              </button>
+              <button
+                type="button"
+                onClick={removeShirtOption}
+                className="btn text-slate-950 bg-amber-400"
+              >
+                Remove Shirt
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="space-y-4">
+          <span className="text-xl">Payment method</span>
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+          >
+            <option value="">Choose payment method</option>
+            <option value="QR code">QR code</option>
+            <option value="Bank number">Bank number</option>
+          </select>
+          <img
+            src="/images/newpayQR.png"
+            alt="banner_1"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text text-xl">
+              Payment slip (File .jpg, .png size less than 5MB)
+            </span>
+          </label>
+          <input
+            type="file"
+            accept="image/jpeg,image/png"
+            onChange={handleImageUpload}
+            className="file-input file-input-bordered w-full bg-white"
+          />
+          {paymentProof && (
+            <div className="mt-2">
+              <img
+                src={paymentProof}
+                alt="Payment proof preview"
+                className="w-full rounded-lg shadow-lg"
+              />
             </div>
           )}
-          <div className="space-y-4">
-            <span className="text-xl">Payment method</span>
-            <select
-              required
-              className="select select-bordered w-full"
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            >
-              <option value="">Choose payment method</option>
-              <option value="QR code">QR code</option>
-              <option value="Bank number">Bank number</option>
-            </select>
-            <img
-              src="/images/donate qr.png"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
-            />
-          </div>
-          <div className="form-control w-full">
-            <label className="label">
-              <span className="label-text text-xl">
-                Payment slip (File .jpg, .png size less than 5MB)
-              </span>
-            </label>
-            <input
-              type="file"
-              accept="image/jpeg,image/png"
-              onChange={handleImageUpload}
-              className="file-input file-input-bordered w-full"
-            />
-            {paymentProof && (
-              <div className="mt-2">
-                <img
-                  src={paymentProof}
-                  alt="Payment proof preview"
-                  className="w-full rounded-lg shadow-lg"
-                />
-              </div>
-            )}
-          </div>
+        </div>
 
           {/* Receipt Checkbox */}
           <div className="flex items-center space-x-4">
@@ -1007,106 +1069,117 @@ const RegisterForm = ({
             </label>
           </div>
 
-          {/* Conditional Fields for Receipt */}
-          {wantsReceipt && (
+        {/* Conditional Fields for Receipt */}
+        {wantsReceipt && (
+          <div className="space-y-4">
+            <span className="text-xl">National ID</span>
+            <input
+              type="text"
+              placeholder="Numbers only"
+              className="input input-bordered w-full bg-white"
+              value={nationalId}
+              onChange={(e) => setNationalId(e.target.value)}
+              maxLength={13} // Limit input to 13 characters
+              pattern="\d{13}" // Ensure only 13 digits are allowed
+              title="pls enter 13 digit for national id" // Tooltip for user guidance
+            />
+            <span className="text-xl">Name on receipt</span>
+            <input
+              required
+              type="text"
+              placeholder="Enter full name"
+              className="input input-bordered w-full bg-white"
+              value={nameOnReceipt}
+              onChange={(e) => setNameOnReceipt(e.target.value)}
+            />
             <div className="space-y-4">
-              <span className="text-xl">National ID</span>
-              <input
-                type="text"
-                placeholder="Numbers only"
-                className="input input-bordered w-full"
-                value={nationalId}
-                onChange={(e) => setNationalId(e.target.value)}
-                maxLength={13} // Limit input to 13 characters
-                pattern="\d{13}" // Ensure only 13 digits are allowed
-                title="pls enter 13 digit for national id" // Tooltip for user guidance
-              />
-              <span className="text-xl">Name on receipt</span>
-              <input
-                required
-                type="text"
-                placeholder="Enter full name"
-                className="input input-bordered w-full"
-                value={nameOnReceipt}
-                onChange={(e) => setNameOnReceipt(e.target.value)}
-              />
-              <div className="space-y-4">
-                <span className="text-xl">Address on receipt</span>
-                <input
-                  required
-                  type="text"
-                  placeholder="House number, Village/building, Road"
-                  value={addressDetail2}
-                  onChange={(e) => setAddressDetail2(e.target.value)}
-                  className="input input-bordered w-full"
-                />
+          <span className="text-xl">Address on receipt</span>
+          <input
+            required
+            type="text"
+            placeholder="House number, Village/building, Road"
+            value={addressDetail2}
+            onChange={(e) => setAddressDetail2(e.target.value)}
+            className="input input-bordered w-full bg-white"
+          />
 
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={selectedProvince2}
-                  onChange={handleProvinceChange2}
-                >
-                  <option value="">Select province</option>
-                  {provinces.map((province) => (
-                    <option key={province.id} value={province.id}>
-                      {province.name_en}
-                    </option>
-                  ))}
-                </select>
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={selectedProvince2}
+            onChange={handleProvinceChange2}
+          >
+            <option value="">Select province</option>
+            {provinces.map((province) => (
+              <option key={province.id} value={province.id}>
+                {province.name_en}
+              </option>
+            ))}
+          </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={selectedDistrict2}
-                  onChange={handleDistrictChange2}
-                  disabled={!selectedProvince2}
-                >
-                  <option value="">Select district</option>
-                  {filteredDistricts2.map((district) => (
-                    <option key={district.id} value={district.id}>
-                      {district.name_en}
-                    </option>
-                  ))}
-                </select>
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={selectedDistrict2}
+            onChange={handleDistrictChange2}
+            disabled={!selectedProvince2}
+          >
+            <option value="">Select district</option>
+            {filteredDistricts2.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name_en}
+              </option>
+            ))}
+          </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={selectedSubDistrict2}
-                  onChange={handleSubDistrictChange2}
-                  disabled={!selectedDistrict2}
-                >
-                  <option value="">Select subdistrict</option>
-                  {filteredSubDistricts2.map((subDistrict) => (
-                    <option key={subDistrict.id} value={subDistrict.id}>
-                      {subDistrict.name_en}
-                    </option>
-                  ))}
-                </select>
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={selectedSubDistrict2}
+            onChange={handleSubDistrictChange2}
+            disabled={!selectedDistrict2}
+          >
+            <option value="">Select subdistrict</option>
+            {filteredSubDistricts2.map((subDistrict) => (
+              <option key={subDistrict.id} value={subDistrict.id}>
+                {subDistrict.name_en}
+              </option>
+            ))}
+          </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full"
-                  value={postalCode2}
-                  onChange={(e) => setPostalCode2(e.target.value)}
-                  disabled={!selectedSubDistrict2}
-                >
-                  <option value="">Postal code</option>
-                  {availablePostalCodes2.map((code) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+          <select
+            required
+            className="select select-bordered w-full bg-white"
+            value={postalCode2}
+            onChange={(e) => setPostalCode2(e.target.value)}
+            disabled={!selectedSubDistrict2}
+          >
+            <option value="">Postal code</option>
+            {availablePostalCodes2.map((code) => (
+              <option key={code} value={code}>
+                {code}
+              </option>
+            ))}
+          </select>
+        </div>
+          </div>
+        )}
+        <span className="text-xl">Total Cost of Shirt Orders: {calculateTotalShirtCost()} baht</span>
+        <span className="text-xl">Total Cost of Cards: {calculateTotalCardCost()} baht</span>
+        <span className="text-xl">Total Cost: {calculateTotalShirtCost() + calculateTotalCardCost()} baht , total money donated {payment_amount} baht</span>
+
+        <button 
+          type="submit" 
+          className="btn btn-primary self-end" 
+          disabled={parseFloat(payment_amount) < totalCost} // Disable if payment_amount is less than totalCost
+        >          Submit →
+        </button>
+        {parseFloat(payment_amount) < totalCost && (
+            <p className="flex justify-end text-red-500 text-sm">
+              money donated must be greater than or equal to the total cost
+            </p>
           )}
-
-          <button type="submit" className="btn btn-primary self-end">
-            Submit →
-          </button>
-        </form>
+      </form>
       </div>
     </>
   );

@@ -196,29 +196,14 @@ export default function AdminApprovePaymentPage() {
               <label className="block font-bold">Update Shipment Status:</label>
               <div className="space-y-2">
                 {[
-                  {
-                    value: "0",
-                    label:
-                      "0 กำลังตรวจสอบหลักฐานการโอนเงิน (Verifying Payment Proof)",
-                  },
-                  {
-                    value: "1",
-                    label:
-                      "1 กำลังจัดเตรียมเข็มฯ / เสื้อ (Preparing Pins / Shirts)",
-                  },
-                  {
-                    value: "2",
-                    label: "2 จัดส่งเข็มฯ / เสื้อ แล้ว (Shipped Pins / Shirts)",
-                  },
-                  {
-                    value: "3",
-                    label: "3 อยู่ระหว่างการออกใบเสร็จ (Processing Receipt)",
-                  },
-                  {
-                    value: "4",
-                    label: "4 จัดส่งใบเสร็จแล้ว (Receipt Shipped)",
-                  },
-                  { value: "99", label: "เกิดข้อผิดพลาด (Error)" },
+                  { value: "0", label: "0 กำลังตรวจสอบ (Pending / Verifying)" },
+                  { value: "1", label: "1 กำลังเตรียมของ (Preparing)" },
+                  { value: "2", label: "2 จัดส่งเข็มฯ / เสื้อเเล้ว (Shipped)" },
+                  { value: "3", label: "3 อยู่ระหว่างออกใบเสร็จ (Processing Receipt)" },
+                  { value: "4", label: "4 ไม่มีคำสั่งซื้อ (No order)" },
+                  { value: "5", label: "5 จัดส่งใบเสร็จแล้ว (Receipt Shipped)"},
+                  { value: "99", label: "99 เกิดข้อผิดพลาด (Error)" },
+
                 ].map((status) => (
                   <label
                     key={status.value}
