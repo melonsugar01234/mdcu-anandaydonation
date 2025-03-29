@@ -99,25 +99,34 @@ const [wantsShirt, setWantsShirt] = useState<boolean>(true);
     setpayment_amount(newAmount);
     setCard(validateCardSelection(newAmount, card));
   };
+const [selectedFile, setSelectedFile] = useState<File | null>(null);
+const [imagePreview, setImagePreview] = useState<string | null>(null);  
+const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        // 5MB limit
-        alert("File size should be less than 5MB");
-        return;
-      }
+  if (!file) {
+    alert("No file selected.");
+    return;
+  }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        setPaymentProof(base64String);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // Check file size (limit to 5MB)
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  if (file.size > MAX_FILE_SIZE) {
+    alert("File size should be less than 5MB");
+    return;
+  }
 
+  // Temporarily store the file
+  setSelectedFile(file);
+  
+  // Show preview
+  const previewUrl = URL.createObjectURL(file);
+  setImagePreview(previewUrl);
+};
+
+  
+  
+  
   const handleProvinceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedProvince(e.target.value);
     setSelectedDistrict("");
@@ -224,44 +233,83 @@ const [wantsShirt, setWantsShirt] = useState<boolean>(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const fullAddress = getFullAddress();
-    const fullAddressforReceipt = getFullAddressforReceipt();
-    const shirtData = shirts
-      .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
-      .join(";");
-
+  
+    if (!selectedFile) {
+      alert("Please select an image before submitting.");
+      return;
+    }
+  
+    // Upload the image first
+    const formData = new FormData();
+    formData.append("payment_proof", selectedFile);
+  
     try {
+      console.log("⏳ Uploading file...");
+      const uploadResponse = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (!uploadResponse.ok) {
+        const errorText = await uploadResponse.text();
+        console.error("❌ Upload error:", errorText);
+        alert("Something went wrong while uploading. Please try again.");
+        return;
+      }
+  
+      const uploadData = await uploadResponse.json();
+      if (!uploadData.filePath) {
+        console.error("❌ No file path returned from API!");
+        alert("No file path returned. Upload failed.");
+        return;
+      }
+  
+      console.log("✅ File uploaded successfully:", uploadData.filePath);
+      setPaymentProof(uploadData.filePath); // Save uploaded file path
+  
+      // Prepare the form submission data
+      const fullAddress = getFullAddress();
+      const fullAddressforReceipt = getFullAddressforReceipt();
+      const shirtData = shirts
+        .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
+        .join(";");
+  
+      const requestData = {
+        name,
+        phone,
+        email,
+        home: fullAddress,
+        payment_proof: uploadData.filePath, // Use uploaded file path
+        payment_amount,
+        card: parseInt(card),
+        cardwithbox: parseInt(cardwithbox),
+        shirts: shirtData,
+        receipt: wantsReceipt ? "yes" : "no",
+        payment_method: paymentMethod,
+        national_id: wantsReceipt ? nationalId : "",
+        name_on_receipt: wantsReceipt ? nameOnReceipt : "",
+        address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
+      };
+  
+      console.log("📤 Submitting form data:", requestData);
+  
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name,
-          phone,
-          email,
-          home: fullAddress,
-          payment_proof: paymentProof,
-          payment_amount,
-          card : parseInt(card),
-          cardwithbox : parseInt(cardwithbox),
-          shirts: shirtData,
-          receipt: wantsReceipt ? "yes" : "no",
-          payment_method: paymentMethod,
-          national_id: wantsReceipt ? nationalId : "",
-          name_on_receipt: wantsReceipt ? nameOnReceipt : "",
-          address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
-        }),
+        body: JSON.stringify(requestData),
       });
-
+  
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Failed to submit data:", errorText);
+        console.error("❌ Submission error:", errorText);
         return;
       }
-
+  
       const result = await response.json();
-      console.log("New register created:", result);
+      console.log("✅ Registration successful:", result);
+  
       // Redirect to success page with tracking code
       window.location.href = `/donationsuccess?trackingCode=${
         result.tracking_code
@@ -275,9 +323,11 @@ const [wantsShirt, setWantsShirt] = useState<boolean>(true);
         shirtData
       )}`;
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error("❌ Error during registration:", error);
+      alert("An error occurred. Please try again.");
     }
   };
+  
 
   const addShirtOption = () => {
     setShirts([...shirts, { size: "xs", color: "white", amount: 1 }]);
@@ -589,10 +639,10 @@ const [wantsShirt, setWantsShirt] = useState<boolean>(true);
             onChange={handleImageUpload}
             className="file-input file-input-bordered w-full bg-white"
           />
-          {paymentProof && (
+          {imagePreview && (
             <div className="mt-2">
               <img
-                src={paymentProof}
+                src={imagePreview}
                 alt="Payment proof preview"
                 className="w-full rounded-lg shadow-lg"
               />
@@ -1036,10 +1086,10 @@ const [wantsShirt, setWantsShirt] = useState<boolean>(true);
             onChange={handleImageUpload}
             className="file-input file-input-bordered w-full bg-white"
           />
-          {paymentProof && (
+          {imagePreview && (
             <div className="mt-2">
               <img
-                src={paymentProof}
+                src={imagePreview}
                 alt="Payment proof preview"
                 className="w-full rounded-lg shadow-lg"
               />
