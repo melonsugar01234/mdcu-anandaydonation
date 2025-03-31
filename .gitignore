@@ -45,4 +45,4 @@ prisma/file.db
 *.db
 
 # image use in testing
-public/uploads/
+# public/uploads/
