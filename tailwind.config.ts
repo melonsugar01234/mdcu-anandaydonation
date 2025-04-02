@@ -12,6 +12,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "yellow2025": "#edbc5c",
       },
     },
   },
@@ -20,7 +21,7 @@ export default {
     themes: [
       {
         mytheme: {
-          primary: "#7c1c1c",
+          primary: "#efbf5d",
           secondary: "#f6d860",
           accent: "#3d84a8",
           neutral: "#3d4451",

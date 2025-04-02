@@ -25,7 +25,7 @@ export default function Home() {
       >
         <div className="w-full max-w-[1000px] mx-auto">
           <img
-            src="/images/banner_1.jpg"
+            src="/images/Logo2.png"
             alt="banner_1"
             className="w-full h-auto object-cover"
           />
@@ -52,21 +52,21 @@ export default function Home() {
             href="https://thai.fit/c/mfhvr2024"
             rel="noopener noreferrer"
             target="_blank"
-            className="btn btn-wide bg-rose-800 text-white"
+            className="btn btn-wide bg-yellow2025 text-white"
           >
             ลงทะเบียนงานวิ่ง
           </Link>
         
         <div className="artboard artboard-horizontal phone-2 flex justify-center w-full mx-auto">
           <img
-            src="/images/bookbank.png"
+            src="/images/newpayQR.png"
             alt="bookbank"
             className="w-full h-auto object-contain"
           />
         </div>
           <Link
             href="/register"
-            className="btn btn-wide bg-rose-800 text-white"
+            className="btn btn-wide bg-yellow2025 text-white"
           >
             ลงทะเบียน
           </Link>
@@ -109,7 +109,7 @@ export default function Home() {
         }`}
       >
         <div className="w-full max-w-[1000px] mx-auto">
-          <img src="/images/banner_1.jpg" alt="banner_1" />
+          <img src="/images/Logo2.png" alt="banner_1" />
         </div>
         <div className="divider"></div>
         <h1 className="text-xl font-bold">
@@ -133,18 +133,18 @@ export default function Home() {
           href="https://thai.fit/c/mfhvr2024"
           rel="noopener noreferrer"
           target="_blank"
-          className="btn btn-wide bg-rose-800 text-white"
+          className="btn btn-wide bg-yellow2025 text-white"
         >
           Register for the virtual walk & run
         </Link>
         <div className="w-full max-w-[1000px] mx-auto">
           <img
-            src="/images/bookbank.png"
+            src="/images/newpayQR.png"
             alt="bookbank"
             className="w-full h-auto object-contain"
           />
         </div>
-        <Link href="/register" className="btn btn-wide bg-rose-800 text-white">
+        <Link href="/register" className="btn btn-wide bg-yellow2025 text-white">
           Register
         </Link>
         <h2 className="text-xl">
