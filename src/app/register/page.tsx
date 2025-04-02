@@ -46,7 +46,7 @@ const RegisterPage = () => {
         <div className="flex flex-col items-center justify-center min-h-screen">
           <h1 className="text-5xl font-bold mb-4">ลงทะเบียนบริจาคและสั่งซื้อเสื้อ</h1>
           <div className="text-2xl mb-4 text-center">
-            <div>โครงการวันอานันทมหิดล คณะแพทยศาสตร์</div>
+            <div>โครงการเข็มวันอานันทมหิดล คณะแพทยศาสตร์</div>
             <div>จุฬาลงกรณ์มหาวิทยาลัย ประจำปี พ.ศ. ๒๕๖๘</div>
           </div>
           <RegisterForm
