@@ -55,8 +55,12 @@ export default function AdminPage() {
 
   return (
     <div>
-      <h2>Hello Admin</h2>
-      {statistics && <StatisticalData statistics={statistics}  />}
+      <h2>
+        <div className="navbar bg-secondary text-white shadow-sm mb-3">
+          <a className="btn btn-ghost text-xl">Admin UI</a>
+        </div>
+      </h2>
+      {statistics && <StatisticalData statistics={statistics} />}
       {statistics && <AdminStatsTable statistics={statistics} />}
     </div>
   );

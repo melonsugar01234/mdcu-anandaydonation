@@ -43,7 +43,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
           } `}
         />
       </div>
-      <button type="submit" disabled={loading} className="btn btn-primary">
+      <button type="submit" disabled={loading} className="btn btn-secondary text-white">
         {loading ? "Searching..." : "Search"}
       </button>
      

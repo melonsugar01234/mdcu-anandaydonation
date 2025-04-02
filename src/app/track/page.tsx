@@ -60,7 +60,7 @@ export default function TrackingPage() {
       <div className="container mx-auto p-4 flex-grow flex flex-col items-center">
         <div className="w-full max-w-4xl flex flex-col items-center">
           <h1
-            className={`text-2xl text-center font-bold mb-4 ${
+            className={`mt-8 text-2xl text-center font-bold mb-4 ${
               language === "th" ? "" : "hidden"
             }`}
           >
