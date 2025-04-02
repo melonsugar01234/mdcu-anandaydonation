@@ -173,7 +173,7 @@ export default function AdminStatsTable() {
           }
           className="input input-bordered mr-2"
         />
-        <button className="btn btn-sm" onClick={() => downloadExcel(data)}>
+        <button className="btn bg-green-400 btn-sm" onClick={() => downloadExcel(data)}>
           ดาวน์โหลด .xlsx
         </button>
       </div>

@@ -35,11 +35,13 @@ const RegisterPage = () => {
     <>
       <Navbar />
       <div className=" bg-stone-100 text-slate-950">
-      <img
+      <div className="flex justify-center py-8">
+          <img
             src="/images/Logo2.png"
             alt="logo"
-            className="w-1/2 h-auto object-cover mx-auto block"
-            />
+            className="w-1/2 h-auto object-cover"
+          />
+        </div>
       <div className={`container mx-auto p-4  bg-stone-100 ${
               language === "th" ? "" : "hidden"
             }`}>

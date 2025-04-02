@@ -33,6 +33,7 @@ export default function RegistrationCard({
       "2": "จัดส่งเข็มฯ / เสื้อ แล้ว (Shipped Pins / Shirts)",
       "3": "อยู่ระหว่างการออกใบเสร็จ (Processing Receipt)",
       "4": "จัดส่งใบเสร็จแล้ว (Receipt Shipped)",
+      "5": "ไม่มีคำสั่งจัดซื้อ (No Order)",
       "99": "เกิดข้อผิดพลาด (Error)",
     };
     return status ? statusMap[status] || "Unknown" : "Pending";
