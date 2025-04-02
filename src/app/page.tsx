@@ -57,7 +57,7 @@ export default function Home() {
             ลงทะเบียนงานวิ่ง
           </Link>
         
-        <div className="artboard artboard-horizontal phone-2 flex justify-center w-full mx-auto">
+        <div className="w-full max-w-[1000px] mx-auto">
           <img
             src="/images/newpayQR.png"
             alt="bookbank"
@@ -86,7 +86,10 @@ export default function Home() {
                     เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน
                   </li>
                   <li>
-                    เงินบริจาคทุก 299 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว
+                    เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว
+                  </li>
+                  <li>
+                    เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1 ชุด
                   </li>
                 </ol>
               </li>
@@ -163,7 +166,8 @@ export default function Home() {
                     For each 150 baht donated, you can receive 1 commemorative
                     card
                   </li>
-                  <li>For each 299 baht donated, you can receive 1 T-shirt</li>
+                  <li>For each 350 baht donated, you can receive 1 T-shirt</li>
+                  <li>For each 250 baht donated, you can receive 1 set of memorial cards with box</li>
                 </ol>
               </li>
               <li>Note: Shipping is free</li>
