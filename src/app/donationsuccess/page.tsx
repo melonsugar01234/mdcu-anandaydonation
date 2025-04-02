@@ -6,13 +6,41 @@ import { useLanguage } from "../context/LanguageContext";
 
 export default function DonationSuccess() {
   const searchParams = useSearchParams();
+  const { language } = useLanguage();
   const trackingCode = searchParams.get("trackingCode");
+
   const name = searchParams.get("name");
   const phone = searchParams.get("phone");
   const email = searchParams.get("email");
   const home = searchParams.get("home");
-  const payment_amount = searchParams.get("payment_amount");
-  const { language } = useLanguage();
+  const payment_amount = searchParams.get("payment_amount") || "0";
+  const shirts = searchParams.get("shirts") || "";
+  const card = searchParams.get("card") || "0";
+
+  // Parse and calculate shirt details
+  let totalShirtCount = 0;
+  let shirtTotal = 0;
+  let shirtDetails = "";
+  if (shirts) {
+    shirtDetails = shirts
+      .split(";")
+      .map((shirt) => {
+        const [size, color, amount] = shirt.split("-");
+        totalShirtCount += parseInt(amount) || 0;
+        return `Size: ${size.toUpperCase()} | Color: ${
+          color.charAt(0).toUpperCase() + color.slice(1)
+        } | Amount: ${amount}`;
+      })
+      .join("\n");
+    shirtTotal = totalShirtCount * 299;
+  }
+
+  // Parse pin data
+  const cardCount = parseInt(card) || 0;
+  const cardTotal = cardCount * 150;
+
+  // Calculate total amount
+  const totalAmount = parseFloat(payment_amount) + shirtTotal + cardTotal;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -36,7 +64,9 @@ export default function DonationSuccess() {
 
           {/* Tracking Code Section */}
           <p className="text-gray-700 text-xl mb-4 font-medium">
-            {language === "en" ? "Your tracking code is" : "รหัสติดตามของท่านคือ"}
+            {language === "en"
+              ? "Your tracking code is"
+              : "รหัสติดตามของท่านคือ"}
           </p>
           <div className="p-6 bg-gray-100 rounded-lg shadow-md border border-gray-300 text-4xl font-bold text-gray-900">
             {trackingCode}
@@ -46,7 +76,9 @@ export default function DonationSuccess() {
           <div className="mt-6 p-6 bg-red-100 border border-red-400 rounded-lg">
             <div className="text-5xl text-red-600 mb-3">⚠️</div>
             <p className="text-red-600 font-bold text-xl">
-              {language === "en" ? "Please take a screenshot" : "กรุณาถ่ายภาพหน้าจอ"}
+              {language === "en"
+                ? "Please take a screenshot"
+                : "กรุณาถ่ายภาพหน้าจอ"}
             </p>
             <p className="text-gray-800 text-lg mt-2">
               {language === "en"
@@ -64,20 +96,81 @@ export default function DonationSuccess() {
           {/* Form Info */}
           <div className="mt-8 text-left text-gray-800 border-t pt-6 text-lg">
             <p>
-              <strong>{language === "en" ? "Name" : "ชื่อ-นามสกุล"}:</strong> {name}
+              <strong>{language === "en" ? "Name" : "ชื่อ-นามสกุล"}:</strong>{" "}
+              {name}
             </p>
             <p>
-              <strong>{language === "en" ? "Phone" : "โทรศัพท์"}:</strong> {phone}
+              <strong>{language === "en" ? "Phone" : "โทรศัพท์"}:</strong>{" "}
+              {phone}
             </p>
             <p>
-              <strong>{language === "en" ? "Email" : "อีเมล"}:</strong> {email}
+              <strong>{language === "en" ? "Email" : "อีเมล"}:</strong>{" "}
+              {email || "-"}
             </p>
             <p>
-              <strong>{language === "en" ? "Address" : "ที่อยู่จัดส่ง"}:</strong> {home}
+              <strong>
+                {language === "en" ? "Address" : "ที่อยู่จัดส่ง"}:
+              </strong>{" "}
+              {home}
             </p>
             <p>
-              <strong>{language === "en" ? "Donation Amount" : "จำนวนเงินที่บริจาค"}:</strong> {payment_amount}
+              <strong>
+                {language === "en" ? "Donation Amount" : "จำนวนเงินที่บริจาค"}:
+              </strong>{" "}
+              {payment_amount}
             </p>
+          </div>
+
+          {/* Order Details Table */}
+          <div className="mt-6 text-left">
+            <h3 className="text-lg font-semibold">
+              {language === "en" ? "Order Details" : "รายละเอียดคำสั่งซื้อ"}
+            </h3>
+            <table className="w-full mt-2 border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border p-2">
+                    {language === "en" ? "Item" : "รายการ"}
+                  </th>
+                  <th className="border p-2">
+                    {language === "en" ? "Quantity" : "จำนวน"}
+                  </th>
+                  <th className="border p-2">
+                    {language === "en" ? "Price (THB)" : "ราคา (บาท)"}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border p-2">
+                    {language === "en" ? "Donation" : "ค่าบริจาค"}
+                  </td>
+                  <td className="border p-2">-</td>
+                  <td className="border p-2">{payment_amount}</td>
+                </tr>
+                <tr>
+                  <td className="border p-2">
+                    {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
+                  </td>
+                  <td className="border p-2">{cardCount}</td>
+                  <td className="border p-2">{cardTotal}</td>
+                </tr>
+                <tr>
+                  <td className="border p-2">
+                    {language === "en" ? "Shirt" : "เสื้อ"}
+                  </td>
+                  <td className="border p-2">{totalShirtCount}</td>
+                  <td className="border p-2">{shirtTotal}</td>
+                </tr>
+                <tr className="font-bold bg-gray-100">
+                  <td className="border p-2">
+                    {language === "en" ? "Total" : "รวม"}
+                  </td>
+                  <td className="border p-2">-</td>
+                  <td className="border p-2">{totalAmount}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

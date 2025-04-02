@@ -44,7 +44,9 @@ export default function RegistrationCard({
       .split(";")
       .map((shirt) => {
         const [size, color, amount] = shirt.split("-");
-        return `Size: ${size.toUpperCase()} | Color: ${color.charAt(0).toUpperCase() + color.slice(1)} | Amount: ${amount}`;
+        return `Size: ${size.toUpperCase()} | Color: ${
+          color.charAt(0).toUpperCase() + color.slice(1)
+        } | Amount: ${amount}`;
       })
       .join("\n"); // Join with line breaks instead of commas
   };
@@ -65,7 +67,8 @@ export default function RegistrationCard({
   const cardTotal = cardCount * 150;
 
   // Calculate the total amount
-  const totalAmount = parseFloat(registration.payment_amount) + shirtTotal + cardTotal;
+  const totalAmount =
+    parseFloat(registration.payment_amount) + shirtTotal + cardTotal;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -131,7 +134,7 @@ export default function RegistrationCard({
             </p>
             <p>
               <strong>{language === "en" ? "Email" : "อีเมล"}:</strong>{" "}
-              {registration.email}
+              {registration.email || "-"}
             </p>
             <p>
               <strong>
