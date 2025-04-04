@@ -24,7 +24,7 @@ const RegisterForm = ({
   const [shirts, setShirts] = useState<
     { size: string; color: string; amount: number }[]
   >([]);
-  const [card, setCard] = useState<string>("");
+  const [card, setCard] = useState<string>("1");
   const [cardwithbox, setCardwithbox] = useState<string>("");
 
   const calculateTotalShirtCost = () => {
@@ -453,7 +453,7 @@ const RegisterForm = ({
             onChange={(e) => setpayment_amount(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           />
-
+          <span>ตัวอย่างของสมนาคุณสำหรับผู้บริจาค (โปสการ์ดและเข็มกลัด)</span>
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
               <div
@@ -768,7 +768,7 @@ const RegisterForm = ({
             <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              ราคาเสื้อ:
+              จำนวนเงินบริจาคขั้นต่ำเพื่อรับเสื้อที่ระลึก:
               </span>
               <span className="text-lg font-bold">
               {calculateTotalShirtCost()} บาท
@@ -776,7 +776,7 @@ const RegisterForm = ({
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              ราคาเข็ม:
+              จำนวนเงินบริจาคขั้นต่ำเพื่อรับเข็มที่ระลึก:
               </span>
               <span className="text-lg font-bold">
               {calculateTotalCardCost()} บาท
@@ -784,7 +784,7 @@ const RegisterForm = ({
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              ราคารวม:
+              มูลค่าของสมนาคุณรวม:
               </span>
               <span className="text-lg font-bold">
               {calculateTotalShirtCost() + calculateTotalCardCost()} บาท
@@ -792,7 +792,7 @@ const RegisterForm = ({
             </div>
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">
-              จำนวนเงินที่บริจาค:
+              จำนวนเงินขั้นต่ำที่ต้องการบริจาคเพื่อรับของสมนาคุณ:
               </span>
               <span className="text-lg font-bold">
               {payment_amount} บาท
@@ -931,7 +931,7 @@ const RegisterForm = ({
             onWheel={(e) => e.currentTarget.blur()}
           />
 
-          <span className="text-xl">Commemorable card</span>
+          <span className="text-xl">souvenir example</span>
 
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
@@ -960,7 +960,7 @@ const RegisterForm = ({
             />
           </div>
           <span className="text-xl">
-            Amount of memorial cards to receive (1 card for each 150 baht
+            Amount of postcard and pin to receive (1 card for each 150 baht
             donated)
           </span>
           <input
@@ -972,7 +972,7 @@ const RegisterForm = ({
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
           <span className="text-xl">
-            Amount of memorial cards with box to receive (1 set for each 250
+            Amount of postcard and pin with box to receive (1 set for each 250
             baht donated)
           </span>
           <input
@@ -991,7 +991,7 @@ const RegisterForm = ({
             />
           </div>
           <span className="text-xl">
-            Commemorable shirts (1 T-shirt for each 350 baht donated)
+            memorials shirts (1 T-shirt for each 350 baht donated)
           </span>
           <div className="flex items-center space-x-4">
             <label>
@@ -1090,14 +1090,14 @@ const RegisterForm = ({
             </div>
           )}
           <div className="space-y-4">
-            <span className="text-xl">Payment method</span>
+            <span className="text-xl">donation method</span>
             <select
               required
               className="select select-bordered w-full bg-white"
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
             >
-              <option value="">Choose payment method</option>
+              <option value="">Choose donation method</option>
               <option value="QR code">QR code</option>
               <option value="Bank number">Bank number</option>
             </select>
@@ -1250,7 +1250,7 @@ const RegisterForm = ({
             <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              Total Cost of Shirt Orders:
+              Minimum donation for Shirts souvenir:
               </span>
               <span className="text-lg font-bold">
               {calculateTotalShirtCost()} baht
@@ -1258,7 +1258,7 @@ const RegisterForm = ({
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              Total Cost of Cards:
+              Minimum donation for Postcards souvenir:
               </span>
               <span className="text-lg font-bold">
               {calculateTotalCardCost()} baht
@@ -1266,7 +1266,7 @@ const RegisterForm = ({
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              Total Cost:
+              Required donation amount needed for souvenirs:
               </span>
               <span className="text-lg font-bold">
               {calculateTotalShirtCost() + calculateTotalCardCost()} baht

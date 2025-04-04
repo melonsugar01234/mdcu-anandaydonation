@@ -46,3 +46,4 @@ prisma/file.db
 
 # image use in testing
 public/uploads/
+prisma/file.db
