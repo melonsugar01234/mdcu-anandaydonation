@@ -111,7 +111,17 @@ const downloadExcel = (data: Register[]) => {
   XLSX.writeFile(workbook, "DataSheet.xlsx");
 };
 
-export default function AdminStatsTable() {
+// Define the interface for your statistics data
+interface AdminStatsTableProps {
+  statistics: {
+    // Add the properties that your statistics object contains
+    totalDonators?: number;
+    totalAmount?: number;
+    // ... add other statistics properties
+  };
+}
+
+export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
   const [data, setData] = useState<Register[]>([]);
   const [loading, setLoading] = useState(true);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -173,7 +183,10 @@ export default function AdminStatsTable() {
           }
           className="input input-bordered mr-2"
         />
-        <button className="btn bg-green-400 btn-sm" onClick={() => downloadExcel(data)}>
+        <button
+          className="btn bg-green-400 btn-sm"
+          onClick={() => downloadExcel(data)}
+        >
           ดาวน์โหลด .xlsx
         </button>
       </div>

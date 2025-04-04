@@ -1,24 +1,29 @@
 "use client";
 import { useLanguage } from "../context/LanguageContext";
 
-interface Register {
-  id: number;
-  name: string;
-  phone: string;
-  email: string;
-  home: string;
-  tracking_code: string;
-  shirts: string;
-  card: string;
-  shipment_status: string;
-  payment_amount: string;
-  payment_proof: string;
-  payment_status: string;
-  receipt: string;
-}
-
 interface RegistrationCardProps {
-  registration: Register;
+  registration: {
+    id: number;
+    name: string;
+    phone: string;
+    email: string | null;
+    home: string;
+    tracking_code: string;
+    created_at: Date;
+    edited_at: Date;
+    card: number | null;
+    cardwithbox: number | null;
+    shirts: string | null;
+    shipment_status: string | null;
+    payment_method: string | null;
+    payment_amount: string | null;
+    payment_proof: string | null;
+    payment_status: string | null;
+    receipt: string | null;
+    national_id: string | null;
+    name_on_receipt: string | null;
+    address_on_receipt: string | null;
+  };
 }
 
 export default function RegistrationCard({
@@ -64,12 +69,14 @@ export default function RegistrationCard({
   }
 
   // Calculate total cost for commemorative pins
-  const cardCount = registration.card ? parseInt(registration.card) || 0 : 0;
+  const cardCount = registration.card
+    ? parseInt(registration.card.toString()) || 0
+    : 0;
   const cardTotal = cardCount * 150;
 
   // Calculate the total amount
   const totalAmount =
-    parseFloat(registration.payment_amount) + shirtTotal + cardTotal;
+    parseFloat(registration.payment_amount || "0") + shirtTotal + cardTotal;
 
   return (
     <div className="flex flex-col min-h-screen">

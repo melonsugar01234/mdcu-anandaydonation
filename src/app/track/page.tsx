@@ -2,22 +2,11 @@
 import Navbar from "../components/Navbar";
 import { useState } from "react";
 import SearchBar from "../components/Tracksearch";
-import RegistrationGrid from "../components/RegistrationGrid";
+import { RegistrationGrid } from "../components/RegistrationGrid";
 import { useLanguage } from "../context/LanguageContext";
 import Link from "next/link";
 import Footer from "../components/Footer";
-
-interface Register {
-  id: number;
-  name: string;
-  tracking_code: string;
-  shirt: string;
-  card: string;
-  shipment_status: string;
-  payment_amount: string;
-  payment_proof: string;
-  payment_status: string;
-}
+import type { Register } from "@/types/register";
 
 export default function TrackingPage() {
   const [registrations, setRegistrations] = useState<Register[]>([]);

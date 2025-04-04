@@ -1,29 +1,14 @@
 "use client";
 
 import RegistrationCard from "./RegistrationCard";
-
-interface Register {
-  id: number;
-  name: string;
-  tracking_code: string;
-  shirts: string;
-  card: string;
-  shipment_status: string
-  payment_amount: string
-  payment_proof: string 
-  payment_status: string
-}
-
 interface RegistrationGridProps {
-  registrations: Register[];
+  registrations: any[];
 }
 
-export default function RegistrationGrid({
-  registrations,
-}: RegistrationGridProps) {
+export function RegistrationGrid({ registrations }: RegistrationGridProps) {
   return (
     <div className="grid grid-cols-1">
-      {registrations.map((registration) => (
+      {registrations.map((registration: any) => (
         <RegistrationCard key={registration.id} registration={registration} />
       ))}
     </div>

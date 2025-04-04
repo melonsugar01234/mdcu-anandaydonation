@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db";
 
 export async function GET() {
   try {
@@ -20,57 +18,64 @@ export async function GET() {
 
     // Donators with commemorable card order
     const donatorsWithCardOrder = await prisma.register.count({
-      where: {  
-        OR: [
-        { card: { not: 0 } },
-        { cardwithbox: { not: 0 } }
-      ], },
+      where: {
+        OR: [{ card: { not: 0 } }, { cardwithbox: { not: 0 } }],
+      },
     });
 
     // Donators with both shirt and card order
     const donatorsWithBothOrders = await prisma.register.count({
       where: {
-        OR: [
-          { card: { not: 0 } },
-          { cardwithbox: { not: 0 } }
-        ],
+        OR: [{ card: { not: 0 } }, { cardwithbox: { not: 0 } }],
         shirts: { not: "" },
       },
     });
 
     const totalMoneyData = await prisma.register.findMany();
-    const totalMoney = totalMoneyData.reduce((sum, registration) => {
-      const payValue = parseFloat(registration.payment_amount|| "0") || 0; // Convert string to number, default to 0 if null
-      return sum + payValue;
-    }, 0);
+    const totalMoney = totalMoneyData.reduce(
+      (sum: number, registration: { payment_amount: any }) => {
+        const payValue = parseFloat(registration.payment_amount || "0") || 0; // Convert string to number, default to 0 if null
+        return sum + payValue;
+      },
+      0
+    );
     const totalMoneyApprovedData = await prisma.register.findMany({
       where: { payment_status: "Approved" },
     });
-    const totalMoneyApproved = totalMoneyApprovedData.reduce((sum, registration) => {
-      const payValue = parseFloat(registration.payment_amount|| "0") || 0; // Convert string to number, default to 0 if null
-      return sum + payValue;
-    }, 0);
+    const totalMoneyApproved = totalMoneyApprovedData.reduce(
+      (sum: number, registration: { payment_amount: any }) => {
+        const payValue = parseFloat(registration.payment_amount || "0") || 0; // Convert string to number, default to 0 if null
+        return sum + payValue;
+      },
+      0
+    );
 
     // Total commemorable card order
     const totalCardOrdersData = await prisma.register.findMany();
-    const totalCardOrders = totalCardOrdersData.reduce((sum, registration) => {
-      const cardValue = registration.card || 0; // Convert string to number, default to 0 if null
-      return sum + cardValue;
-    }, 0);
+    const totalCardOrders = totalCardOrdersData.reduce(
+      (sum: number, registration) => {
+        const cardValue = registration.card ?? 0; // Use nullish coalescing
+        return sum + cardValue;
+      },
+      0
+    );
 
     const totalCardwithboxOrdersData = await prisma.register.findMany();
-    const totalCardwithboxOrders = totalCardwithboxOrdersData.reduce((sum, registration) => {
-      const cardValue = registration.cardwithbox || 0; // Convert string to number, default to 0 if null
-      return sum + cardValue;
-    }, 0);
+    const totalCardwithboxOrders = totalCardwithboxOrdersData.reduce(
+      (sum: number, registration) => {
+        const cardValue = registration.cardwithbox ?? 0; // Use nullish coalescing
+        return sum + cardValue;
+      },
+      0
+    );
 
     // Total commemorable card order from users with approved payment
     const totalCardOrdersApprovedData = await prisma.register.findMany({
       where: { payment_status: "Approved" },
     });
     const totalCardOrdersApproved = totalCardOrdersApprovedData.reduce(
-      (sum, registration) => {
-        const cardValue = registration.card || 0; // Convert string to number, default to 0 if null
+      (sum: number, registration) => {
+        const cardValue = registration.card ?? 0; // Use nullish coalescing
         return sum + cardValue;
       },
       0
@@ -79,13 +84,11 @@ export async function GET() {
     const totalCardwithboxOrdersApprovedData = await prisma.register.findMany({
       where: { payment_status: "Approved" },
     });
-    const totalCardwithboxOrdersApproved = totalCardwithboxOrdersApprovedData.reduce(
-      (sum, registration) => {
-        const cardValue = registration.cardwithbox || 0; // Convert string to number, default to 0 if null
+    const totalCardwithboxOrdersApproved =
+      totalCardwithboxOrdersApprovedData.reduce((sum: number, registration) => {
+        const cardValue = registration.cardwithbox ?? 0; // Use nullish coalescing
         return sum + cardValue;
-      },
-      0
-    );
+      }, 0);
 
     // Total shirt orders
     const totalShirtOrders = await prisma.register.findMany();
@@ -106,7 +109,6 @@ export async function GET() {
     const totalShirtOrdersApproved = await prisma.register.findMany({
       where: { payment_status: "Approved" },
     });
-
     const shirtCountsApproved: { [key: string]: number } = {};
     totalShirtOrdersApproved.forEach((registration) => {
       if (registration.shirts) {

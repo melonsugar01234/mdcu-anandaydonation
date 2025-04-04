@@ -1,8 +1,5 @@
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from "next/server"; // Import NextRequest
+import prisma from "@/lib/db";
 
 function generateTrackingCode() {
   const characters =
@@ -21,10 +18,26 @@ async function isTrackingCodeUnique(code: string) {
   return !existing;
 }
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: NextRequest) {
+  // Use NextRequest instead of NextApiRequest
   try {
-    const { name, phone, email, home, payment_proof, payment_amount, payment_method, card, cardwithbox, shirts, receipt, national_id, name_on_receipt, address_on_receipt} =
-      await (req as any).json();
+    const {
+      name,
+      phone,
+      email,
+      home,
+      payment_proof,
+      payment_amount,
+      payment_method,
+      card,
+      cardwithbox,
+      shirts,
+      receipt,
+      national_id,
+      name_on_receipt,
+      address_on_receipt,
+    } = await req.json(); // Since it's NextRequest, you can directly use `req.json()`
+
     if (!name || !phone || !home || !payment_amount || !payment_proof) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -38,7 +51,11 @@ export async function POST(req: NextApiRequest) {
     } while (!(await isTrackingCodeUnique(trackingCode)));
 
     let shipmentStatus = "0"; // Default status
-    if ((card === 0 || card === "") && (shirts === "") && (cardwithbox === 0 || cardwithbox === "")) {
+    if (
+      (card === 0 || card === "") &&
+      shirts === "" &&
+      (cardwithbox === 0 || cardwithbox === "")
+    ) {
       shipmentStatus = "5"; // No order status
     }
 
@@ -63,17 +80,14 @@ export async function POST(req: NextApiRequest) {
         address_on_receipt: address_on_receipt || "",
       },
     });
-    
-    
+
     return NextResponse.json(newRegister, { status: 201 });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      // Log the stack trace of the error for debugging
       console.error("Error creating new register:", error.stack);
     } else {
-      // If the error is not an instance of Error, just log a generic message
       console.error("An unknown error occurred:", error);
-    }  
+    }
     return NextResponse.json(
       { error: "Failed to create new register" },
       { status: 500 }
@@ -87,7 +101,9 @@ export async function GET() {
     return NextResponse.json(registers);
   } catch (error) {
     console.error("Error fetching register data:", error);
-    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch data" },
+      { status: 500 }
+    );
   }
 }
-

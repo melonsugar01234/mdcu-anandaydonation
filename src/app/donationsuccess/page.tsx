@@ -3,8 +3,10 @@ import { useSearchParams } from "next/navigation";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useLanguage } from "../context/LanguageContext";
+import { Suspense } from "react";
 
-export default function DonationSuccess() {
+// Create a client component that uses useSearchParams
+function DonationSuccessContent() {
   const searchParams = useSearchParams();
   const { language } = useLanguage();
   const trackingCode = searchParams.get("trackingCode");
@@ -176,5 +178,14 @@ export default function DonationSuccess() {
       </div>
       <Footer />
     </div>
+  );
+}
+
+// Create a server component (page.tsx) that wraps the client component in Suspense
+export default function DonationSuccessPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DonationSuccessContent />
+    </Suspense>
   );
 }
