@@ -453,7 +453,9 @@ const RegisterForm = ({
             onChange={(e) => setpayment_amount(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           />
-          <span>ตัวอย่างของสมนาคุณสำหรับผู้บริจาค (โปสการ์ดและเข็มกลัด)</span>
+          <span>
+            ตัวอย่างของที่ระลึกสำหรับผู้บริจาค (โปสการ์ดและเข็มที่ระลึก)
+          </span>
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
               <div
@@ -477,7 +479,7 @@ const RegisterForm = ({
             alt="thaipin"
             className="w-full h-auto object-contain"
           />
-          <span className="text-xl">เช็มที่ระลึก</span>
+          <span className="text-xl">เข็มที่ระลึก</span>
           <span className="text-xl">
             จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม)
           </span>
@@ -683,7 +685,9 @@ const RegisterForm = ({
                 pattern="\d{13}" // Ensure only 13 digits are allowed
                 title="หมายเลขประจำตัวประชาชนต้องมี 13 หลัก" // Tooltip for user guidance
               />
-              <span className="text-xl">ชื่อ-นามสกุลในใบเสร็จ</span>
+              <div className="space-y-4">
+                <span className="text-xl">ชื่อ-นามสกุลในใบเสร็จ</span>
+              </div>
               <input
                 required
                 type="text"
@@ -765,40 +769,38 @@ const RegisterForm = ({
             </div>
           )}
 
-            <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              จำนวนเงินบริจาคขั้นต่ำเพื่อรับเสื้อที่ระลึก:
+                มูลค่ารวมของเสื้อที่ระลึก:
               </span>
               <span className="text-lg font-bold">
-              {calculateTotalShirtCost()} บาท
+                {calculateTotalShirtCost()} บาท
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              จำนวนเงินบริจาคขั้นต่ำเพื่อรับเข็มที่ระลึก:
+                มูลค่ารวมของเข็มที่ระลึก:
               </span>
               <span className="text-lg font-bold">
-              {calculateTotalCardCost()} บาท
+                {calculateTotalCardCost()} บาท
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              มูลค่าของสมนาคุณรวม:
+                มูลค่าของที่ระลึกรวม:
               </span>
               <span className="text-lg font-bold">
-              {calculateTotalShirtCost() + calculateTotalCardCost()} บาท
+                {calculateTotalShirtCost() + calculateTotalCardCost()} บาท
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">
-              จำนวนเงินขั้นต่ำที่ต้องการบริจาคเพื่อรับของสมนาคุณ:
+                จำนวนเงินที่ต้องการบริจาค:
               </span>
-              <span className="text-lg font-bold">
-              {payment_amount} บาท
-              </span>
+              <span className="text-lg font-bold">{payment_amount} บาท</span>
             </div>
-            </div>
+          </div>
 
           <button
             type="submit"
@@ -810,7 +812,7 @@ const RegisterForm = ({
           </button>
           {parseFloat(payment_amount) < totalCost && (
             <p className="flex justify-end text-red-500 text-sm">
-              จำนวนเงินที่บริจาคต้องมากกว่าหรือเท่ากับราคารวม
+              ยอดบริจาคต้องไม่น้อยกว่าราคารวม
             </p>
           )}
         </form>
@@ -821,7 +823,7 @@ const RegisterForm = ({
             language === "en" ? "" : "hidden"
           }`}
         >
-          <div className="text-3xl text-center">Profile Information</div>
+          {/* <div className="text-3xl text-center">Profile Information</div> */}
           <span className="text-xl">Name</span>
           <input
             required
@@ -931,7 +933,7 @@ const RegisterForm = ({
             onWheel={(e) => e.currentTarget.blur()}
           />
 
-          <span className="text-xl">souvenir example</span>
+          <span className="text-xl">Souvenir example</span>
 
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
@@ -991,7 +993,7 @@ const RegisterForm = ({
             />
           </div>
           <span className="text-xl">
-            memorials shirts (1 T-shirt for each 350 baht donated)
+            Memorials shirts (1 T-shirt for each 350 baht donated)
           </span>
           <div className="flex items-center space-x-4">
             <label>
@@ -1090,7 +1092,7 @@ const RegisterForm = ({
             </div>
           )}
           <div className="space-y-4">
-            <span className="text-xl">donation method</span>
+            <span className="text-xl">Donation method</span>
             <select
               required
               className="select select-bordered w-full bg-white"
@@ -1166,7 +1168,9 @@ const RegisterForm = ({
                 pattern="\d{13}" // Ensure only 13 digits are allowed
                 title="pls enter 13 digit for national id" // Tooltip for user guidance
               />
-              <span className="text-xl">Name on receipt</span>
+              <div className="space-y-4">
+                <span className="text-xl">Name on receipt</span>
+              </div>
               <input
                 required
                 type="text"
@@ -1247,40 +1251,38 @@ const RegisterForm = ({
               </div>
             </div>
           )}
-            <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              Minimum donation for Shirts souvenir:
+                Minimum donation for Shirts souvenir:
               </span>
               <span className="text-lg font-bold">
-              {calculateTotalShirtCost()} baht
+                {calculateTotalShirtCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              Minimum donation for Postcards souvenir:
+                Minimum donation for Postcards souvenir:
               </span>
               <span className="text-lg font-bold">
-              {calculateTotalCardCost()} baht
+                {calculateTotalCardCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-              Required donation amount needed for souvenirs:
+                Required donation amount needed for souvenirs:
               </span>
               <span className="text-lg font-bold">
-              {calculateTotalShirtCost() + calculateTotalCardCost()} baht
+                {calculateTotalShirtCost() + calculateTotalCardCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">
-              Total Money Donated:
+                Total Money Donated:
               </span>
-              <span className="text-lg font-bold">
-              {payment_amount} baht
-              </span>
+              <span className="text-lg font-bold">{payment_amount} baht</span>
             </div>
-            </div>
+          </div>
 
           <button
             type="submit"
