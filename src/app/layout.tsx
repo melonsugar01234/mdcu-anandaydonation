@@ -9,7 +9,7 @@ const Noto = Noto_Sans_Thai({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "AnandayDonation",
-  description: "ลงทะเบียนบริจาควันอนันทมหิดล",
+  description: "ลงทะเบียนบริจาควันอานันทมหิดล",
 };
 
 export default function RootLayout({
