@@ -18,6 +18,7 @@ function DonationSuccessContent() {
   const payment_amount = searchParams.get("payment_amount") || "0";
   const shirts = searchParams.get("shirts") || "";
   const card = searchParams.get("card") || "0";
+  const cardwithbox = searchParams.get("cardwithbox") || "";
 
   // Parse and calculate shirt details
   let totalShirtCount = 0;
@@ -34,12 +35,15 @@ function DonationSuccessContent() {
         } | Amount: ${amount}`;
       })
       .join("\n");
-    shirtTotal = totalShirtCount * 299;
+    shirtTotal = totalShirtCount * 350;
   }
 
   // Parse pin data
   const cardCount = parseInt(card) || 0;
   const cardTotal = cardCount * 150;
+
+  const cardwithboxCount = parseInt(cardwithbox) || 0;
+  const cardwithboxTotal = cardwithboxCount * 250;
 
   // Calculate total amount
   const totalAmount = parseFloat(payment_amount) + shirtTotal + cardTotal;
@@ -55,8 +59,8 @@ function DonationSuccessContent() {
           {/* Confirmation Message */}
           <h2 className="text-3xl font-semibold text-gray-800 mb-4">
             {language === "en"
-              ? "Your donation and order have been recorded."
-              : "การบริจาคและสั่งซื้อของท่านได้ถูกบันทึกแล้ว"}
+              ? "Your donation has been recorded."
+              : "ข้อมูลการบริจาคของท่านได้ถูกบันทึกแล้ว"}
           </h2>
           <p className="text-gray-600 mb-8 text-lg">
             {language === "en"
@@ -145,31 +149,42 @@ function DonationSuccessContent() {
               <tbody>
                 <tr>
                   <td className="border p-2">
-                    {language === "en" ? "Donation" : "ค่าบริจาค"}
+                    {language === "en"
+                      ? "Donation amount"
+                      : "จำนวนเงินที่บริจาค"}
                   </td>
                   <td className="border p-2">-</td>
                   <td className="border p-2">{payment_amount}</td>
                 </tr>
                 <tr>
                   <td className="border p-2">
-                    {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
+                    <li>
+                      {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
+                    </li>
                   </td>
                   <td className="border p-2">{cardCount}</td>
                   <td className="border p-2">{cardTotal}</td>
                 </tr>
                 <tr>
                   <td className="border p-2">
-                    {language === "en" ? "Shirt" : "เสื้อ"}
+                    <li>{language === "en" ? "Shirt" : "เสื้อที่ระลึก"}</li>
                   </td>
                   <td className="border p-2">{totalShirtCount}</td>
                   <td className="border p-2">{shirtTotal}</td>
+                </tr>
+                <tr>
+                  <td className="border p-2">
+                    <li>{language === "en" ? "Pin with box" : "เข็มที่ระลึกพร้อมกล่อง"}</li>
+                  </td>
+                  <td className="border p-2">{cardwithboxCount}</td>
+                  <td className="border p-2">{cardwithboxTotal}</td>
                 </tr>
                 <tr className="font-bold bg-gray-100">
                   <td className="border p-2">
                     {language === "en" ? "Total" : "รวม"}
                   </td>
                   <td className="border p-2">-</td>
-                  <td className="border p-2">{totalAmount}</td>
+                  <td className="border p-2">{payment_amount}</td>
                 </tr>
               </tbody>
             </table>

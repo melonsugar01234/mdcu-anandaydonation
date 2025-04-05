@@ -448,7 +448,7 @@ const RegisterForm = ({
           <input
             required
             type="number"
-            placeholder="ใส่แค่ตัวเลข"
+            placeholder="กรุณากรอกเป็นตัวเลข"
             className="input input-bordered w-full bg-white"
             value={payment_amount}
             onChange={(e) => setpayment_amount(e.target.value)}
@@ -457,10 +457,10 @@ const RegisterForm = ({
           <div className="font-light">
             หมายเหตุ
             <li>เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน</li>
-            <li>เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว</li>
             <li>
               เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1 ชุด
             </li>
+            <li>เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว</li>
           </div>
           <span className="text-xl">
             ตัวอย่างของที่ระลึกสำหรับผู้บริจาค (เข็มที่ระลึกพร้อมโปสการ์ด)
@@ -503,7 +503,7 @@ const RegisterForm = ({
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
           <span className="text-xl">
-            ชุดเข็มพร้อมกล่อง (เงินบริจาค 250 ต่อ 1 ชุด)
+            จำนวนเข็มพร้อมกล่องที่ต้องการรับ (เงินบริจาค 250 ต่อ 1 ชุด)
           </span>
           <input
             required
@@ -689,7 +689,7 @@ const RegisterForm = ({
               <span className="text-xl">หมายเลขประจำตัวประชาชน</span>
               <input
                 type="text"
-                placeholder="ใส่แค่ตัวเลข"
+                placeholder="กรุณากรอกเป็นตัวเลข"
                 className="input input-bordered w-full mb-4 bg-white"
                 value={nationalId}
                 onChange={(e) => setNationalId(e.target.value)}
@@ -698,7 +698,7 @@ const RegisterForm = ({
                 title="หมายเลขประจำตัวประชาชนต้องมี 13 หลัก" // Tooltip for user guidance
               />
               <div className="space-y-4">
-                <span className="text-xl">ชื่อ-นามสกุลในใบเสร็จ</span>
+                <span className="text-xl">ชื่อ-นามสกุลที่ต้องการให้ปรากฎในใบเสร็จ</span>
               </div>
               <input
                 required
@@ -709,7 +709,7 @@ const RegisterForm = ({
                 onChange={(e) => setNameOnReceipt(e.target.value)}
               />
               <div className="space-y-4">
-                <span className="text-xl">ที่อยู่ในใบเสร็จ</span>
+                <span className="text-xl">ที่อยู่ที่ต้องการให้ปรากฎในใบเสร็จ</span>
                 <input
                   required
                   type="text"
@@ -950,13 +950,13 @@ const RegisterForm = ({
           <div className="font-light">
             Note
             <li>
-              For each 150 baht donated, you can receive 1 commemorative card
+              For each 150 baht donated, you can receive 1 commemorative pin with postcard
             </li>
-            <li>For each 350 baht donated, you can receive 1 T-shirt</li>
             <li>
-              For each 250 baht donated, you can receive 1 set of memorial cards
+              For each 250 baht donated, you can receive 1 set of commemorative pin with box
               with box
             </li>
+            <li>For each 350 baht donated, you can receive 1 T-shirt</li>
           </div>
 
           <span className="text-xl">Souvenir example (Pin and postcard)</span>

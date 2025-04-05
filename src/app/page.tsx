@@ -31,7 +31,7 @@ export default function Home() {
           />
         </div>
         <div className="divider"></div>
-        <h1 className="text-xl font-bold">
+        {/* <h1 className="text-xl font-bold">
           'Miles for Heart' Virtual Walk and Run เปิดรับสมัครแล้ววันนี้
         </h1>
         <h1 className="text-xl font-bold">
@@ -55,7 +55,7 @@ export default function Home() {
             className="btn btn-wide bg-yellow2025 text-white"
           >
             ลงทะเบียนงานวิ่ง
-          </Link>
+          </Link> */}
         
         <div className="w-full max-w-[1000px] mx-auto">
           <img
@@ -86,10 +86,10 @@ export default function Home() {
                     เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน
                   </li>
                   <li>
-                    เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว
+                    เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1 ชุด
                   </li>
                   <li>
-                    เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1 ชุด
+                    เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว
                   </li>
                 </ol>
               </li>
@@ -115,7 +115,7 @@ export default function Home() {
           <img src="/images/Logo2.png" alt="banner_1" />
         </div>
         <div className="divider"></div>
-        <h1 className="text-xl font-bold">
+        {/* <h1 className="text-xl font-bold">
           'Miles for Heart' Virtual Walk and Run is now open for registration
         </h1>
         <h1 className="text-xl font-bold">
@@ -139,7 +139,7 @@ export default function Home() {
           className="btn btn-wide bg-yellow2025 text-white"
         >
           Register for the virtual walk & run
-        </Link>
+        </Link> */}
         <div className="w-full max-w-[1000px] mx-auto">
           <img
             src="/images/newpayQR.png"
@@ -163,11 +163,10 @@ export default function Home() {
                 the donation amount
                 <ol className="list-decimal list-inside ml-4">
                   <li>
-                    For each 150 baht donated, you can receive 1 commemorative
-                    card
+                    For each 150 baht donated, you can receive 1 commemorative pin with postcard
                   </li>
+                  <li>For each 250 baht donated, you can receive 1 set of commemorative pin with box</li>
                   <li>For each 350 baht donated, you can receive 1 T-shirt</li>
-                  <li>For each 250 baht donated, you can receive 1 set of memorial cards with box</li>
                 </ol>
               </li>
               <li>Note: Shipping is free</li>
