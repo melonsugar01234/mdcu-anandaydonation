@@ -11,10 +11,11 @@ interface RegisterFormProps {
 }
 
 const images = [
-  { src: "/images/1.jpg", alt: "Image 1" },
-  { src: "/images/2.jpg", alt: "Image 2" },
-  { src: "/images/3.jpg", alt: "Image 3" },
+  { src: "/images/one.jpg", alt: "Image 1" },
+  { src: "/images/two.jpg", alt: "Image 2" },
+  { src: "/images/three.jpg", alt: "Image 3" },
 ];
+
 const RegisterForm = ({
   provinces,
   districts,

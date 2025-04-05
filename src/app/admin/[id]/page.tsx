@@ -160,7 +160,7 @@ export default function AdminApprovePaymentPage() {
             <div>
               <figure className="mb-4">
                 <img
-                  src={`${window.location.origin}${register.payment_proof}`}
+                  src={`${register.payment_proof}`}
                   alt="Payment proof"
                   className="rounded-lg max-w-sm"
                 />
