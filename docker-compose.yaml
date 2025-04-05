@@ -1,0 +1,28 @@
+services:
+  nextjs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: anandaydonation-app
+    pull_policy: build
+    volumes:
+      - /storage/mdcu-anandaydonation/assets:/app/assets:rw,z
+    restart: always
+    env_file:
+      - stack.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.anandaydonation-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.anandaydonation-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.anandaydonation-http.middlewares=anandaydonation-redirect"
+      - "traefik.http.routers.anandaydonation-http.rule=Host(`anandaydonation.docchula.com`)"
+      - "traefik.http.routers.anandaydonation-http.entrypoints=web"
+      - "traefik.http.routers.anandaydonation-https.rule=Host(`anandaydonation.docchula.com`)"
+      - "traefik.http.routers.anandaydonation-https.entrypoints=websecure"
+      - "traefik.http.routers.anandaydonation-https.tls.certresolver=leresolver"
+      - "traefik.http.services.anandaydonation-https.loadbalancer.server.port=3000"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
