@@ -25,7 +25,7 @@ RUN mkdir -p /app/uploads
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm exec prisma generate
 
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm build
 
@@ -33,7 +33,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm build
 FROM base AS runner
 WORKDIR /app
 
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -58,7 +58,7 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
+ENV PORT=3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
