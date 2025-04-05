@@ -24,7 +24,7 @@ const uploadMiddleware = async (req: NextRequest) => {
   const uniqueName = `${base}-${timestamp}${ext}`;
   const filePath = path.join(uploadDir, uniqueName);
 
-  fs.writeFileSync(filePath, buffer);
+  await fs.promises.writeFile(filePath, buffer);
 
   return `/api/files/${uniqueName}`; // ✅ dynamic served path
 };
