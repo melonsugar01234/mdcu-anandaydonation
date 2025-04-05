@@ -6,7 +6,7 @@ services:
     image: anandaydonation-app
     pull_policy: build
     volumes:
-      - /storage/mdcu-anandaydonation/assets:/app/assets:rw,z
+      - /storage/mdcu-anandaydonation/uploads:/app/uploads:rw,z
     restart: always
     env_file:
       - stack.env
