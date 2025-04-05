@@ -47,7 +47,7 @@ export default function Navbar() {
               <li>
                 <Link href="/register">
                   <span className={language === "th" ? "" : "hidden"}>
-                    ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
+                    ลงทะเบียนบริจาคและรับของที่ระลึก
                   </span>
                   <span className={language === "en" ? "" : "hidden"}>
                     Register & Donation
@@ -98,7 +98,7 @@ export default function Navbar() {
             <li>
               <Link href="/register">
                 <span className={language === "th" ? "" : "hidden"}>
-                  ลงทะเบียนบริจาคและสั่งซื้อเสื้อ
+                  ลงทะเบียนบริจาคและรับของที่ระลึก
                 </span>
                 <span className={language === "en" ? "" : "hidden"}>
                   Register & Donation
