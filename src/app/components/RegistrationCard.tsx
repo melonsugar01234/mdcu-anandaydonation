@@ -193,7 +193,7 @@ export default function RegistrationCard({
               <tbody>
                 <tr>
                   <td className="border p-2">
-                    {language === "en" ? "Donation" : "ค่าบริจาค"}
+                    {language === "en" ? "Donation Amount" : "จำนวนเงินที่บริจาค"}
                   </td>
                   <td className="border p-2">-</td>
                   <td className="border p-2">{registration.payment_amount}</td>
@@ -207,7 +207,7 @@ export default function RegistrationCard({
                 </tr>
                 <tr>
                   <td className="border p-2">
-                    {language === "en" ? "Shirt" : "เสื้อ"}
+                    {language === "en" ? "Shirt" : "เสื้อที่ระลึก"}
                   </td>
                   <td className="border p-2">{totalShirtCount}</td>
                   <td className="border p-2">{shirtTotal}</td>
