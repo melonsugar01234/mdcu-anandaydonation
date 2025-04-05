@@ -62,10 +62,10 @@ const RegisterPage = () => {
               language === "en" ? "" : "hidden"
             }`}>
         <div className="flex flex-col items-center justify-center min-h-screen">
-          <h1 className="text-5xl font-bold mb-4 text-center">Register for donation and ordering</h1>
+          <h1 className="text-5xl font-bold mb-4 text-center">Registration & Donation information</h1>
           <div className="text-2xl mb-4 text-center">
-            <div>Ananda Mahidol the Faculty of Medicine</div>
-            <div>Chulalongkorn University year 2025</div>
+            <div>Ananda Mahidol Day charity campaign</div>
+            <div>the Faculty of Medicine, Chulalongkorn University year 2025</div>
           </div>
           <RegisterForm
             provinces={provinces}

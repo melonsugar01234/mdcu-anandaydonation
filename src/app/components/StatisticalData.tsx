@@ -30,20 +30,20 @@ const StatisticalData: React.FC<StatisticalDataProps> = ({ statistics }) => {
       <p>Donators Without Order:{" "} {statistics.donatorsWithoutOrder}</p>
       <p>Donators With Shirt Order:{" "} {statistics.donatorsWithShirtOrder}</p>
       <p>
-        Donators With Commemorative Card Order:{" "}
+        Donators With Commemorative Pin Order:{" "}
         {statistics.donatorsWithCardOrder}
       </p>
       <p>
-        Donators With Both Shirt and Card Order:{" "}
+        Donators With Both Shirt and Pin Order:{" "}
         {statistics.donatorsWithBothOrders}
       </p>
-      <p>Total memorial Card Orders: {statistics.totalCardOrders}</p>
+      <p>Total memorial Pin Orders: {statistics.totalCardOrders}</p>
       <p>
-        Total memorial Card Orders (Approved Payment):{" "}
+        Total memorial Pin Orders (Approved Payment):{" "}
         {statistics.totalCardOrdersApproved}
       </p>
-      <p>Total memorial Card with box set orders:{" "} {statistics.totalCardwithboxOrders}</p>
-      <p>Total memorial Card with box set orders (Approved payment):{" "} {statistics.totalCardwithboxOrdersApproved}</p>
+      <p>Total memorial Pin with box set orders:{" "} {statistics.totalCardwithboxOrders}</p>
+      <p>Total memorial Pin with box set orders (Approved payment):{" "} {statistics.totalCardwithboxOrdersApproved}</p>
       <h3 className="font-bold">Total Shirt Orders:</h3>
       {Object.entries(statistics.totalShirtOrders).map(([key, count]) => (
         <p key={key}>

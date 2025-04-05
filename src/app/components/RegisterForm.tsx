@@ -454,8 +454,16 @@ const RegisterForm = ({
             onChange={(e) => setpayment_amount(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           />
-          <span>
-            ตัวอย่างของที่ระลึกสำหรับผู้บริจาค (โปสการ์ดและเข็มที่ระลึก)
+          <div className="font-light">
+            หมายเหตุ
+            <li>เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน</li>
+            <li>เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว</li>
+            <li>
+              เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1 ชุด
+            </li>
+          </div>
+          <span className="text-xl">
+            ตัวอย่างของที่ระลึกสำหรับผู้บริจาค (เข็มที่ระลึกพร้อมโปสการ์ด)
           </span>
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
@@ -472,15 +480,17 @@ const RegisterForm = ({
                   alt={image.alt}
                   className="w-full h-auto object-cover" // Make the image fill the width of the container
                 />
+                <div className="text-center">แบบที่ {index + 1}</div>
               </div>
             ))}
           </div>
+          <span className="text-xl">ตัวอย่างเข็มที่ระลึกและกล่อง</span>
           <img
             src="/images/thaipin.jpg"
             alt="thaipin"
             className="w-full h-auto object-contain"
           />
-          <span className="text-xl">เข็มที่ระลึก</span>
+          <span className="text-xl font-semibold">เข็มที่ระลึก</span>
           <span className="text-xl">
             จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม)
           </span>
@@ -503,6 +513,7 @@ const RegisterForm = ({
             onChange={(e) => setCardwithbox(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
+          <span>ตัวอย่างเสื้อที่ระลึก</span>
           <div className="flex justify-center w-full">
             <img
               src="/images/shirt.jpg"
@@ -568,7 +579,7 @@ const RegisterForm = ({
                     className="select select-bordered bg-white"
                   >
                     <option value="white">White</option>
-                    <option value="red">Red</option>
+                    <option value="red">Yellow</option>
                   </select>
                   <select
                     value={shirt.amount}
@@ -771,22 +782,7 @@ const RegisterForm = ({
           )}
 
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-lg font-semibold">
-                มูลค่ารวมของเสื้อที่ระลึก:
-              </span>
-              <span className="text-lg font-bold">
-                {calculateTotalShirtCost()} บาท
-              </span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-lg font-semibold">
-                มูลค่ารวมของเข็มที่ระลึก:
-              </span>
-              <span className="text-lg font-bold">
-                {calculateTotalCardCost()} บาท
-              </span>
-            </div>
+            <div className="font-bold text-xl text-center">สรุปรายการ</div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
                 มูลค่าของที่ระลึกรวม:
@@ -795,12 +791,30 @@ const RegisterForm = ({
                 {calculateTotalShirtCost() + calculateTotalCardCost()} บาท
               </span>
             </div>
+            <div className="flex justify-between items-center mb-2">
+              <li className="text-lg font-semibold">
+                มูลค่ารวมของเสื้อที่ระลึก:
+              </li>
+              <span className="text-lg font-bold">
+                {calculateTotalShirtCost()} บาท
+              </span>
+            </div>
+            <div className="flex justify-between items-center mb-2">
+              <li className="text-lg font-semibold">
+                มูลค่ารวมของเข็มที่ระลึก:
+              </li>
+              <span className="text-lg font-bold">
+                {calculateTotalCardCost()} บาท
+              </span>
+            </div>
+
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">
                 จำนวนเงินที่ต้องการบริจาค:
               </span>
               <span className="text-lg font-bold">{payment_amount} บาท</span>
             </div>
+            <div className="text-red-700">โปรดตรวจสอบข้อมูลของท่านก่อนกดยืนยัน</div>
           </div>
 
           <button
@@ -933,8 +947,19 @@ const RegisterForm = ({
             onChange={(e) => setpayment_amount(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           />
+          <div className="font-light">
+            Note
+            <li>
+              For each 150 baht donated, you can receive 1 commemorative card
+            </li>
+            <li>For each 350 baht donated, you can receive 1 T-shirt</li>
+            <li>
+              For each 250 baht donated, you can receive 1 set of memorial cards
+              with box
+            </li>
+          </div>
 
-          <span className="text-xl">Souvenir example</span>
+          <span className="text-xl">Souvenir example (Pin and postcard)</span>
 
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
@@ -951,9 +976,11 @@ const RegisterForm = ({
                   alt={image.alt}
                   className="w-full h-auto object-cover" // Make the image fill the width of the container
                 />
+                <div className="text-center">Design {index + 1}</div>
               </div>
             ))}
           </div>
+          <span className="text-xl">Memorial pin and box example</span>
 
           <div className="flex justify-center w-full">
             <img
@@ -986,6 +1013,8 @@ const RegisterForm = ({
             onChange={(e) => setCardwithbox(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
+          <span className="text-xl">T-Shirts example</span>
+
           <div className="flex justify-center w-full">
             <img
               src="/images/shirt.jpg"
@@ -1051,7 +1080,7 @@ const RegisterForm = ({
                     className="select select-bordered bg-white"
                   >
                     <option value="white">White</option>
-                    <option value="red">Red</option>
+                    <option value="red">Yellow</option>
                   </select>
                   <select
                     value={shirt.amount}
@@ -1253,28 +1282,29 @@ const RegisterForm = ({
             </div>
           )}
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
+          <div className="font-bold text-xl text-center">Donation summary</div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-                Minimum donation for Shirts souvenir:
+                Total Price of Ordered Souvenirs:
               </span>
+              <span className="text-lg font-bold">
+                {calculateTotalShirtCost() + calculateTotalCardCost()} baht
+              </span>
+            </div>
+            <div className="flex justify-between items-center mb-2">
+              <li className="text-lg font-semibold">
+                Total Price of Ordered Souvenir Shirts:
+              </li>
               <span className="text-lg font-bold">
                 {calculateTotalShirtCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
-              <span className="text-lg font-semibold">
-                Minimum donation for Postcards souvenir:
-              </span>
+              <li className="text-lg font-semibold">
+                Total Price of Ordered Souvenir Pin:
+              </li>
               <span className="text-lg font-bold">
                 {calculateTotalCardCost()} baht
-              </span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-lg font-semibold">
-                Required donation amount needed for souvenirs:
-              </span>
-              <span className="text-lg font-bold">
-                {calculateTotalShirtCost() + calculateTotalCardCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center">
@@ -1283,6 +1313,7 @@ const RegisterForm = ({
               </span>
               <span className="text-lg font-bold">{payment_amount} baht</span>
             </div>
+            <div className="text-red-700">Please verify your registration details before submitting.</div>
           </div>
 
           <button
