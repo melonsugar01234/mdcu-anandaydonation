@@ -33,7 +33,7 @@ export async function GET() {
 
     const totalMoneyData = await prisma.register.findMany();
     const totalMoney = totalMoneyData.reduce(
-      (sum: number, registration: { payment_amount: any }) => {
+      (sum: number, registration: { payment_amount: string | null }) => {
         const payValue = parseFloat(registration.payment_amount || "0") || 0; // Convert string to number, default to 0 if null
         return sum + payValue;
       },
@@ -43,7 +43,7 @@ export async function GET() {
       where: { payment_status: "Approved" },
     });
     const totalMoneyApproved = totalMoneyApprovedData.reduce(
-      (sum: number, registration: { payment_amount: any }) => {
+      (sum: number, registration: { payment_amount: string | null }) => {
         const payValue = parseFloat(registration.payment_amount || "0") || 0; // Convert string to number, default to 0 if null
         return sum + payValue;
       },
@@ -53,17 +53,18 @@ export async function GET() {
     // Total commemorable card order
     const totalCardOrdersData = await prisma.register.findMany();
     const totalCardOrders = totalCardOrdersData.reduce(
-      (sum: number, registration) => {
-        const cardValue = registration.card ?? 0; // Use nullish coalescing
+      (sum: number, registration: { card: number | null }) => {
+        const cardValue = registration.card ?? 0; // Use nullish coalescing to default to 0
         return sum + cardValue;
       },
       0
     );
 
+    // Total commemorable card with box orders
     const totalCardwithboxOrdersData = await prisma.register.findMany();
     const totalCardwithboxOrders = totalCardwithboxOrdersData.reduce(
-      (sum: number, registration) => {
-        const cardValue = registration.cardwithbox ?? 0; // Use nullish coalescing
+      (sum: number, registration: { cardwithbox: number | null }) => {
+        const cardValue = registration.cardwithbox ?? 0; // Use nullish coalescing to default to 0
         return sum + cardValue;
       },
       0
@@ -74,8 +75,8 @@ export async function GET() {
       where: { payment_status: "Approved" },
     });
     const totalCardOrdersApproved = totalCardOrdersApprovedData.reduce(
-      (sum: number, registration) => {
-        const cardValue = registration.card ?? 0; // Use nullish coalescing
+      (sum: number, registration: { card: number | null }) => {
+        const cardValue = registration.card ?? 0; // Use nullish coalescing to default to 0 if null
         return sum + cardValue;
       },
       0
@@ -85,22 +86,25 @@ export async function GET() {
       where: { payment_status: "Approved" },
     });
     const totalCardwithboxOrdersApproved =
-      totalCardwithboxOrdersApprovedData.reduce((sum: number, registration) => {
-        const cardValue = registration.cardwithbox ?? 0; // Use nullish coalescing
-        return sum + cardValue;
-      }, 0);
+      totalCardwithboxOrdersApprovedData.reduce(
+        (sum: number, registration: { cardwithbox: number | null }) => {
+          const cardValue = registration.cardwithbox ?? 0; // Use nullish coalescing to default to 0 if null
+          return sum + cardValue;
+        },
+        0
+      );
 
     // Total shirt orders
     const totalShirtOrders = await prisma.register.findMany();
     const shirtCounts: { [key: string]: number } = {};
 
-    totalShirtOrders.forEach((registration) => {
+    totalShirtOrders.forEach((registration: { shirts: string | null }) => {
       if (registration.shirts) {
         const shirts = registration.shirts.split(";");
         shirts.forEach((shirt) => {
           const [size, color, amount] = shirt.split("-");
           const key = `${size}-${color}`;
-          shirtCounts[key] = (shirtCounts[key] || 0) + parseInt(amount);
+          shirtCounts[key] = (shirtCounts[key] || 0) + (parseInt(amount) || 0); // Ensure amount is a number
         });
       }
     });
@@ -110,7 +114,7 @@ export async function GET() {
       where: { payment_status: "Approved" },
     });
     const shirtCountsApproved: { [key: string]: number } = {};
-    totalShirtOrdersApproved.forEach((registration) => {
+    totalShirtOrdersApproved.forEach((registration: { shirts: string | null }) => {
       if (registration.shirts) {
         const shirts = registration.shirts.split(";");
         shirts.forEach((shirt) => {

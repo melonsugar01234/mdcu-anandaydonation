@@ -30,3 +30,9 @@ model Register {
     name_on_receipt    String?
     address_on_receipt String?
 }
+
+model DonationStatus {
+    id        Int      @id @default(autoincrement())
+    isOpen    Boolean  @default(true) // true for open, false for closed
+    updatedAt DateTime @updatedAt
+}

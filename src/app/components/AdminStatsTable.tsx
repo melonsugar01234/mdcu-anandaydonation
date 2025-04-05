@@ -10,6 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
   ColumnFiltersState,
+  Row,
 } from "@tanstack/react-table";
 
 import * as XLSX from "xlsx";
@@ -50,17 +51,19 @@ export const columns: ColumnDef<Register>[] = [
   {
     accessorKey: "created_at",
     header: "created at",
-    cell: ({ row }) => formatDate(row.original.created_at),
+    cell: ({ row }: { row: Row<Register> }) =>
+      formatDate(row.original.created_at),
   },
   {
     accessorKey: "edited_at",
     header: "edited at",
-    cell: ({ row }) => formatDate(row.original.edited_at),
+    cell: ({ row }: { row: Row<Register> }) =>
+      formatDate(row.original.edited_at),
   },
   {
     accessorKey: "tracking_code",
     header: "tracking code",
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<Register> }) => (
       <Link
         href={`/admin/${row.original.id}`}
         className="text-blue-600 hover:underline"
@@ -72,9 +75,9 @@ export const columns: ColumnDef<Register>[] = [
   {
     accessorKey: "shipment_status",
     header: "shipment status",
-    cell: ({ row }) => {
+    cell: ({ row }: { row: Row<Register> }) => {
       const status = row.original.shipment_status;
-      const statusText = {
+      const statusText: Record<string, string> = {
         "0": "0 (Verifying Payment)",
         "1": "1 (Preparing)",
         "2": "2 (Shipped)",
@@ -91,7 +94,7 @@ export const columns: ColumnDef<Register>[] = [
   {
     accessorKey: "payment_status",
     header: "payment status",
-    cell: ({ row }) => {
+    cell: ({ row }: { row: Row<Register> }) => {
       const status = row.original.payment_status;
       const statusBadge = {
         Pending: <div className="badge badge-neutral">Pending</div>,
@@ -330,7 +333,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
       {/* table */}
       <table className="w-full border-collapse border border-gray-300">
         <thead className="bg-gray-100">
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table.getHeaderGroups().map((headerGroup: { id: React.Key | null | undefined; headers: any[]; }) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id} className="border p-2">
@@ -344,7 +347,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
+          {table.getRowModel().rows.map((row: Row<Register>) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="border p-2">
