@@ -158,23 +158,23 @@ function DonationSuccessContent() {
                 </tr>
                 <tr>
                   <td className="border p-2">
-                    <li>
-                      {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
-                    </li>
+                    {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
                   </td>
                   <td className="border p-2">{cardCount}</td>
                   <td className="border p-2">{cardTotal}</td>
                 </tr>
                 <tr>
                   <td className="border p-2">
-                    <li>{language === "en" ? "Shirt" : "เสื้อที่ระลึก"}</li>
+                    {language === "en" ? "Shirt" : "เสื้อที่ระลึก"}
                   </td>
                   <td className="border p-2">{totalShirtCount}</td>
                   <td className="border p-2">{shirtTotal}</td>
                 </tr>
                 <tr>
                   <td className="border p-2">
-                    <li>{language === "en" ? "Pin with box" : "เข็มที่ระลึกพร้อมกล่อง"}</li>
+                    {language === "en"
+                      ? "Pin with box"
+                      : "เข็มที่ระลึกพร้อมกล่อง"}
                   </td>
                   <td className="border p-2">{cardwithboxCount}</td>
                   <td className="border p-2">{cardwithboxTotal}</td>
@@ -184,7 +184,7 @@ function DonationSuccessContent() {
                     {language === "en" ? "Total" : "รวม"}
                   </td>
                   <td className="border p-2">-</td>
-                  <td className="border p-2">{payment_amount}</td>
+                  <td className="border p-2">{totalAmount}</td>
                 </tr>
               </tbody>
             </table>

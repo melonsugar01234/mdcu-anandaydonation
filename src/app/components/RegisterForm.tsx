@@ -456,11 +456,13 @@ const RegisterForm = ({
           />
           <div className="font-light">
             หมายเหตุ
-            <li>เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน</li>
-            <li>
+            <div>
+              เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน
+            </div>
+            <div>
               เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1 ชุด
-            </li>
-            <li>เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว</li>
+            </div>
+            <div>เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว</div>
           </div>
           <span className="text-xl">
             ตัวอย่างของที่ระลึกสำหรับผู้บริจาค (เข็มที่ระลึกพร้อมโปสการ์ด)
@@ -792,17 +794,17 @@ const RegisterForm = ({
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
-              <li className="text-lg font-semibold">
+              <span className="text-lg font-semibold">
                 มูลค่ารวมของเสื้อที่ระลึก:
-              </li>
+              </span>
               <span className="text-lg font-bold">
                 {calculateTotalShirtCost()} บาท
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
-              <li className="text-lg font-semibold">
+              <span className="text-lg font-semibold">
                 มูลค่ารวมของเข็มที่ระลึก:
-              </li>
+              </span>
               <span className="text-lg font-bold">
                 {calculateTotalCardCost()} บาท
               </span>
@@ -949,14 +951,15 @@ const RegisterForm = ({
           />
           <div className="font-light">
             Note
-            <li>
-              For each 150 baht donated, you can receive 1 commemorative pin with postcard
-            </li>
-            <li>
-              For each 250 baht donated, you can receive 1 set of commemorative pin with box
-              with box
-            </li>
-            <li>For each 350 baht donated, you can receive 1 T-shirt</li>
+            <div>
+              For each 150 baht donated, you can receive 1 commemorative pin
+              with postcard
+            </div>
+            <div>
+              For each 250 baht donated, you can receive 1 set of commemorative
+              pin with box
+            </div>
+            <div>For each 350 baht donated, you can receive 1 T-shirt</div>
           </div>
 
           <span className="text-xl">Souvenir example (Pin and postcard)</span>
@@ -1292,17 +1295,17 @@ const RegisterForm = ({
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
-              <li className="text-lg font-semibold">
+              <span className="text-lg font-semibold">
                 Total Price of Ordered Souvenir Shirts:
-              </li>
+              </span>
               <span className="text-lg font-bold">
                 {calculateTotalShirtCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
-              <li className="text-lg font-semibold">
+              <span className="text-lg font-semibold">
                 Total Price of Ordered Souvenir Pin:
-              </li>
+              </span>
               <span className="text-lg font-bold">
                 {calculateTotalCardCost()} baht
               </span>
