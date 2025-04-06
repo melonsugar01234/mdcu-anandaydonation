@@ -71,7 +71,7 @@ export default function ForgotTrackPage() {
               className="input input-bordered"
               required
             />
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-secondary text-white mt-2">
               {language === "th" ? "ค้นหา" : "Search"}
             </button>
           </form>
@@ -88,8 +88,8 @@ export default function ForgotTrackPage() {
             </div>
           )}
           <div className="mt-4 text-center">
-            <Link href="/forgotTrack" className="underline">
-              {language === "th" ? "ลืมรหัส" : "Forgot Code"}
+            <Link href="/track" className="underline">
+              {language === "th" ? "ติดตามสถานะ" : "View Status"}
             </Link>
           </div>
         </div>

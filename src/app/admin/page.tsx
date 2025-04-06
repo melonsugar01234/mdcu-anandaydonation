@@ -106,7 +106,7 @@ export default function AdminPage() {
           <a className="btn btn-ghost text-xl">Admin UI</a>
         </div>
       </h2>
-      <button onClick={toggleDonationStatus} className="btn btn-primary">
+      <button onClick={toggleDonationStatus} className="btn btn-primary my-4">
         {donationStatus ? "Close Donations" : "Open Donations"}
       </button>
       {statistics && <StatisticalData statistics={statistics} />}

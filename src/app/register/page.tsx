@@ -44,13 +44,17 @@ const RegisterPage = () => {
 
   if (!donationStatus) {
     return (
+      <>
+      <Navbar />
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold">
           {language === "en"
-            ? "Sorry, we are closed."
-            : "ขออภัย เราได้ปิดรับสมัครแล้ว"}
+            ? "We regret to inform you that the registration is now closed."
+            : "ขออภัย การลงทะเบียนได้ปิดแล้วในขณะนี้"}
         </h1>
       </div>
+    </>
+
     );
   }
 
