@@ -20,8 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/package.json /app
 COPY . .
 RUN mkdir -p /app/uploads
-# Change ownership of the uploads directory
-RUN chown -R nextjs:nodejs /app/uploads
+
 # Generates prisma files for linting
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm exec prisma generate
