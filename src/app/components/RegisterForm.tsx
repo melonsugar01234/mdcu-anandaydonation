@@ -322,7 +322,7 @@ const RegisterForm = ({
         payment_amount
       )}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(
         shirtData
-      )}`;
+      )}&cardwithbox=${encodeURIComponent(cardwithbox)}`;
     } catch (error) {
       console.error("❌ Error during registration:", error);
       alert("An error occurred. Please try again.");
@@ -700,7 +700,9 @@ const RegisterForm = ({
                 title="หมายเลขประจำตัวประชาชนต้องมี 13 หลัก" // Tooltip for user guidance
               />
               <div className="space-y-4">
-                <span className="text-xl">ชื่อ-นามสกุลที่ต้องการให้ปรากฎในใบเสร็จ</span>
+                <span className="text-xl">
+                  ชื่อ-นามสกุลที่ต้องการให้ปรากฎในใบเสร็จ
+                </span>
               </div>
               <input
                 required
@@ -711,7 +713,9 @@ const RegisterForm = ({
                 onChange={(e) => setNameOnReceipt(e.target.value)}
               />
               <div className="space-y-4">
-                <span className="text-xl">ที่อยู่ที่ต้องการให้ปรากฎในใบเสร็จ</span>
+                <span className="text-xl">
+                  ที่อยู่ที่ต้องการให้ปรากฎในใบเสร็จ
+                </span>
                 <input
                   required
                   type="text"
@@ -816,7 +820,9 @@ const RegisterForm = ({
               </span>
               <span className="text-lg font-bold">{payment_amount} บาท</span>
             </div>
-            <div className="text-red-700">โปรดตรวจสอบข้อมูลของท่านก่อนกดยืนยัน</div>
+            <div className="text-red-700">
+              โปรดตรวจสอบข้อมูลของท่านก่อนกดยืนยัน
+            </div>
           </div>
 
           <button
@@ -1285,7 +1291,9 @@ const RegisterForm = ({
             </div>
           )}
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
-          <div className="font-bold text-xl text-center">Donation summary</div>
+            <div className="font-bold text-xl text-center">
+              Donation summary
+            </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
                 Total Price of Ordered Souvenirs:
@@ -1316,7 +1324,9 @@ const RegisterForm = ({
               </span>
               <span className="text-lg font-bold">{payment_amount} baht</span>
             </div>
-            <div className="text-red-700">Please verify your registration details before submitting.</div>
+            <div className="text-red-700">
+              Please verify your registration details before submitting.
+            </div>
           </div>
 
           <button

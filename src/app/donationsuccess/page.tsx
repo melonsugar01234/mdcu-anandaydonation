@@ -130,7 +130,7 @@ function DonationSuccessContent() {
           {/* Order Details Table */}
           <div className="mt-6 text-left">
             <h3 className="text-lg font-semibold">
-              {language === "en" ? "Order Details" : "รายละเอียดคำสั่งซื้อ"}
+              {language === "en" ? "Donation Souvenir Details" : "รายละเอียดของสัมนาคุณการบริจาค"}
             </h3>
             <table className="w-full mt-2 border border-gray-300">
               <thead>
@@ -142,7 +142,7 @@ function DonationSuccessContent() {
                     {language === "en" ? "Quantity" : "จำนวน"}
                   </th>
                   <th className="border p-2">
-                    {language === "en" ? "Price (THB)" : "ราคา (บาท)"}
+                    {language === "en" ? "Value (THB)" : "มูลค่า (บาท)"}
                   </th>
                 </tr>
               </thead>
@@ -184,7 +184,7 @@ function DonationSuccessContent() {
                     {language === "en" ? "Total" : "รวม"}
                   </td>
                   <td className="border p-2">-</td>
-                  <td className="border p-2">{totalAmount}</td>
+                  <td className="border p-2">{payment_amount}</td>
                 </tr>
               </tbody>
             </table>
