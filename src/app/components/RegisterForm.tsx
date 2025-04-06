@@ -581,7 +581,7 @@ const RegisterForm = ({
                     className="select select-bordered bg-white"
                   >
                     <option value="white">White</option>
-                    <option value="red">Yellow</option>
+                    <option value="yellow">Yellow</option>
                   </select>
                   <select
                     value={shirt.amount}
@@ -596,7 +596,7 @@ const RegisterForm = ({
                     }
                     className="select select-bordered bg-white"
                   >
-                    {[...Array(7)].map((_, i) => (
+                    {[...Array(20)].map((_, i) => (
                       <option key={i} value={i + 1}>
                         {i + 1}
                       </option>
@@ -1089,7 +1089,7 @@ const RegisterForm = ({
                     className="select select-bordered bg-white"
                   >
                     <option value="white">White</option>
-                    <option value="red">Yellow</option>
+                    <option value="yellow">Yellow</option>
                   </select>
                   <select
                     value={shirt.amount}
@@ -1104,7 +1104,7 @@ const RegisterForm = ({
                     }
                     className="select select-bordered bg-white"
                   >
-                    {[...Array(7)].map((_, i) => (
+                    {[...Array(20)].map((_, i) => (
                       <option key={i} value={i + 1}>
                         {i + 1}
                       </option>
