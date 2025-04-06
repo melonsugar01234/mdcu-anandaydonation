@@ -799,18 +799,18 @@ const RegisterForm = ({
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-                มูลค่ารวมของเสื้อที่ระลึก:
-              </span>
-              <span className="text-lg font-bold">
-                {calculateTotalShirtCost()} บาท
-              </span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-lg font-semibold">
                 มูลค่ารวมของเข็มที่ระลึก:
               </span>
               <span className="text-lg font-bold">
                 {calculateTotalCardCost()} บาท
+              </span>
+            </div>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-lg font-semibold">
+                มูลค่ารวมของเสื้อที่ระลึก:
+              </span>
+              <span className="text-lg font-bold">
+                {calculateTotalShirtCost()} บาท
               </span>
             </div>
 
@@ -1304,18 +1304,18 @@ const RegisterForm = ({
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-                Total Price of Ordered Souvenir Shirts:
+                Total Price of Ordered Souvenir Pins:
               </span>
               <span className="text-lg font-bold">
-                {calculateTotalShirtCost()} baht
+                {calculateTotalCardCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
-                Total Price of Ordered Souvenir Pin:
+                Total Price of Ordered Souvenir Shirts:
               </span>
               <span className="text-lg font-bold">
-                {calculateTotalCardCost()} baht
+                {calculateTotalShirtCost()} baht
               </span>
             </div>
             <div className="flex justify-between items-center">
