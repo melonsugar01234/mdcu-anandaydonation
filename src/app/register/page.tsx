@@ -89,7 +89,7 @@ const RegisterPage = () => {
             />
           </div>
         </div>
-        <div
+<div
           className={`container mx-auto p-4 bg-stone-100 ${
             language === "en" ? "" : "hidden"
           }`}

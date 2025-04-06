@@ -14,6 +14,7 @@ interface Register {
   created_at: string;
   edited_at: string;
   card: number | null;
+  cardwithbox: number | null;
   shirts: string | null;
   shipment_status: string | null;
   payment_method: string | null;
@@ -146,6 +147,9 @@ export default function AdminApprovePaymentPage() {
         <div className="bg-white shadow-lg rounded-lg p-6">
           <p>
             <strong>Pins:</strong> {register.card}
+          </p>
+          <p>
+            <strong>Pin with box:</strong> {register.cardwithbox}
           </p>
           <p>
             <strong>Shirts:</strong> {register.shirts}
