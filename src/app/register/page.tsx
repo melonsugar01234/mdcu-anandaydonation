@@ -49,8 +49,8 @@ const RegisterPage = () => {
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold">
           {language === "en"
-            ? "We regret to inform you that the registration is now closed."
-            : "ขออภัย การลงทะเบียนได้ปิดแล้วในขณะนี้"}
+            ? "We regret to inform you that the donation is now closed."
+            : "ขออภัย การรับบริจาคได้ปิดแล้วในขณะนี้"}
         </h1>
       </div>
     </>
