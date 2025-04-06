@@ -309,6 +309,18 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
           </button>
           <button
             className={`btn btn-sm mr-2 ${
+              table.getColumn("shipment_status")?.getFilterValue() === "5"
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+            onClick={() =>
+              table.getColumn("shipment_status")?.setFilterValue("5")
+            }
+          >
+            No Order
+          </button>
+          <button
+            className={`btn btn-sm mr-2 ${
               table.getColumn("shipment_status")?.getFilterValue() === "99"
                 ? "btn-neutral"
                 : "btn-outline"
@@ -333,18 +345,25 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
       {/* table */}
       <table className="w-full border-collapse border border-gray-300">
         <thead className="bg-gray-100">
-          {table.getHeaderGroups().map((headerGroup: { id: React.Key | null | undefined; headers: any[]; }) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="border p-2">
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
+          {table
+            .getHeaderGroups()
+            .map(
+              (headerGroup: {
+                id: React.Key | null | undefined;
+                headers: any[];
+              }) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} className="border p-2">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              )
+            )}
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row: Row<Register>) => (
