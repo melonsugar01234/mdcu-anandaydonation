@@ -37,12 +37,17 @@ export const config = {
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("Received upload request");
     const filePath = await uploadMiddleware(req);
+    console.log("File uploaded successfully:", filePath);
     return new NextResponse(JSON.stringify({ filePath }), { status: 200 });
   } catch (error) {
     console.error("Error during file upload:", error);
     return new NextResponse(
-      JSON.stringify({ error: "Error during file upload" }),
+      JSON.stringify({
+        error: "Error during file upload",
+        details: (error as Error).message,
+      }),
       { status: 500 }
     );
   }
