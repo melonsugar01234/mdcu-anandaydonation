@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
-const uploadDir = path.join(process.cwd(), "uploads"); // ✅ NOT in /public
+const uploadDir = path.join(process.cwd(), 'uploads'); // ✅ NOT in /public
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -10,10 +10,10 @@ if (!fs.existsSync(uploadDir)) {
 
 const uploadMiddleware = async (req: NextRequest) => {
   const formData = await req.formData();
-  const file = formData.get("payment_proof") as File;
+  const file = formData.get('payment_proof') as File;
 
   if (!file) {
-    throw new Error("No file uploaded");
+    throw new Error('No file uploaded');
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -42,12 +42,16 @@ export async function POST(req: NextRequest) {
     console.log("File uploaded successfully:", filePath);
     return new NextResponse(JSON.stringify({ filePath }), { status: 200 });
   } catch (error) {
-    console.error("Error during file upload:", error);
+    console.error('Error during file upload:', error);
     return new NextResponse(
+<<<<<<< HEAD
       JSON.stringify({
         error: "Error during file upload",
         details: (error as Error).message,
       }),
+=======
+      JSON.stringify({ error: 'Error during file upload' }),
+>>>>>>> parent of 6544f46 (.)
       { status: 500 }
     );
   }
