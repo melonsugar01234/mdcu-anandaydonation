@@ -74,9 +74,18 @@ export default function RegistrationCard({
     : 0;
   const cardTotal = cardCount * 150;
 
+  // Calculate total cost for commemorative pins with boxes
+  const cardwithboxCount = registration.cardwithbox
+    ? parseInt(registration.cardwithbox.toString()) || 0
+    : 0;
+  const cardwithboxTotal = cardwithboxCount * 250;
+
   // Calculate the total amount
   const totalAmount =
-    parseFloat(registration.payment_amount || "0") + shirtTotal + cardTotal;
+    parseFloat(registration.payment_amount || "0") +
+    shirtTotal +
+    cardTotal +
+    cardwithboxTotal;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -193,7 +202,9 @@ export default function RegistrationCard({
               <tbody>
                 <tr>
                   <td className="border p-2">
-                    {language === "en" ? "Donation Amount" : "จำนวนเงินที่บริจาค"}
+                    {language === "en"
+                      ? "Donation Amount"
+                      : "จำนวนเงินที่บริจาค"}
                   </td>
                   <td className="border p-2">-</td>
                   <td className="border p-2">{registration.payment_amount}</td>
@@ -212,12 +223,21 @@ export default function RegistrationCard({
                   <td className="border p-2">{totalShirtCount}</td>
                   <td className="border p-2">{shirtTotal}</td>
                 </tr>
+                <tr>
+                  <td className="border p-2">
+                    {language === "en"
+                      ? "Pin with box"
+                      : "เข็มที่ระลึกพร้อมกล่อง"}
+                  </td>
+                  <td className="border p-2">{cardwithboxCount}</td>
+                  <td className="border p-2">{cardwithboxTotal}</td>
+                </tr>
                 <tr className="font-bold bg-gray-100">
                   <td className="border p-2">
                     {language === "en" ? "Total" : "รวม"}
                   </td>
                   <td className="border p-2">-</td>
-                  <td className="border p-2">{totalAmount}</td>
+                  <td className="border p-2">{registration.payment_amount}</td>
                 </tr>
               </tbody>
             </table>
