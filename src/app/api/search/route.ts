@@ -28,10 +28,12 @@ export async function GET(request: NextRequest) {
         tracking_code: true,
         shirts: true,
         card: true,
+        cardwithbox: true,
         shipment_status: true,
         payment_amount: true,
         payment_proof: true,
         payment_status: true,
+        receipt: true,
       },
     });
 

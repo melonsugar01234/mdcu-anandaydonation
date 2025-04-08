@@ -74,14 +74,17 @@ export default function RegistrationCard({
     : 0;
   const cardTotal = cardCount * 150;
 
+
   const cardwithboxCount = registration.cardwithbox
     ? parseInt(registration.cardwithbox.toString()) || 0
     : 0;
   const cardwithboxTotal = cardCount * 250;
 
-  // Calculate the total amount
   const totalAmount =
-    parseFloat(registration.payment_amount || "0") + shirtTotal + cardTotal;
+    parseFloat(registration.payment_amount || "0") +
+    shirtTotal +
+    cardTotal +
+    cardwithboxTotal;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -205,6 +208,7 @@ export default function RegistrationCard({
                   <td className="border p-2">-</td>
                   <td className="border p-2">{registration.payment_amount}</td>
                 </tr>
+
                 {cardCount !== 0 && cardCount !== undefined && (
                   <tr>
                     <td className="border p-2">
@@ -234,6 +238,7 @@ export default function RegistrationCard({
                     <td className="border p-2">{shirtTotal}</td>
                   </tr>
                 )}
+
                 <tr className="font-bold bg-gray-100">
                   <td className="border p-2">
                     {language === "en" ? "Total" : "รวม"}
