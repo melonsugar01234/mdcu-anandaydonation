@@ -1294,7 +1294,7 @@ const RegisterForm = ({
             <div className="font-bold text-xl text-center">
               Donation summary
             </div>
-            <div className="flex justify-between items-center mb-2">
+            {/* <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
                 Total Price of Ordered Souvenirs:
               </span>
@@ -1317,7 +1317,7 @@ const RegisterForm = ({
               <span className="text-lg font-bold">
                 {calculateTotalShirtCost()} baht
               </span>
-            </div>
+            </div> */}
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">
                 Total Money Donated:
