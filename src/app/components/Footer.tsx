@@ -13,7 +13,7 @@ export default function Footer() {
         }`}
       >
         <span>
-          คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย โทร. 02 256 4183 หรือ 02 256 4462
+          คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย โทร. 02 256 4183
         </span>
         <Link
           className="link link-accent"
@@ -30,8 +30,7 @@ export default function Footer() {
         }`}
       >
         <span>
-          Faculty of Medicine, Chulalongkorn University, Tel. 02 256 4183 or 02
-          256 4462
+          Faculty of Medicine, Chulalongkorn University, Tel. 02 256 4183
         </span>
 
         <Link
