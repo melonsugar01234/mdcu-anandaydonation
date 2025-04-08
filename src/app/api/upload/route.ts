@@ -42,7 +42,10 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error during file upload:', error);
     return new NextResponse(
-      JSON.stringify({ error: 'Error during file upload' }),
+      JSON.stringify({
+        error: "Error during file upload",
+        details: (error as Error).message,
+      }),
       { status: 500 }
     );
   }
