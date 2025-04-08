@@ -91,6 +91,27 @@ export default function AdminApprovePaymentPage() {
   const handleRejectPayment = () =>
     updateRegister({ payment_status: "Rejected" });
 
+  const handleDeleteRegistration = async () => {
+    if (!confirm("Are you sure you want to delete this registration?")) return;
+
+    try {
+      const res = await fetch(`/api/register/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to delete: ${res.status} - ${errorText}`);
+      }
+
+      alert("Registration deleted successfully!");
+      router.push("/admin"); // Redirect to the admin page after deletion
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete registration.");
+    }
+  };
+
   const getShipmentStatusText = (status: string | null) => {
     const statusText = {
       "0": "0 (Verifying Payment)",
@@ -175,9 +196,10 @@ export default function AdminApprovePaymentPage() {
 
         <h2 className="text-xl font-bold mt-6">Receipt</h2>
         <div className="bg-white shadow-lg rounded-lg p-6">
-          <p>
-            <strong>Receipt:</strong> {register.receipt}
-          </p>
+            <p>
+            <strong>Receipt:</strong>{" "}
+            {register.receipt === "yes" ? "✅" : "❌"}
+            </p>
           <p>
             <strong>National ID:</strong> {register.national_id}
           </p>
@@ -239,13 +261,34 @@ export default function AdminApprovePaymentPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
-            <button onClick={handleApprovePayment} className="btn btn-success">
-              Approve Payment Proof
-            </button>
-            <button onClick={handleRejectPayment} className="btn btn-error">
-              Reject Payment Proof
-            </button>
+          <div className="flex flex-col space-y-6">
+            {/* Approve / Reject Section */}
+            <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+              <button
+                onClick={handleApprovePayment}
+                className="btn btn-success"
+              >
+                Approve Payment Proof
+              </button>
+              <button onClick={handleRejectPayment} className="btn btn-error">
+                Reject Payment Proof
+              </button>
+            </div>
+
+            {/* delete registration */}
+            <div className="border border-red-300 rounded-lg p-4">
+              <div className="flex flex-col space-y-2">
+                <button
+                  onClick={handleDeleteRegistration}
+                  className="btn btn-warning"
+                >
+                  Delete Registration
+                </button>
+                <span className="text-sm text-red-700 font-medium">
+                  👿😡 Caution: delete registration cannot be undone!
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

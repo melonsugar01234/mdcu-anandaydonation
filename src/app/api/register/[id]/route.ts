@@ -59,3 +59,39 @@ export async function PUT(
     );
   }
 }
+
+// Updated DELETE handler
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: number }> }
+) {
+  try {
+    if (!(await params)?.id) throw new Error("Missing ID parameter.");
+
+    const id = Number((await params).id);
+    const register = await prisma.register.findUnique({
+      where: { id },
+    });
+
+    if (!register) {
+      return NextResponse.json(
+        { error: "Registration not found" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.register.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: "Registration deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting registration:", error);
+    return NextResponse.json(
+      { error: "Failed to delete registration" },
+      { status: 500 }
+    );
+  }
+}
+
+
