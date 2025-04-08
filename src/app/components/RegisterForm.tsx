@@ -789,15 +789,15 @@ const RegisterForm = ({
 
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-6">
             <div className="font-bold text-xl text-center">สรุปรายการ</div>
-            <div className="flex justify-between items-center mb-2">
+            {/* <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
                 มูลค่าของที่ระลึกรวม:
               </span>
               <span className="text-lg font-bold">
                 {calculateTotalShirtCost() + calculateTotalCardCost()} บาท
               </span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
+            </div> */}
+            {/* <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-semibold">
                 มูลค่ารวมของเข็มที่ระลึก:
               </span>
@@ -812,11 +812,11 @@ const RegisterForm = ({
               <span className="text-lg font-bold">
                 {calculateTotalShirtCost()} บาท
               </span>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">
-                จำนวนเงินที่ต้องการบริจาค:
+                ยอดรวมการร่วมบริจาคทั้งหมด
               </span>
               <span className="text-lg font-bold">{payment_amount} บาท</span>
             </div>
