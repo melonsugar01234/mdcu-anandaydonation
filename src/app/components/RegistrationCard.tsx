@@ -65,7 +65,7 @@ export default function RegistrationCard({
       const [, , amount] = shirt.split("-");
       totalShirtCount += parseInt(amount) || 0;
     });
-    shirtTotal = totalShirtCount * 299;
+    shirtTotal = totalShirtCount * 350;
   }
 
   // Calculate total cost for commemorative pins
@@ -73,6 +73,11 @@ export default function RegistrationCard({
     ? parseInt(registration.card.toString()) || 0
     : 0;
   const cardTotal = cardCount * 150;
+
+  const cardwithboxCount = registration.cardwithbox
+    ? parseInt(registration.cardwithbox.toString()) || 0
+    : 0;
+  const cardwithboxTotal = cardCount * 250;
 
   // Calculate the total amount
   const totalAmount =
@@ -174,7 +179,7 @@ export default function RegistrationCard({
           {/* Order Details Table */}
           <div className="mt-6 text-left">
             <h3 className="text-lg font-semibold">
-              {language === "en" ? "Order Details" : "รายละเอียดคำสั่งซื้อ"}
+              {language === "en" ? "Donation Details" : "รายละเอียดการบริจาค"}
             </h3>
             <table className="w-full mt-2 border border-gray-300">
               <thead>
@@ -193,31 +198,48 @@ export default function RegistrationCard({
               <tbody>
                 <tr>
                   <td className="border p-2">
-                    {language === "en" ? "Donation Amount" : "จำนวนเงินที่บริจาค"}
+                    {language === "en"
+                      ? "Donation Amount"
+                      : "จำนวนเงินที่บริจาค"}
                   </td>
                   <td className="border p-2">-</td>
                   <td className="border p-2">{registration.payment_amount}</td>
                 </tr>
-                <tr>
-                  <td className="border p-2">
-                    {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
-                  </td>
-                  <td className="border p-2">{cardCount}</td>
-                  <td className="border p-2">{cardTotal}</td>
-                </tr>
-                <tr>
-                  <td className="border p-2">
-                    {language === "en" ? "Shirt" : "เสื้อที่ระลึก"}
-                  </td>
-                  <td className="border p-2">{totalShirtCount}</td>
-                  <td className="border p-2">{shirtTotal}</td>
-                </tr>
+                {cardCount !== 0 && cardCount !== undefined && (
+                  <tr>
+                    <td className="border p-2">
+                      {language === "en" ? "Commemorative Pin" : "เข็มที่ระลึก"}
+                    </td>
+                    <td className="border p-2">{cardCount}</td>
+                    <td className="border p-2">{cardTotal}</td>
+                  </tr>
+                )}
+                {cardwithboxCount !== 0 && cardwithboxCount !== undefined && (
+                  <tr>
+                    <td className="border p-2">
+                      {language === "en"
+                        ? "Pin with box"
+                        : "เข็มที่ระลึกพร้อมกล่อง"}
+                    </td>
+                    <td className="border p-2">{cardwithboxCount}</td>
+                    <td className="border p-2">{cardwithboxTotal}</td>
+                  </tr>
+                )}
+                {totalShirtCount !== 0 && totalShirtCount !== undefined && (
+                  <tr>
+                    <td className="border p-2">
+                      {language === "en" ? "Shirt" : "เสื้อที่ระลึก"}
+                    </td>
+                    <td className="border p-2">{totalShirtCount}</td>
+                    <td className="border p-2">{shirtTotal}</td>
+                  </tr>
+                )}
                 <tr className="font-bold bg-gray-100">
                   <td className="border p-2">
                     {language === "en" ? "Total" : "รวม"}
                   </td>
                   <td className="border p-2">-</td>
-                  <td className="border p-2">{totalAmount}</td>
+                  <td className="border p-2">{registration.payment_amount}</td>
                 </tr>
               </tbody>
             </table>
