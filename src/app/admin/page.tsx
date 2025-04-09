@@ -107,7 +107,7 @@ export default function AdminPage() {
         </div>
       </h2>
       <button onClick={toggleDonationStatus} className="btn btn-primary my-4">
-        {donationStatus ? "Close Donations" : "Open Donations"}
+        {donationStatus ? "ปิดการบริจาค" : "เปิดการบริจาค"}
       </button>
       {statistics && <StatisticalData statistics={statistics} />}
       {statistics && <AdminStatsTable statistics={statistics} />}

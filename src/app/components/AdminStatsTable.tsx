@@ -50,19 +50,19 @@ function formatDate(timestamp: string) {
 export const columns: ColumnDef<Register>[] = [
   {
     accessorKey: "created_at",
-    header: "created at",
+    header: "วันที่สร้าง",
     cell: ({ row }: { row: Row<Register> }) =>
       formatDate(row.original.created_at),
   },
   {
     accessorKey: "edited_at",
-    header: "edited at",
+    header: "วันที่แก้ไข",
     cell: ({ row }: { row: Row<Register> }) =>
       formatDate(row.original.edited_at),
   },
   {
     accessorKey: "tracking_code",
-    header: "tracking code",
+    header: "รหัสติดตาม",
     cell: ({ row }: { row: Row<Register> }) => (
       <Link
         href={`/admin/${row.original.id}`}
@@ -74,32 +74,32 @@ export const columns: ColumnDef<Register>[] = [
   },
   {
     accessorKey: "shipment_status",
-    header: "shipment status",
+    header: "สถานะการจัดส่ง",
     cell: ({ row }: { row: Row<Register> }) => {
       const status = row.original.shipment_status;
       const statusText: Record<string, string> = {
-        "0": "0 (Verifying Payment)",
-        "1": "1 (Preparing)",
-        "2": "2 (Shipped)",
-        "3": "3 (Processing Receipt)",
-        "4": "4 (Receipt Shipped)",
-        "5": "5 (No order)",
-        "99": "99 (Error)",
+        "0": "กำลังตรวจสอบ",
+        "1": "กำลังเตรียมของ",
+        "2": "จัดส่งเข็มฯ / เสื้อเเล้ว",
+        "3": "อยู่ระหว่างออกใบเสร็จ",
+        "4": "จัดส่งใบเสร็จแล้ว",
+        "5": "ไม่มีคำสั่งซื้อ",
+        "99": "เกิดข้อผิดพลาด",
       };
-      return statusText[status as keyof typeof statusText] || "Unknown";
+      return statusText[status as keyof typeof statusText] || "ไม่ทราบ";
     },
   },
-  { accessorKey: "name", header: "name" },
-  { accessorKey: "phone", header: "phone" },
+  { accessorKey: "name", header: "ชื่อ" },
+  { accessorKey: "phone", header: "เบอร์โทร" },
   {
     accessorKey: "payment_status",
-    header: "payment status",
+    header: "สถานะการชำระเงิน",
     cell: ({ row }: { row: Row<Register> }) => {
       const status = row.original.payment_status;
       const statusBadge = {
-        Pending: <div className="badge badge-neutral">Pending</div>,
-        Approved: <div className="badge badge-success">Approved</div>,
-        Rejected: <div className="badge badge-error">Rejected</div>,
+        Pending: <div className="badge badge-neutral">รอดำเนินการ</div>,
+        Approved: <div className="badge badge-success">อนุมัติ</div>,
+        Rejected: <div className="badge badge-error">ปฏิเสธ</div>,
       };
 
       return statusBadge[status as keyof typeof statusBadge] || <div>-</div>;
@@ -170,7 +170,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
       <div className="mb-4">
         <input
           type="text"
-          placeholder="Search by name"
+          placeholder="ค้นหาด้วยชื่อ"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(e) =>
             table.getColumn("name")?.setFilterValue(e.target.value)
@@ -179,7 +179,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
         />
         <input
           type="text"
-          placeholder="Search by phone"
+          placeholder="ค้นหาด้วยโทรศัพท์"
           value={(table.getColumn("phone")?.getFilterValue() as string) ?? ""}
           onChange={(e) =>
             table.getColumn("phone")?.setFilterValue(e.target.value)
@@ -197,7 +197,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
       <div className="mb-4">
         {/* Payment Status Filters */}
         <div className="mb-2">
-          <span className="font-bold mr-2">Payment Status:</span>
+          <span className="font-bold mr-2">สถานะการชำระเงิน:</span>
           <button
             className={`btn btn-sm mr-2 ${
               table.getColumn("payment_status")?.getFilterValue() === "Pending"
@@ -208,7 +208,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("payment_status")?.setFilterValue("Pending")
             }
           >
-            Pending
+            รอดำเนินการ
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -220,7 +220,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("payment_status")?.setFilterValue("Approved")
             }
           >
-            Approved
+            อนุมัติ
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -232,7 +232,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("payment_status")?.setFilterValue("Rejected")
             }
           >
-            Rejected
+            ปฏิเสธ
           </button>
           <button
             className="btn btn-sm btn-outline"
@@ -240,13 +240,13 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("payment_status")?.setFilterValue("")
             }
           >
-            Clear
+            ล้าง
           </button>
         </div>
 
         {/* Shipment Status Filters */}
         <div>
-          <span className="font-bold mr-2">Shipment Status:</span>
+          <span className="font-bold mr-2">สถานะการจัดส่ง:</span>
           <button
             className={`btn btn-sm mr-2 ${
               table.getColumn("shipment_status")?.getFilterValue() === "0"
@@ -257,7 +257,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("0")
             }
           >
-            Verifying Payment
+            กำลังตรวจสอบ
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -269,7 +269,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("1")
             }
           >
-            Preparing
+            กำลังเตรียมของ
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -281,7 +281,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("2")
             }
           >
-            Shipped
+            จัดส่งเข็มฯ / เสื้อเเล้ว
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -293,7 +293,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("3")
             }
           >
-            Processing Receipt
+            อยู่ระหว่างออกใบเสร็จ
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -305,7 +305,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("4")
             }
           >
-            Receipt Shipped
+            จัดส่งใบเสร็จแล้ว
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -317,7 +317,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("5")
             }
           >
-            No Order
+            ไม่มีคำสั่งซื้อ
           </button>
           <button
             className={`btn btn-sm mr-2 ${
@@ -329,7 +329,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("99")
             }
           >
-            Error
+            เกิดข้อผิดพลาด
           </button>
           <button
             className="btn btn-sm btn-outline"
@@ -337,7 +337,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
               table.getColumn("shipment_status")?.setFilterValue("")
             }
           >
-            Clear
+            ล้าง
           </button>
         </div>
       </div>

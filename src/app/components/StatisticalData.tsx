@@ -23,42 +23,45 @@ interface StatisticalDataProps {
 const StatisticalData: React.FC<StatisticalDataProps> = ({ statistics }) => {
   return (
     <div className="space-x-4 space-y-0.5">
-      <h2 className="text-xl font-bold">Statistical Data</h2>
-      <p>Total Donators:{" "} {statistics.totalDonators}</p>
-      <p>Total donation (ALL):{" "} {statistics.totalMoney}</p>
-      <p>Total donation (Approved payment):{" "} {statistics.totalMoneyApproved}</p>
-      <p>Donators Without Order:{" "} {statistics.donatorsWithoutOrder}</p>
-      <p>Donators With Shirt Order:{" "} {statistics.donatorsWithShirtOrder}</p>
+      <h2 className="text-xl font-bold">ข้อมูลสถิติ</h2>
+      <p>ผู้บริจาครวมทั้งหมด: {statistics.totalDonators}</p>
+      <p>ยอดบริจาครวม (ทั้งหมด): {statistics.totalMoney}</p>
+      <p>ยอดบริจาครวม (ตรวจสอบการชำระเงินแล้ว): {statistics.totalMoneyApproved}</p>
+      <p>ผู้บริจาคที่ไม่มีคำสั่งซื้อ: {statistics.donatorsWithoutOrder}</p>
+      <p>ผู้บริจาคที่สั่งซื้อเสื้อที่ระลึก: {statistics.donatorsWithShirtOrder}</p>
+      <p>ผู้บริจาคที่สั่งซื้อเข็มที่ระลึก: {statistics.donatorsWithCardOrder}</p>
       <p>
-        Donators With Commemorative Pin Order:{" "}
-        {statistics.donatorsWithCardOrder}
-      </p>
-      <p>
-        Donators With Both Shirt and Pin Order:{" "}
+        ผู้บริจาคที่สั่งซื้อทั้งเสื้อที่ระลึกและเข็มที่ระลึก:{" "}
         {statistics.donatorsWithBothOrders}
       </p>
-      <p>Total memorial Pin Orders: {statistics.totalCardOrders}</p>
+      <p>ยอดสั่งซื้อเข็มที่ระลึกทั้งหมด: {statistics.totalCardOrders}</p>
       <p>
-        Total memorial Pin Orders (Approved Payment):{" "}
+        ยอดสั่งซื้อเข็มที่ระลึกทั้งหมด (ตรวจสอบการชำระเงินแล้ว):{" "}
         {statistics.totalCardOrdersApproved}
       </p>
-      <p>Total memorial Pin with box set orders:{" "} {statistics.totalCardwithboxOrders}</p>
-      <p>Total memorial Pin with box set orders (Approved payment):{" "} {statistics.totalCardwithboxOrdersApproved}</p>
-      <h3 className="font-bold">Total Shirt Orders:</h3>
+      <p>
+        ยอดสั่งซื้อเข็มพร้อมกล่องทั้งหมด:{" "}
+        {statistics.totalCardwithboxOrders}
+      </p>
+      <p>
+        ยอดสั่งซื้อเข็มพร้อมกล่องทั้งหมด (ชำระเงินแล้ว):{" "}
+        {statistics.totalCardwithboxOrdersApproved}
+      </p>
+      <h3 className="font-bold">ยอดสั่งซื้อเสื้อที่ระลึกทั้งหมด:</h3>
       {Object.entries(statistics.totalShirtOrders).map(([key, count]) => (
         <p key={key}>
-          Total {key}: {count}
+          รวม {key}: {count}
         </p>
       ))}
 
-      <h3 className="font-bold">Total Shirt Orders (Approved Payment):</h3>
+      {/* <h3 className="font-bold">ยอดสั่งซื้อเสื้อที่ระลึกทั้งหมด (ชำระเงินแล้ว):</h3>
       {Object.entries(statistics.totalShirtOrdersApproved).map(
         ([key, count]) => (
           <p key={key}>
-            Total {key}: {count}
+            รวม {key}: {count}
           </p>
         )
-      )}
+      )} */}
     </div>
   );
 };

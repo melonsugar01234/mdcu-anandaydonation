@@ -110,7 +110,21 @@ export default function RegistrationCard({
                     : ""
                 }`}
               >
-                {registration.payment_status || "Pending"}
+                {registration.payment_status === "Pending"
+                  ? language === "en"
+                    ? "Pending"
+                    : "รอดำเนินการ"
+                  : registration.payment_status === "Approved"
+                  ? language === "en"
+                    ? "Approved"
+                    : "อนุมัติ"
+                  : registration.payment_status === "Rejected"
+                  ? language === "en"
+                    ? "Rejected"
+                    : "ปฏิเสธ"
+                  : language === "en"
+                  ? "Unknown"
+                  : "ไม่ทราบสถานะ"}
               </span>
             </p>
             <p>
