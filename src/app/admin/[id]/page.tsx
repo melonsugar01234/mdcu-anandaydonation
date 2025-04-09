@@ -114,13 +114,13 @@ export default function AdminApprovePaymentPage() {
 
   const getShipmentStatusText = (status: string | null) => {
     const statusText = {
-      "0": "0 (Verifying Payment)",
-      "1": "1 (Preparing)",
-      "2": "2 (Shipped)",
-      "3": "3 (Processing Receipt)",
-      "4": "4 (Receipt Shipped)",
-      "5": "5 (No order)",
-      "99": "99 (Error)",
+      "0": "0 กำลังตรวจสอบ (Pending / Verifying)",
+      "1": "1 กำลังเตรียมของ (Preparing)",
+      "2": "2 จัดส่งเข็มฯ / เสื้อเเล้ว (Shipped)",
+      "3": "3 อยู่ระหว่างออกใบเสร็จ (Processing Receipt)",
+      "4": "4 จัดส่งใบเสร็จแล้ว (Receipt Shipped)",
+      "5": "5 ไม่มีคำสั่งซื้อ (No order)",
+      "99": "99 เกิดข้อผิดพลาด (Error)",
     };
     return status
       ? statusText[status as keyof typeof statusText] || "Unknown"
@@ -137,56 +137,56 @@ export default function AdminApprovePaymentPage() {
           onClick={() => router.back()}
           className="mb-4 px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
         >
-          ← Go Back
+          ← ย้อนกลับ
         </button>
 
         <h1 className="text-2xl font-bold text-center mb-6">
-          Registration Info
+          ข้อมูลการลงทะเบียน
         </h1>
         <div className="bg-white shadow-lg rounded-lg p-6">
           <p>
-            <strong>ID:</strong> {register.id}
+            <strong>รหัส:</strong> {register.id}
           </p>
           <p>
-            <strong>Name:</strong> {register.name}
+            <strong>ชื่อ:</strong> {register.name}
           </p>
           <p>
-            <strong>Phone:</strong> {register.phone}
+            <strong>เบอร์โทร:</strong> {register.phone}
           </p>
           <p>
-            <strong>Email:</strong> {register.email}
+            <strong>อีเมล:</strong> {register.email}
           </p>
           <p>
-            <strong>Address:</strong> {register.home}
+            <strong>ที่อยู่:</strong> {register.home}
           </p>
           <p>
-            <strong>Tracking Code:</strong> {register.tracking_code}
+            <strong>รหัสติดตาม:</strong> {register.tracking_code}
           </p>
         </div>
 
-        <h2 className="text-xl font-bold mt-6">Orders Info</h2>
+        <h2 className="text-xl font-bold mt-6">ข้อมูลคำสั่งซื้อ</h2>
         <div className="bg-white shadow-lg rounded-lg p-6">
           <p>
-            <strong>Pins:</strong> {register.card}
+            <strong>เข็มที่ระลึก:</strong> {register.card}
           </p>
           <p>
-            <strong>Pin with box:</strong> {register.cardwithbox}
+            <strong>เข็มที่ระลึกพร้อมกล่อง:</strong> {register.cardwithbox}
           </p>
           <p>
-            <strong>Shirts:</strong> {register.shirts}
+            <strong>เสื้อที่ระลึก:</strong> {register.shirts}
           </p>
           <p>
-            <strong>Payment Method:</strong> {register.payment_method}
+            <strong>วิธีการชำระเงิน:</strong> {register.payment_method}
           </p>
           <p>
-            <strong>Payment Amount:</strong> {register.payment_amount} บาท
+            <strong>จำนวนเงินที่ชำระ:</strong> {register.payment_amount} บาท
           </p>
           {register.payment_proof && (
             <div>
               <figure className="mb-4">
                 <img
                   src={`${register.payment_proof}`}
-                  alt="Payment proof"
+                  alt="หลักฐานการชำระเงิน"
                   className="rounded-lg max-w-sm"
                 />
               </figure>
@@ -194,43 +194,48 @@ export default function AdminApprovePaymentPage() {
           )}
         </div>
 
-        <h2 className="text-xl font-bold mt-6">Receipt</h2>
+        <h2 className="text-xl font-bold mt-6">ใบเสร็จ</h2>
         <div className="bg-white shadow-lg rounded-lg p-6">
-            <p>
-            <strong>Receipt:</strong>{" "}
+          <p>
+            <strong>รับใบเสร็จ:</strong>{" "}
             {register.receipt === "yes" ? "✅" : "❌"}
-            </p>
-          <p>
-            <strong>National ID:</strong> {register.national_id}
           </p>
           <p>
-            <strong>Name on Receipt:</strong> {register.name_on_receipt}
+            <strong>เลขบัตรประชาชน:</strong> {register.national_id}
           </p>
           <p>
-            <strong>Address on Receipt:</strong> {register.address_on_receipt}
+            <strong>ชื่อในใบเสร็จ:</strong> {register.name_on_receipt}
+          </p>
+          <p>
+            <strong>ที่อยู่ในใบเสร็จ:</strong> {register.address_on_receipt}
           </p>
         </div>
 
-        <h2 className="text-xl font-bold mt-6">Status</h2>
+        <h2 className="text-xl font-bold mt-6">สถานะ</h2>
         <div className="bg-white shadow-lg rounded-lg p-6 space-y-6">
-          {/* Shipment Status */}
+          {/* สถานะการจัดส่ง */}
           <div>
-            <p className="font-semibold text-lg">Shipment Status:</p>
+            <p className="font-semibold text-lg">สถานะการจัดส่ง:</p>
             <p className="mb-4">
               {getShipmentStatusText(register.shipment_status)}
             </p>
             <form onSubmit={handleStatusChange} className="space-y-4">
-              <label className="block font-bold">Update Shipment Status:</label>
+              <label className="block font-bold">อัปเดตสถานะการจัดส่ง:</label>
               <div className="space-y-2">
                 {[
                   { value: "0", label: "0 กำลังตรวจสอบ (Pending / Verifying)" },
                   { value: "1", label: "1 กำลังเตรียมของ (Preparing)" },
                   { value: "2", label: "2 จัดส่งเข็มฯ / เสื้อเเล้ว (Shipped)" },
-                  { value: "3", label: "3 อยู่ระหว่างออกใบเสร็จ (Processing Receipt)" },
-                  { value: "4", label: "4 จัดส่งใบเสร็จแล้ว (Receipt Shipped)"},
+                  {
+                    value: "3",
+                    label: "3 อยู่ระหว่างออกใบเสร็จ (Processing Receipt)",
+                  },
+                  {
+                    value: "4",
+                    label: "4 จัดส่งใบเสร็จแล้ว (Receipt Shipped)",
+                  },
                   { value: "5", label: "5 ไม่มีคำสั่งซื้อ (No order)" },
                   { value: "99", label: "99 เกิดข้อผิดพลาด (Error)" },
-
                 ].map((status) => (
                   <label
                     key={status.value}
@@ -249,43 +254,52 @@ export default function AdminApprovePaymentPage() {
                 ))}
               </div>
               <button type="submit" className="btn btn-info">
-                Update Shipment Status
+                อัปเดตสถานะการจัดส่ง
               </button>
             </form>
           </div>
 
           {/* Payment Status */}
           <div>
-            <p className="font-semibold text-lg">Payment Status:</p>
-            <p className="mb-4">{register.payment_status}</p>
+            <p className="font-semibold text-lg">สถานะการชำระเงิน:</p>
+            <p className="mb-4">
+              {register.payment_status === "Pending"
+                ? "รอดำเนินการ"
+                : register.payment_status === "Approved"
+                ? "อนุมัติ"
+                : register.payment_status === "Rejected"
+                ? "ปฏิเสธ"
+                : "ไม่ทราบสถานะ"}{" "}
+              {/* Default fallback */}
+            </p>
           </div>
 
-          {/* Action Buttons */}
+          {/* ปุ่มดำเนินการ */}
           <div className="flex flex-col space-y-6">
-            {/* Approve / Reject Section */}
+            {/* ส่วนอนุมัติ / ปฏิเสธ */}
             <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
               <button
                 onClick={handleApprovePayment}
                 className="btn btn-success"
               >
-                Approve Payment Proof
+                อนุมัติหลักฐานการชำระเงิน
               </button>
               <button onClick={handleRejectPayment} className="btn btn-error">
-                Reject Payment Proof
+                ปฏิเสธหลักฐานการชำระเงิน
               </button>
             </div>
 
-            {/* delete registration */}
+            {/* ลบการลงทะเบียน */}
             <div className="border border-red-300 rounded-lg p-4">
               <div className="flex flex-col space-y-2">
                 <button
                   onClick={handleDeleteRegistration}
                   className="btn btn-warning"
                 >
-                  Delete Registration
+                  ลบการลงทะเบียน
                 </button>
                 <span className="text-sm text-red-700 font-medium">
-                  👿😡 Caution: delete registration cannot be undone!
+                  👿😡 คำเตือน: การลบไม่สามารถยกเลิกกลับได้!
                 </span>
               </div>
             </div>
