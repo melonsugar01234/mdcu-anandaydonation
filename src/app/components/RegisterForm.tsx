@@ -464,7 +464,7 @@ const RegisterForm = ({
             </div>
             <div>เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว</div>
           </div>
-          <span className="text-xl">
+          <span className="text-xl text-center">
             ตัวอย่างของที่ระลึกสำหรับผู้บริจาค (เข็มที่ระลึกพร้อมโปสการ์ด)
           </span>
           <div className="flex justify-center space-x-4">
@@ -486,13 +486,13 @@ const RegisterForm = ({
               </div>
             ))}
           </div>
-          <span className="text-xl">ตัวอย่างเข็มที่ระลึกและกล่อง</span>
+          <span className="text-xl text-center">ตัวอย่างเข็มที่ระลึกและกล่อง</span>
           <img
             src="/images/thaipin.jpg"
             alt="thaipin"
             className="w-full h-auto object-contain"
           />
-          <span className="text-xl font-semibold">เข็มที่ระลึก</span>
+          <span className="text-xl">เข็มที่ระลึก</span>
           <span className="text-xl">
             จำนวนเข็มที่ต้องการรับ (เงินบริจาค 150 บาทต่อเข็มที่ระลึก 1 เข็ม)
           </span>
@@ -515,12 +515,12 @@ const RegisterForm = ({
             onChange={(e) => setCardwithbox(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
-          <span>ตัวอย่างเสื้อที่ระลึก</span>
-          <div className="flex justify-center w-full">
+          <span className="text-xl text-center">ตัวอย่างเสื้อที่ระลึก</span>
+          <div className="flex justify-center w-full max-w-[700px] mx-auto">
             <img
-              src="/images/shirt.jpg"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
+              src="/images/2025/shirts.jpg"
+              alt="shirts"
+              className=" rounded-xl shadow-lg w-full h-auto object-contain"
             />
           </div>
           <span className="text-xl">
@@ -635,9 +635,9 @@ const RegisterForm = ({
               <option value="Bank number">Bank number</option>
             </select>
             <img
-              src="/images/newpayQR.png"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
+              src="/images/2025/qr2568.jpg"
+              alt="qr"
+              className="rounded-xl w-full h-auto object-contain"
             />
           </div>
           <div className="form-control w-full">
@@ -968,7 +968,7 @@ const RegisterForm = ({
             <div>For each 350 baht donated, you can receive 1 T-shirt</div>
           </div>
 
-          <span className="text-xl">Souvenir example (Pin and postcard)</span>
+          <span className="text-xl text-center">Souvenir example (Pin and postcard)</span>
 
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
@@ -989,7 +989,7 @@ const RegisterForm = ({
               </div>
             ))}
           </div>
-          <span className="text-xl">Memorial pin and box example</span>
+          <span className="text-xl text-center">Memorial pin and box example</span>
 
           <div className="flex justify-center w-full">
             <img
@@ -1022,13 +1022,13 @@ const RegisterForm = ({
             onChange={(e) => setCardwithbox(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
-          <span className="text-xl">T-Shirts example</span>
+          <span className="text-xl text-center">T-Shirts example</span>
 
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-full max-w-[700px] mx-auto">
             <img
-              src="/images/shirt.jpg"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
+              src="/images/2025/shirts.jpg"
+              alt="shirts"
+              className=" rounded-xl shadow-lg w-full h-auto object-contain"
             />
           </div>
           <span className="text-xl">
@@ -1143,9 +1143,9 @@ const RegisterForm = ({
               <option value="Bank number">Bank number</option>
             </select>
             <img
-              src="/images/newpayQR.png"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
+              src="/images/2025/qr2568.jpg"
+              alt="qr"
+              className="rounded-xl w-full h-auto object-contain"
             />
           </div>
           <div className="form-control w-full">

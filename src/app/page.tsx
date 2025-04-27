@@ -59,7 +59,7 @@ export default function Home() {
         
         <div className="w-full max-w-[1000px] mx-auto">
           <img
-            src="/images/newpayQR.png"
+            src="/images/2025/qr2568.jpg"
             alt="bookbank"
             className="w-full h-auto object-contain"
           />
@@ -142,7 +142,7 @@ export default function Home() {
         </Link> */}
         <div className="w-full max-w-[1000px] mx-auto">
           <img
-            src="/images/newpayQR.png"
+            src="/images/2025/qr2568.jpg"
             alt="bookbank"
             className="w-full h-auto object-contain"
           />
