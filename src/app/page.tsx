@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      
+
       <div
         className={`text-slate-900 flex flex-col items-center gap-4 p-4 bg-stone-100 ${
           clientLanguage === "th" ? "" : "hidden"
@@ -30,6 +30,19 @@ export default function Home() {
             className="w-full h-auto object-cover"
           />
         </div>
+        <div className="divider" />
+        <div className="text-2xl mb-4 text-center">
+          <div>โครงการเข็มวันอานันทมหิดล คณะแพทยศาสตร์</div>
+          <div>จุฬาลงกรณ์มหาวิทยาลัย ประจำปี พ.ศ. ๒๕๖๘</div>
+        </div>
+        <div className="w-full max-w-[1000px] mx-auto">
+          <img
+            src="/images/2025/banner2.jpg"
+            alt="banner_2"
+            className="w-full h-auto object-cover"
+          />
+        </div>
+
         <div className="divider"></div>
         {/* <h1 className="text-xl font-bold">
           'Miles for Heart' Virtual Walk and Run เปิดรับสมัครแล้ววันนี้
@@ -56,7 +69,7 @@ export default function Home() {
           >
             ลงทะเบียนงานวิ่ง
           </Link> */}
-        
+
         <div className="w-full max-w-[1000px] mx-auto">
           <img
             src="/images/2025/qr2568.jpg"
@@ -64,12 +77,12 @@ export default function Home() {
             className="w-full h-auto object-contain"
           />
         </div>
-          <Link
-            href="/register"
-            className="btn btn-wide bg-yellow2025 text-white"
-          >
-            ลงทะเบียน
-          </Link>
+        <Link
+          href="/register"
+          className="btn btn-wide bg-yellow2025 text-white"
+        >
+          ลงทะเบียน
+        </Link>
         <h2 className="text-xl">
           ขั้นตอนการขอรับเข็มหรือเสื้อยืดที่ระลึกวันอานันทมหิดล
         </h2>
@@ -86,7 +99,8 @@ export default function Home() {
                     เงินบริจาคทุก 150 บาท สามารถรับเข็มเดี่ยวที่ระลึกได้ 1 อัน
                   </li>
                   <li>
-                    เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1 ชุด
+                    เงินบริจาคทุก 250 บาท สามารถรับชุดเข็มที่ระลึกพร้อมกล่อง 1
+                    ชุด
                   </li>
                   <li>
                     เงินบริจาคทุก 350 บาท สามารถรับเสื้อยืดที่ระลึกได้ 1 ตัว
@@ -113,6 +127,14 @@ export default function Home() {
       >
         <div className="w-full max-w-[1000px] mx-auto">
           <img src="/images/Logo2.png" alt="banner_1" />
+        </div>
+        <div className="divider" />
+        <div className="text-2xl mb-4 text-center">
+          <div>Ananda Mahidol the Faculty of Medicine</div>
+          <div>Chulalongkorn University year 2025</div>
+        </div>
+        <div className="w-full max-w-[1000px] mx-auto">
+          <img src="/images/2025/banner2.jpg" alt="banner_2" />
         </div>
         <div className="divider"></div>
         {/* <h1 className="text-xl font-bold">
@@ -147,7 +169,10 @@ export default function Home() {
             className="w-full h-auto object-contain"
           />
         </div>
-        <Link href="/register" className="btn btn-wide bg-yellow2025 text-white">
+        <Link
+          href="/register"
+          className="btn btn-wide bg-yellow2025 text-white"
+        >
           Register
         </Link>
         <h2 className="text-xl">
@@ -163,9 +188,13 @@ export default function Home() {
                 the donation amount
                 <ol className="list-decimal list-inside ml-4">
                   <li>
-                    For each 150 baht donated, you can receive 1 commemorative pin with postcard
+                    For each 150 baht donated, you can receive 1 commemorative
+                    pin with postcard
                   </li>
-                  <li>For each 250 baht donated, you can receive 1 set of commemorative pin with box</li>
+                  <li>
+                    For each 250 baht donated, you can receive 1 set of
+                    commemorative pin with box
+                  </li>
                   <li>For each 350 baht donated, you can receive 1 T-shirt</li>
                 </ol>
               </li>

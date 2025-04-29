@@ -486,11 +486,18 @@ const RegisterForm = ({
               </div>
             ))}
           </div>
+          <div className="flex justify-center w-full max-w-[700px] mx-auto">
+            <img
+              src="/images/2025/postcard.jpg"
+              alt="postcard"
+              className="rounded-xl w-full h-auto object-contain"
+            />
+          </div>
           <span className="text-xl text-center">ตัวอย่างเข็มที่ระลึกและกล่อง</span>
           <img
-            src="/images/thaipin.jpg"
-            alt="thaipin"
-            className="w-full h-auto object-contain"
+            src="/images/2025/pinbox.jpg"
+            alt="pinbox"
+            className="rounded-xl w-full h-auto object-contain"
           />
           <span className="text-xl">เข็มที่ระลึก</span>
           <span className="text-xl">
@@ -993,9 +1000,9 @@ const RegisterForm = ({
 
           <div className="flex justify-center w-full">
             <img
-              src="/images/enpin.jpg"
-              alt="banner_1"
-              className="w-full h-auto object-contain"
+              src="/images/2025/pinbox.jpg"
+              alt="pinbox"
+              className="rounded-xl w-full h-auto object-contain"
             />
           </div>
           <span className="text-xl">
