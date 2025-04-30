@@ -996,6 +996,13 @@ const RegisterForm = ({
               </div>
             ))}
           </div>
+          <div className="flex justify-center w-full max-w-[700px] mx-auto">
+            <img
+              src="/images/2025/postcard.jpg"
+              alt="postcard"
+              className="rounded-xl w-full h-auto object-contain"
+            />
+          </div>
           <span className="text-xl text-center">Memorial pin and box example</span>
 
           <div className="flex justify-center w-full">
