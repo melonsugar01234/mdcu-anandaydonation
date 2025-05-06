@@ -78,7 +78,7 @@ export default function RegistrationCard({
   const cardwithboxCount = registration.cardwithbox
     ? parseInt(registration.cardwithbox.toString()) || 0
     : 0;
-  const cardwithboxTotal = cardCount * 250;
+  const cardwithboxTotal = cardwithboxCount * 250;
 
   const totalAmount =
     parseFloat(registration.payment_amount || "0") +
