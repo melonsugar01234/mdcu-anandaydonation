@@ -28,7 +28,7 @@ model Register {
     receipt            String? // yes or no
     national_id        String?
     name_on_receipt    String?
-    address_on_receipt String? @db.Text
+    address_on_receipt String?  @db.Text
 }
 
 model DonationStatus {
