@@ -13,7 +13,7 @@ model Register {
     name               String
     phone              String
     email              String?  @default("")
-    home               String
+    home               String   @db.Text
     tracking_code      String   @unique
     created_at         DateTime @default(now())
     edited_at          DateTime @updatedAt
@@ -28,7 +28,7 @@ model Register {
     receipt            String? // yes or no
     national_id        String?
     name_on_receipt    String?
-    address_on_receipt String?
+    address_on_receipt String? @db.Text
 }
 
 model DonationStatus {
