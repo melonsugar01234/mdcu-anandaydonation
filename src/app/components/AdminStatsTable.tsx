@@ -25,6 +25,7 @@ interface Register {
   created_at: string;
   edited_at: string;
   card: number | null;
+  cardwithbox: number | null;
   shirts: string | null;
   shipment_status: string | null;
   payment_method: string | null;
@@ -104,6 +105,91 @@ export const columns: ColumnDef<Register>[] = [
 
       return statusBadge[status as keyof typeof statusBadge] || <div>-</div>;
     },
+  },
+  {
+    accessorKey: "receipt",
+    header: "รับใบเสร็จ",
+    cell: ({ row }: { row: Row<Register> }) => {
+      return row.original.receipt ?? "-";
+    },
+  },
+  {
+    accessorKey: "card",
+    header: "เข็ม",
+    filterFn: (row, id, filterValue) => {
+      if (filterValue === "card_gt_0") {
+        const value = row.getValue(id);
+        return typeof value === "number" && value > 0;
+      }
+      return true;
+    },
+  },
+  {
+    accessorKey: "cardwithbox",
+    header: "เข็มพร้อมกล่อง",
+    filterFn: (row, id, filterValue) => {
+      if (filterValue === "cardwithbox_gt_0") {
+        const value = row.getValue(id);
+        return typeof value === "number" && value > 0;
+      }
+      return true;
+    },
+  },
+  {
+    accessorKey: "shirts",
+    header: "เสื้อ",
+    filterFn: (row, id, filterValue) => {
+      if (filterValue === "shirts_not_null") {
+        return row.getValue(id) !== null && row.getValue(id) !== undefined;
+      }
+      return true;
+    },
+  },
+  {
+    id: "combinedFilter",
+    accessorFn: (row) => row, // ใช้ row ทั้งก้อน เพราะ filter ต้องอ่านหลายฟิลด์
+    filterFn: (row, columnId, filterValue) => {
+      const card = row.original.card ?? 0;
+      const cardwithbox = row.original.cardwithbox ?? 0;
+      const shirts = row.original.shirts ?? "";
+
+      switch (filterValue) {
+        case "card_gt_0":
+          return (
+            typeof card === "number" &&
+            card > 0 &&
+            typeof cardwithbox === "number" &&
+            cardwithbox === 0 &&
+            shirts.trim() === ""
+          );
+        case "cardwithbox_gt_0":
+          return (
+            typeof cardwithbox === "number" &&
+            cardwithbox > 0 &&
+            typeof card === "number" &&
+            card === 0 &&
+            shirts.trim() === ""
+          );
+        case "shirts_not_null":
+          return (
+            shirts.trim() !== "" &&
+            typeof card === "number" &&
+            card === 0 &&
+            typeof cardwithbox === "number" &&
+            cardwithbox === 0
+          );
+        case "combo":
+          return (card > 0 || cardwithbox > 0) && shirts.trim() !== "";
+        case "combo_without_shirts":
+          return (card > 0 || cardwithbox > 0) && shirts.trim() === "";
+        default:
+          return true; // ถ้าไม่ได้เลือก filter ใดๆ ให้ผ่านหมด
+      }
+    },
+    header: "", // ไม่ต้องแสดงหัวคอลัมน์
+    enableColumnFilter: true,
+    enableHiding: true,
+    cell: () => null, // ไม่ต้องแสดง cell
   },
 ];
 
@@ -245,7 +331,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
         </div>
 
         {/* Shipment Status Filters */}
-        <div>
+        <div className="mb-2">
           <span className="font-bold mr-2">สถานะการจัดส่ง:</span>
           <button
             className={`btn btn-sm mr-2 ${
@@ -340,43 +426,117 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
             ล้าง
           </button>
         </div>
+        {/* Receipt Status Filters */}
+        <div className="mb-2">
+          <span className="font-bold mr-2">รับใบเสร็จ:</span>
+          <button
+            className={`btn btn-sm mr-2 ${
+              table.getColumn("receipt")?.getFilterValue() === "yes"
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+            onClick={() => table.getColumn("receipt")?.setFilterValue("yes")}
+          >
+            รับใบเสร็จ
+          </button>
+          <button
+            className={`btn btn-sm mr-2 ${
+              table.getColumn("receipt")?.getFilterValue() === "no"
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+            onClick={() => table.getColumn("receipt")?.setFilterValue("no")}
+          >
+            ไม่รับใบเสร็จ
+          </button>
+          <button
+            className="btn btn-sm btn-outline"
+            onClick={() => table.getColumn("receipt")?.setFilterValue("")}
+          >
+            ล้าง
+          </button>
+        </div>
+        {/* เข็ม,เสื้อ */}
+        <div className="mb-2">
+          <span className="font-bold mr-2">เข็มและเสื้อ:</span>
+
+          {[
+            { value: "card_gt_0", label: "เข็มอย่างเดียว" },
+            { value: "cardwithbox_gt_0", label: "เข็มพร้อมกล่องอย่างเดียว" },
+            { value: "shirts_not_null", label: "เสื้ออย่างเดียว" },
+            {
+              value: "combo",
+              label: "เข็มหรือเข็มกล่อง+เสื้อ",
+            },
+            {
+              value: "combo_without_shirts",
+              label: "เข็มหรือเข็มกล่อง",
+            },
+          ].map((item) => (
+            <button
+              key={item.value}
+              className={`btn btn-sm mr-2 ${
+                table.getColumn("combinedFilter")?.getFilterValue() ===
+                item.value
+                  ? "btn-neutral"
+                  : "btn-outline"
+              }`}
+              onClick={() =>
+                table.getColumn("combinedFilter")?.setFilterValue(item.value)
+              }
+            >
+              {item.label}
+            </button>
+          ))}
+
+          <button
+            className="btn btn-sm btn-outline"
+            onClick={() =>
+              table.getColumn("combinedFilter")?.setFilterValue("")
+            }
+          >
+            ล้าง
+          </button>
+        </div>
       </div>
 
       {/* table */}
-      <table className="w-full border-collapse border border-gray-300">
-        <thead className="bg-gray-100">
-          {table
-            .getHeaderGroups()
-            .map(
-              (headerGroup: {
-                id: React.Key | null | undefined;
-                headers: any[];
-              }) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th key={header.id} className="border p-2">
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              )
-            )}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row: Row<Register>) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border p-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[800px] border-collapse border border-gray-300">
+          <thead className="bg-gray-100">
+            {table
+              .getHeaderGroups()
+              .map(
+                (headerGroup: {
+                  id: React.Key | null | undefined;
+                  headers: any[];
+                }) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id} className="border p-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                )
+              )}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row: Row<Register>) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="border p-2">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
