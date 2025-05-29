@@ -23,6 +23,9 @@ interface RegistrationCardProps {
     national_id: string | null;
     name_on_receipt: string | null;
     address_on_receipt: string | null;
+    item_tracking_number: string | null;
+    receipt_tracking_number: string | null;
+    error_details: string | null;
   };
 }
 
@@ -140,13 +143,45 @@ export default function RegistrationCard({
                 getShipmentStatusText(registration.shipment_status)
               )}
             </p>
-            {registration.shipment_status === "99" && (
-              <p className="text-red-600 mt-2">
-                {language === "en"
-                  ? "Please re-register or contact support via LINE ID: prmdcu or ANANDAY's Facebook page."
-                  : "กรุณาลงทะเบียนใหม่หรือติดต่อเจ้าหน้าที่ผ่าน LINE ID: prmdcu หรือ แฟนเพจ ANANDAY"}
-              </p>
+            {registration.shipment_status === "2" && registration.item_tracking_number && (
+              <div className="mb-2">
+                <span className="font-semibold">
+                  {language === "en" ? "Parcel Tracking Number:" : "เลขพัสดุ:"}
+                </span>{" "}
+                <span className="badge badge-outline badge-info">
+                  {registration.item_tracking_number}
+                </span>
+              </div>
             )}
+            {registration.shipment_status === "4" && registration.receipt_tracking_number && (
+              <div className="mb-2">
+              <span className="font-semibold">
+                {language === "en" ? "Receipt Parcel Tracking Number:" : "เลขพัสดุใบเสร็จ:"}
+              </span>{" "}
+              <span className="badge badge-outline badge-info">
+                {registration.receipt_tracking_number}
+              </span>
+              </div>
+            )}
+           {registration.shipment_status === "99" && (
+  <div className="mb-2">
+    {registration.error_details && (
+      <div className="mb-2">
+        <span className="font-semibold">
+          {language === "en" ? "Error Details:" : "รายละเอียดข้อผิดพลาด:"}
+        </span>{" "}
+        <span className="badge badge-outline badge-error">
+          {registration.error_details}
+        </span>
+      </div>
+    )}
+    <p className="text-red-600 mt-2">
+      {language === "en"
+        ? "Please re-register or contact support via LINE ID: prmdcu or ANANDAY's Facebook page."
+        : "กรุณาลงทะเบียนใหม่หรือติดต่อเจ้าหน้าที่ผ่าน LINE ID: prmdcu หรือ แฟนเพจ ANANDAY"}
+    </p>
+  </div>
+)}
           </div>
 
           {/* Personal Information */}
