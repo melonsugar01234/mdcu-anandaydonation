@@ -107,36 +107,36 @@ export const columns: ColumnDef<Register>[] = [
     },
   },
   {
-  accessorKey: "itemReceived",
-  header: "ประเภทของ",
-  enableColumnFilter: true,
-  cell: ({ row }) => {
-    const { card, cardwithbox, shirts } = row.original;
-    const hasCard = !!(card || cardwithbox);
-    const hasShirt = !!(shirts && shirts.trim() !== "");
+    accessorKey: "itemReceived",
+    header: "ประเภทของ",
+    enableColumnFilter: true,
+    cell: ({ row }) => {
+      const { card, cardwithbox, shirts } = row.original;
+      const hasCard = !!(card || cardwithbox);
+      const hasShirt = !!(shirts && shirts.trim() !== "");
 
-    if (hasCard && hasShirt) return "เข็มและเสื้อ";
-    if (hasCard) return "เข็ม";
-    if (hasShirt) return "เสื้อ";
-    return "-";
-  },
-  filterFn: (row, columnId, filterValue) => {
-    const { card, cardwithbox, shirts } = row.original;
-    const hasCard = !!(card || cardwithbox);
-    const hasShirt = !!(shirts && shirts.trim() !== "");
+      if (hasCard && hasShirt) return "เข็มและเสื้อ";
+      if (hasCard) return "เข็ม";
+      if (hasShirt) return "เสื้อ";
+      return "-";
+    },
+    filterFn: (row, columnId, filterValue) => {
+      const { card, cardwithbox, shirts } = row.original;
+      const hasCard = !!(card || cardwithbox);
+      const hasShirt = !!(shirts && shirts.trim() !== "");
 
-    if (filterValue === "เข็ม") {
-      return hasCard;
-    }
-    if (filterValue === "เสื้อ") {
-      return hasShirt;
-    }
-    if (filterValue === "เข็มและเสื้อ") {
-      return hasCard && hasShirt;
-    }
-    return true;
+      if (filterValue === "เข็ม") {
+        return hasCard;
+      }
+      if (filterValue === "เสื้อ") {
+        return hasShirt;
+      }
+      if (filterValue === "เข็มและเสื้อ") {
+        return hasCard && hasShirt;
+      }
+      return true;
+    },
   },
-},
   {
     accessorKey: "receipt",
     header: "ขอใบเสร็จ",
@@ -146,6 +146,35 @@ export const columns: ColumnDef<Register>[] = [
       ) : (
         <div className="badge badge-outline badge-error">ไม่ขอ</div>
       ),
+  },
+  {
+    accessorKey: "combinedFilter",
+    header: "",
+    enableColumnFilter: true,
+    cell: () => null, // This column is only for filtering, not display
+    filterFn: (row, columnId, filterValue) => {
+      const { card, cardwithbox, shirts } = row.original;
+      const cardNum = Number(card) || 0;
+      const cardWithBoxNum = Number(cardwithbox) || 0;
+      const hasShirt = !!(shirts && shirts.trim() !== "" && shirts !== "0");
+
+      if (filterValue === "card_gt_0") {
+        return cardNum > 0 && cardWithBoxNum === 0 && !hasShirt;
+      }
+      if (filterValue === "cardwithbox_gt_0") {
+        return cardWithBoxNum > 0 && cardNum === 0 && !hasShirt;
+      }
+      if (filterValue === "shirts_not_null") {
+        return hasShirt && cardNum === 0 && cardWithBoxNum === 0;
+      }
+      if (filterValue === "combo") {
+        return (cardNum > 0 || cardWithBoxNum > 0) && hasShirt;
+      }
+      if (filterValue === "combo_without_shirts") {
+        return (cardNum > 0 || cardWithBoxNum > 0) && !hasShirt;
+      }
+      return true;
+    },
   },
 ];
 
@@ -349,108 +378,73 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
           >
             จัดส่งใบเสร็จแล้ว
           </button>
-            <button
+          <button
             className={`btn btn-sm mr-2 ${
               table.getColumn("shipment_status")?.getFilterValue() === "5"
-              ? "btn-neutral"
-              : "btn-outline"
+                ? "btn-neutral"
+                : "btn-outline"
             }`}
             onClick={() =>
               table.getColumn("shipment_status")?.setFilterValue("5")
             }
-            >
+          >
             ไม่มีคำสั่งซื้อ
-            </button>
-            <button
+          </button>
+          <button
             className={`btn btn-sm mr-2 ${
               table.getColumn("shipment_status")?.getFilterValue() === "99"
-              ? "btn-neutral"
-              : "btn-outline"
+                ? "btn-neutral"
+                : "btn-outline"
             }`}
             onClick={() =>
               table.getColumn("shipment_status")?.setFilterValue("99")
             }
-            >
+          >
             เกิดข้อผิดพลาด
-            </button>
-            <button
+          </button>
+          <button
             className="btn btn-sm btn-outline"
             onClick={() =>
               table.getColumn("shipment_status")?.setFilterValue("")
             }
-            >
+          >
             ล้าง
-            </button>
-          </div>
+          </button>
+        </div>
 
-          {/* Item Received Filters */}
-          <div className="mb-2">
-            <span className="font-bold mr-2">ประเภทของที่ระลึก:</span>
-            <button
-            className={`btn btn-sm mr-2 ${
-              columnFilters.find((f) => f.id === "itemReceived")?.value === "เข็ม"
-              ? "btn-neutral"
-              : "btn-outline"
-            }`}
-            onClick={() =>
-              table.setColumnFilters([
-              ...columnFilters.filter((f) => f.id !== "itemReceived"),
-              {
-                id: "itemReceived",
-                value: "เข็ม",
-              },
-              ])
-            }
-            >
-            รับเข็ม
-            </button>
-            <button
-            className={`btn btn-sm mr-2 ${
-              columnFilters.find((f) => f.id === "itemReceived")?.value === "เสื้อ"
-              ? "btn-neutral"
-              : "btn-outline"
-            }`}
-            onClick={() =>
-              table.setColumnFilters([
-              ...columnFilters.filter((f) => f.id !== "itemReceived"),
-              {
-                id: "itemReceived",
-                value: "เสื้อ",
-              },
-              ])
-            }
-            >
-            รับเสื้อ
-            </button>
-            <button
-            className={`btn btn-sm mr-2 ${
-              columnFilters.find((f) => f.id === "itemReceived")?.value === "เข็มและเสื้อ"
-              ? "btn-neutral"
-              : "btn-outline"
-            }`}
-            onClick={() =>
-              table.setColumnFilters([
-              ...columnFilters.filter((f) => f.id !== "itemReceived"),
-              {
-                id: "itemReceived",
-                value: "เข็มและเสื้อ",
-              },
-              ])
-            }
-            >
-            รับเข็มและเสื้อ
-            </button>
-            <button
-            className="btn btn-sm btn-outline"
-            onClick={() =>
-              setColumnFilters(
-              columnFilters.filter((f) => f.id !== "itemReceived")
-              )
-            }
-            >
-            ล้าง
-            </button>
-          </div>
+        {/* Item Received Filters */}
+        <div className="mb-2">
+  <span className="font-bold mr-2">เข็มและเสื้อ:</span>
+  {[
+    { value: "card_gt_0", label: "เข็มอย่างเดียว" },
+    { value: "cardwithbox_gt_0", label: "เข็มพร้อมกล่องอย่างเดียว" },
+    { value: "shirts_not_null", label: "เสื้ออย่างเดียว" },
+    { value: "combo", label: "เข็มหรือเข็มกล่อง+เสื้อ" },
+    { value: "combo_without_shirts", label: "เข็มหรือเข็มกล่อง" },
+  ].map((item) => (
+    <button
+      key={item.value}
+      className={`btn btn-sm mr-2 ${
+        table.getColumn("combinedFilter")?.getFilterValue() === item.value
+          ? "btn-neutral"
+          : "btn-outline"
+      }`}
+      onClick={() =>
+        table.getColumn("combinedFilter")?.setFilterValue(item.value)
+      }
+    >
+      {item.label}
+    </button>
+  ))}
+  <button
+    className="btn btn-sm btn-outline"
+    onClick={() =>
+      table.getColumn("combinedFilter")?.setFilterValue("")
+    }
+  >
+    ล้าง
+  </button>
+</div>
 
         {/* Receipt Request Filters */}
         <div className="mb-2">
