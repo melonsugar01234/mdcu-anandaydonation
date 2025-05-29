@@ -40,13 +40,22 @@ export async function PUT(
     if (!(await params)?.id) throw new Error("Missing ID parameter.");
 
     const id = Number((await params).id);
-    const { shipment_status, payment_status } = await request.json();
+    const {
+      shipment_status,
+      payment_status,
+      item_tracking_number,
+      receipt_tracking_number,
+      error_details,
+    } = await request.json();
 
     const updatedRegister = await prisma.register.update({
       where: { id },
       data: {
         shipment_status: shipment_status ?? undefined,
         payment_status: payment_status ?? undefined,
+        item_tracking_number: item_tracking_number ?? undefined,
+        receipt_tracking_number: receipt_tracking_number ?? undefined,
+        error_details: error_details ?? undefined,
       },
     });
 
@@ -93,5 +102,3 @@ export async function DELETE(
     );
   }
 }
-
-
