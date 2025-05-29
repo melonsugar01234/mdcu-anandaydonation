@@ -34,6 +34,9 @@ export async function GET(request: NextRequest) {
         payment_proof: true,
         payment_status: true,
         receipt: true,
+        item_tracking_number: true,
+        receipt_tracking_number: true,
+        error_details: true,
       },
     });
 
