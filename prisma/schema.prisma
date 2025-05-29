@@ -29,9 +29,6 @@ model Register {
     national_id        String?
     name_on_receipt    String?
     address_on_receipt String?
-    item_tracking_number    String?   // เลขพัสดุสำหรับของที่ระลึก
-    receipt_tracking_number String?   // เลขพัสดุสำหรับใบเสร็จ
-    error_details           String?   // รายละเอียดเพิ่มเติมกรณี error
 }
 
 model DonationStatus {
