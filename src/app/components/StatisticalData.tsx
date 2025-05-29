@@ -29,7 +29,7 @@ const StatisticalData: React.FC<StatisticalDataProps> = ({ statistics }) => {
       <p>ยอดบริจาครวม (ตรวจสอบการชำระเงินแล้ว): {statistics.totalMoneyApproved}</p>
       <p>ผู้บริจาคที่ไม่มีคำสั่งซื้อ: {statistics.donatorsWithoutOrder}</p>
       <p>ผู้บริจาคที่สั่งซื้อเสื้อที่ระลึก: {statistics.donatorsWithShirtOrder}</p>
-      <p>ผู้บริจาคที่สั่งซื้อเข็มที่ระลึก: {statistics.donatorsWithCardOrder}</p>
+      <p>ผู้บริจาคที่สั่งซื้อเข็มที่ระลึกหรือเข็มพร้อมกล่อง: {statistics.donatorsWithCardOrder}</p>
       <p>
         ผู้บริจาคที่สั่งซื้อทั้งเสื้อที่ระลึกและเข็มที่ระลึก:{" "}
         {statistics.donatorsWithBothOrders}
@@ -44,7 +44,7 @@ const StatisticalData: React.FC<StatisticalDataProps> = ({ statistics }) => {
         {statistics.totalCardwithboxOrders}
       </p>
       <p>
-        ยอดสั่งซื้อเข็มพร้อมกล่องทั้งหมด (ชำระเงินแล้ว):{" "}
+        ยอดสั่งซื้อเข็มพร้อมกล่องทั้งหมด (ยืนยันการชำระเงินแล้ว):{" "}
         {statistics.totalCardwithboxOrdersApproved}
       </p>
       <h3 className="font-bold">ยอดสั่งซื้อเสื้อที่ระลึกทั้งหมด:</h3>
@@ -54,14 +54,14 @@ const StatisticalData: React.FC<StatisticalDataProps> = ({ statistics }) => {
         </p>
       ))}
 
-      {/* <h3 className="font-bold">ยอดสั่งซื้อเสื้อที่ระลึกทั้งหมด (ชำระเงินแล้ว):</h3>
+      <h3 className="font-bold">ยอดสั่งซื้อเสื้อที่ระลึกทั้งหมด (ชำระเงินแล้ว):</h3>
       {Object.entries(statistics.totalShirtOrdersApproved).map(
         ([key, count]) => (
           <p key={key}>
             รวม {key}: {count}
           </p>
         )
-      )} */}
+      )}
     </div>
   );
 };
