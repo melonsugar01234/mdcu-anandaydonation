@@ -25,6 +25,7 @@ interface Register {
   created_at: string;
   edited_at: string;
   card: number | null;
+  cardwithbox: number | null;
   shirts: string | null;
   shipment_status: string | null;
   payment_method: string | null;
@@ -104,6 +105,47 @@ export const columns: ColumnDef<Register>[] = [
 
       return statusBadge[status as keyof typeof statusBadge] || <div>-</div>;
     },
+  },
+  {
+  accessorKey: "itemReceived",
+  header: "ประเภทของ",
+  enableColumnFilter: true,
+  cell: ({ row }) => {
+    const { card, cardwithbox, shirts } = row.original;
+    const hasCard = !!(card || cardwithbox);
+    const hasShirt = !!(shirts && shirts.trim() !== "");
+
+    if (hasCard && hasShirt) return "เข็มและเสื้อ";
+    if (hasCard) return "เข็ม";
+    if (hasShirt) return "เสื้อ";
+    return "-";
+  },
+  filterFn: (row, columnId, filterValue) => {
+    const { card, cardwithbox, shirts } = row.original;
+    const hasCard = !!(card || cardwithbox);
+    const hasShirt = !!(shirts && shirts.trim() !== "");
+
+    if (filterValue === "เข็ม") {
+      return hasCard;
+    }
+    if (filterValue === "เสื้อ") {
+      return hasShirt;
+    }
+    if (filterValue === "เข็มและเสื้อ") {
+      return hasCard && hasShirt;
+    }
+    return true;
+  },
+},
+  {
+    accessorKey: "receipt",
+    header: "ขอใบเสร็จ",
+    cell: ({ row }: { row: Row<Register> }) =>
+      row.original.receipt === "yes" ? (
+        <div className="badge badge-outline badge-success">ขอ</div>
+      ) : (
+        <div className="badge badge-outline badge-error">ไม่ขอ</div>
+      ),
   },
 ];
 
@@ -245,7 +287,7 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
         </div>
 
         {/* Shipment Status Filters */}
-        <div>
+        <div className="mb-2">
           <span className="font-bold mr-2">สถานะการจัดส่ง:</span>
           <button
             className={`btn btn-sm mr-2 ${
@@ -307,35 +349,135 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
           >
             จัดส่งใบเสร็จแล้ว
           </button>
-          <button
+            <button
             className={`btn btn-sm mr-2 ${
               table.getColumn("shipment_status")?.getFilterValue() === "5"
-                ? "btn-neutral"
-                : "btn-outline"
+              ? "btn-neutral"
+              : "btn-outline"
             }`}
             onClick={() =>
               table.getColumn("shipment_status")?.setFilterValue("5")
             }
-          >
+            >
             ไม่มีคำสั่งซื้อ
-          </button>
-          <button
+            </button>
+            <button
             className={`btn btn-sm mr-2 ${
               table.getColumn("shipment_status")?.getFilterValue() === "99"
-                ? "btn-neutral"
-                : "btn-outline"
+              ? "btn-neutral"
+              : "btn-outline"
             }`}
             onClick={() =>
               table.getColumn("shipment_status")?.setFilterValue("99")
             }
-          >
+            >
             เกิดข้อผิดพลาด
-          </button>
-          <button
+            </button>
+            <button
             className="btn btn-sm btn-outline"
             onClick={() =>
               table.getColumn("shipment_status")?.setFilterValue("")
             }
+            >
+            ล้าง
+            </button>
+          </div>
+
+          {/* Item Received Filters */}
+          <div className="mb-2">
+            <span className="font-bold mr-2">ประเภทของที่ระลึก:</span>
+            <button
+            className={`btn btn-sm mr-2 ${
+              columnFilters.find((f) => f.id === "itemReceived")?.value === "เข็ม"
+              ? "btn-neutral"
+              : "btn-outline"
+            }`}
+            onClick={() =>
+              table.setColumnFilters([
+              ...columnFilters.filter((f) => f.id !== "itemReceived"),
+              {
+                id: "itemReceived",
+                value: "เข็ม",
+              },
+              ])
+            }
+            >
+            รับเข็ม
+            </button>
+            <button
+            className={`btn btn-sm mr-2 ${
+              columnFilters.find((f) => f.id === "itemReceived")?.value === "เสื้อ"
+              ? "btn-neutral"
+              : "btn-outline"
+            }`}
+            onClick={() =>
+              table.setColumnFilters([
+              ...columnFilters.filter((f) => f.id !== "itemReceived"),
+              {
+                id: "itemReceived",
+                value: "เสื้อ",
+              },
+              ])
+            }
+            >
+            รับเสื้อ
+            </button>
+            <button
+            className={`btn btn-sm mr-2 ${
+              columnFilters.find((f) => f.id === "itemReceived")?.value === "เข็มและเสื้อ"
+              ? "btn-neutral"
+              : "btn-outline"
+            }`}
+            onClick={() =>
+              table.setColumnFilters([
+              ...columnFilters.filter((f) => f.id !== "itemReceived"),
+              {
+                id: "itemReceived",
+                value: "เข็มและเสื้อ",
+              },
+              ])
+            }
+            >
+            รับเข็มและเสื้อ
+            </button>
+            <button
+            className="btn btn-sm btn-outline"
+            onClick={() =>
+              setColumnFilters(
+              columnFilters.filter((f) => f.id !== "itemReceived")
+              )
+            }
+            >
+            ล้าง
+            </button>
+          </div>
+
+        {/* Receipt Request Filters */}
+        <div className="mb-2">
+          <span className="font-bold mr-2">ขอใบเสร็จ:</span>
+          <button
+            className={`btn btn-sm mr-2 ${
+              table.getColumn("receipt")?.getFilterValue() === "yes"
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+            onClick={() => table.getColumn("receipt")?.setFilterValue("yes")}
+          >
+            ขอใบเสร็จ
+          </button>
+          <button
+            className={`btn btn-sm mr-2 ${
+              table.getColumn("receipt")?.getFilterValue() === "no"
+                ? "btn-neutral"
+                : "btn-outline"
+            }`}
+            onClick={() => table.getColumn("receipt")?.setFilterValue("no")}
+          >
+            ไม่ขอใบเสร็จ
+          </button>
+          <button
+            className="btn btn-sm btn-outline"
+            onClick={() => table.getColumn("receipt")?.setFilterValue("")}
           >
             ล้าง
           </button>
