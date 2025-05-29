@@ -25,6 +25,9 @@ interface Register {
   national_id: string | null;
   name_on_receipt: string | null;
   address_on_receipt: string | null;
+  item_tracking_number?: string | null;
+  receipt_tracking_number?: string | null;
+  error_details?: string | null;
 }
 
 export default function AdminApprovePaymentPage() {
@@ -34,6 +37,8 @@ export default function AdminApprovePaymentPage() {
   const [register, setRegister] = useState<Register | null>(null);
   const [loading, setLoading] = useState(true);
   const [shipmentStatus, setShipmentStatus] = useState("");
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [additionalDetails, setAdditionalDetails] = useState("");
 
   useEffect(() => {
     if (status === "loading") return;
@@ -83,7 +88,30 @@ export default function AdminApprovePaymentPage() {
 
   const handleStatusChange = (e: React.FormEvent) => {
     e.preventDefault();
-    updateRegister({ shipment_status: shipmentStatus });
+
+    const updateData: Partial<Register> = {
+      shipment_status: shipmentStatus,
+    };
+
+    if (shipmentStatus === "2") {
+      updateData.item_tracking_number = trackingNumber;
+      updateData.receipt_tracking_number = null;
+      updateData.error_details = null;
+    } else if (shipmentStatus === "4") {
+      updateData.receipt_tracking_number = trackingNumber;
+      updateData.item_tracking_number = null;
+      updateData.error_details = null;
+    } else if (shipmentStatus === "99") {
+      updateData.error_details = additionalDetails;
+      updateData.item_tracking_number = null;
+      updateData.receipt_tracking_number = null;
+    } else {
+      updateData.item_tracking_number = null;
+      updateData.receipt_tracking_number = null;
+      updateData.error_details = null;
+    }
+
+    updateRegister(updateData);
   };
 
   const handleApprovePayment = () =>
@@ -249,10 +277,59 @@ export default function AdminApprovePaymentPage() {
                       onChange={(e) => setShipmentStatus(e.target.value)}
                       className="form-radio text-blue-500"
                     />
-                    <span>{status.label}</span>
+                    <span>
+                      {status.label}
+                      {status.value === "2" && register?.item_tracking_number && (
+                      <span className="badge badge-outline badge-info ml-2">
+                        เลขพัสดุ: {register.item_tracking_number}
+                      </span>
+                      )}
+                      {status.value === "4" && register?.receipt_tracking_number && (
+                      <span className="badge badge-outline badge-info ml-2">
+                        เลขพัสดุใบเสร็จ: {register.receipt_tracking_number}
+                      </span>
+                      )}
+                      {status.value === "99" && register?.error_details && (
+                      <span className="badge badge-outline badge-info ml-2">
+                        รายละเอียด: {register.error_details}
+                      </span>
+                      )}
+                    </span>
                   </label>
                 ))}
               </div>
+
+              {(shipmentStatus === "2" || shipmentStatus === "4") && (
+                <div>
+                  <label className="block font-bold mt-2">
+                    เลขพัสดุ (Tracking Number):
+                  </label>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    value={trackingNumber}
+                    onChange={(e) => setTrackingNumber(e.target.value)}
+                    name="tracking_number"
+                    placeholder="กรอกเลขพัสดุ"
+                  />
+                </div>
+              )}
+
+              {shipmentStatus === "99" && (
+                <div>
+                  <label className="block font-bold mt-2">
+                    รายละเอียดเพิ่มเติม (Additional Details):
+                  </label>
+                  <textarea
+                    className="textarea textarea-bordered w-full"
+                    value={additionalDetails}
+                    onChange={(e) => setAdditionalDetails(e.target.value)}
+                    name="additional_details"
+                    placeholder="กรอกรายละเอียดเพิ่มเติม"
+                  />
+                </div>
+              )}
+
               <button type="submit" className="btn btn-info">
                 อัปเดตสถานะการจัดส่ง
               </button>
