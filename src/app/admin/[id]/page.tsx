@@ -28,6 +28,8 @@ interface Register {
   item_tracking_number?: string | null;
   receipt_tracking_number?: string | null;
   error_details?: string | null;
+  alumni?: boolean;
+  alumni_gen?: string | null;
 }
 
 export default function AdminApprovePaymentPage() {
@@ -39,6 +41,8 @@ export default function AdminApprovePaymentPage() {
   const [shipmentStatus, setShipmentStatus] = useState("");
   const [trackingNumber, setTrackingNumber] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
+  const [isAlumni, setIsAlumni] = useState<boolean>(false);
+  const [alumniGen, setAlumniGen] = useState<string>("");
 
   useEffect(() => {
     if (status === "loading") return;
@@ -46,6 +50,13 @@ export default function AdminApprovePaymentPage() {
       router.push("/admin/login");
     }
   }, [status, router]);
+
+  useEffect(() => {
+    if (register) {
+      setIsAlumni(!!register.alumni);
+      setAlumniGen(register.alumni_gen || "");
+    }
+  }, [register]);
 
   useEffect(() => {
     if (status !== "authenticated" || !id) return;
@@ -84,6 +95,13 @@ export default function AdminApprovePaymentPage() {
       console.error(error);
       alert("Update failed.");
     }
+  };
+
+  const handleAlumniUpdate = async () => {
+    await updateRegister({
+      alumni: isAlumni,
+      alumni_gen: isAlumni ? alumniGen : "",
+    });
   };
 
   const handleStatusChange = (e: React.FormEvent) => {
@@ -190,7 +208,53 @@ export default function AdminApprovePaymentPage() {
           <p>
             <strong>รหัสติดตาม:</strong> {register.tracking_code}
           </p>
+          {/* Show alumni status and generation */}
+          <p>
+            <strong>ศิษย์เก่าแพทย์จุฬาฯ:</strong>{" "}
+            {register.alumni ? "✅" : "❌"}
+          </p>
+          {register.alumni && (
+            <p>
+              <strong>รุ่นศิษย์เก่า:</strong> {register.alumni_gen || "ไม่ระบุ"}
+            </p>
+          )}
+          {/* Editable alumni section */}
+          <div className="flex items-center space-x-4 mb-4 mt-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isAlumni}
+                onChange={() => setIsAlumni(!isAlumni)}
+                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+              />
+              <span className="ml-2 text-lg">เป็นศิษย์เก่าแพทย์จุฬาฯ</span>
+            </label>
+            {isAlumni && (
+              <select
+                className="select select-bordered ml-4"
+                value={alumniGen}
+                onChange={(e) => setAlumniGen(e.target.value)}
+              >
+                <option value="">เลือกรุ่นศิษย์เก่า</option>
+                {Array.from({ length: 75 }, (_, i) => (
+                  <option key={i + 1} value={String(i + 1)}>
+                    รุ่น {i + 1}
+                  </option>
+                ))}
+              </select>
+            )}
+            <button
+              className="btn btn-info ml-2"
+              onClick={handleAlumniUpdate}
+              disabled={isAlumni && !alumniGen}
+              type="button"
+            >
+              บันทึกข้อมูลศิษย์เก่า
+            </button>
+          </div>
         </div>
+
+        
 
         <h2 className="text-xl font-bold mt-6">ข้อมูลคำสั่งซื้อ</h2>
         <div className="bg-white shadow-lg rounded-lg p-6">

@@ -1,6 +1,7 @@
 "use client";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import AlumniDonation from "./components/AlumniDonation";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -83,6 +84,7 @@ export default function Home() {
         >
           ลงทะเบียน
         </Link>
+        <AlumniDonation />
         <h2 className="text-xl">
           ขั้นตอนการขอรับเข็มหรือเสื้อยืดที่ระลึกวันอานันทมหิดล
         </h2>
@@ -175,6 +177,7 @@ export default function Home() {
         >
           Register
         </Link>
+        <AlumniDonation />
         <h2 className="text-xl">
           How to request a card or T-shirt commemorating Ananda Mahidol
         </h2>

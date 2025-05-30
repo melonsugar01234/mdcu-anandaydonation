@@ -27,6 +27,8 @@ const RegisterForm = ({
   >([]);
   const [card, setCard] = useState<string>("1");
   const [cardwithbox, setCardwithbox] = useState<string>("");
+  const [isAlumni, setIsAlumni] = useState<boolean>(false);
+  const [alumniGen, setAlumniGen] = useState<string>("");
 
   const calculateTotalShirtCost = () => {
     const totalShirts = shirts.reduce(
@@ -290,6 +292,8 @@ const RegisterForm = ({
         national_id: wantsReceipt ? nationalId : "",
         name_on_receipt: wantsReceipt ? nameOnReceipt : "",
         address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
+        alumni: isAlumni,
+        alumni_gen: isAlumni ? alumniGen : "",
       };
 
       console.log("📤 Submitting form data:", requestData);
@@ -830,6 +834,33 @@ const RegisterForm = ({
             <div className="text-red-700">
               โปรดตรวจสอบข้อมูลของท่านก่อนกดยืนยัน
             </div>
+          </div>
+
+          {/* Alumni Checkbox and Dropdown */}
+          <div className="flex items-center space-x-4 mb-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isAlumni}
+                onChange={() => setIsAlumni(!isAlumni)}
+                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+              />
+              <span className="ml-2 text-lg">เป็นศิษย์เก่าแพทย์จุฬาฯ</span>
+            </label>
+            {isAlumni && (
+              <select
+                className="select select-bordered ml-4"
+                value={alumniGen}
+                onChange={(e) => setAlumniGen(e.target.value)}
+              >
+                <option value="">เลือกรุ่นศิษย์เก่า</option>
+                {Array.from({ length: 75 }, (_, i) => (
+                  <option key={i + 1} value={String(i + 1)}>
+                    รุ่น {i + 1}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <button
