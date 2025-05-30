@@ -219,39 +219,46 @@ export default function AdminApprovePaymentPage() {
             </p>
           )}
           {/* Editable alumni section */}
-          <div className="flex items-center space-x-4 mb-4 mt-4">
-            <label className="flex items-center cursor-pointer">
-              <input
+            <div className="flex flex-col space-y-2 mb-4 mt-4">
+              <div className="flex items-center space-x-4">
+              <label className="flex items-center cursor-pointer">
+                <input
                 type="checkbox"
                 checked={isAlumni}
                 onChange={() => setIsAlumni(!isAlumni)}
                 className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
-              />
-              <span className="ml-2 text-lg">เป็นศิษย์เก่าแพทย์จุฬาฯ</span>
-            </label>
-            {isAlumni && (
-              <select
+                />
+                <span className="ml-2 text-lg">เป็นศิษย์เก่าแพทย์จุฬาฯ</span>
+              </label>
+              {isAlumni && (
+                <select
                 className="select select-bordered ml-4"
                 value={alumniGen}
                 onChange={(e) => setAlumniGen(e.target.value)}
-              >
+                >
                 <option value="">เลือกรุ่นศิษย์เก่า</option>
                 {Array.from({ length: 75 }, (_, i) => (
                   <option key={i + 1} value={String(i + 1)}>
-                    รุ่น {i + 1}
+                  รุ่น {i + 1}
                   </option>
                 ))}
-              </select>
-            )}
-            <button
-              className="btn btn-info ml-2"
-              onClick={handleAlumniUpdate}
-              disabled={isAlumni && !alumniGen}
-              type="button"
-            >
-              บันทึกข้อมูลศิษย์เก่า
-            </button>
-          </div>
+                </select>
+              )}
+              <button
+                className="btn btn-info ml-2"
+                onClick={handleAlumniUpdate}
+                disabled={isAlumni && !alumniGen}
+                type="button"
+              >
+                บันทึกข้อมูลศิษย์เก่า
+              </button>
+              </div>
+              {isAlumni && (
+              <p className="text-sm text-gray-600">
+                ระบบจะแสดงยอดบริจาคบนหน้าแรกของเว็บไซต์หลังจากใบเสร็จได้รับการอนุมัติแล้ว
+              </p>
+              )}
+            </div>
         </div>
 
         
