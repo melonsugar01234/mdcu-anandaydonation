@@ -21,7 +21,7 @@ export async function GET() {
       const gen =
         entry.alumni_gen && entry.alumni_gen.trim() !== ""
           ? entry.alumni_gen
-          : "ไม่ระบุ";
+          : "ไม่ระบุ / Unspecified";
       const amount = parseFloat(entry.payment_amount || "0") || 0;
       summary[gen] = (summary[gen] || 0) + amount;
     }
