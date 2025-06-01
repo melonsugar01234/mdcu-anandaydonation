@@ -3,11 +3,11 @@ import prisma from "@/lib/db";
 
 export async function GET() {
   try {
-    // Get all alumni with payment_status "Approved" and alumni true
+    // Get all alumni with payment_status "Approved" and alumni === "true"
     const alumni = await prisma.register.findMany({
       where: {
         payment_status: "Approved",
-        alumni: true,
+        alumni: "true", 
       },
       select: {
         alumni_gen: true,

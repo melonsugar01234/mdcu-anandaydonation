@@ -292,7 +292,7 @@ const RegisterForm = ({
         national_id: wantsReceipt ? nationalId : "",
         name_on_receipt: wantsReceipt ? nameOnReceipt : "",
         address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
-        alumni: isAlumni,
+        alumni: isAlumni ? "true" : null, 
         alumni_gen: isAlumni ? alumniGen : "",
       };
 

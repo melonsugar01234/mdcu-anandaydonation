@@ -80,8 +80,8 @@ export async function POST(req: NextRequest) {
         national_id: national_id || "",
         name_on_receipt: name_on_receipt || "",
         address_on_receipt: address_on_receipt || "",
-        alumni: alumni ?? false,                
-        alumni_gen: alumni_gen || null,         
+        alumni: alumni === "true" ? "true" : null, 
+        alumni_gen: alumni_gen || null,
       },
     });
 
