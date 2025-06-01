@@ -27,8 +27,8 @@ const RegisterForm = ({
   >([]);
   const [card, setCard] = useState<string>("1");
   const [cardwithbox, setCardwithbox] = useState<string>("");
-  const [isAlumni, setIsAlumni] = useState<boolean>(false);
-  const [alumniGen, setAlumniGen] = useState<string>("");
+  const [isAlumni, setIsAlumni] = useState(false);
+  const [alumniGen, setAlumniGen] = useState("");
 
   const calculateTotalShirtCost = () => {
     const totalShirts = shirts.reduce(
@@ -255,86 +255,95 @@ const handleSubmit = async (e: React.FormEvent) => {
     return;
   }
 
- // Upload the image first
-const formData = new FormData();
-formData.append("payment_proof", selectedFile);
+  // Upload the image first
+  const formData = new FormData();
+  formData.append("payment_proof", selectedFile);
 
-try {
-  console.log("⏳ Uploading file...");
-  const uploadResponse = await fetch("/api/upload", {
-    method: "POST",
-    body: formData,
-  });
+  try {
+    console.log("⏳ Uploading file...");
+    const uploadResponse = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
 
-  if (!uploadResponse.ok) {
-    const errorText = await uploadResponse.text();
-    console.error("❌ Upload error:", errorText);
-    alert("Something went wrong while uploading. Please try again.");
-    return;
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      console.error("❌ Upload error:", errorText);
+      alert("Something went wrong while uploading. Please try again.");
+      return;
+    }
+
+    const uploadData = await uploadResponse.json();
+    if (!uploadData.filePath) {
+      console.error("❌ No file path returned from API!");
+      alert("No file path returned. Upload failed.");
+      return;
+    }
+
+    console.log("✅ File uploaded successfully:", uploadData.filePath);
+    setPaymentProof(uploadData.filePath); // Save uploaded file path
+
+    // Prepare the form submission data
+    const fullAddress = getFullAddress();
+    const fullAddressforReceipt = getFullAddressforReceipt();
+    const shirtData = shirts
+      .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
+      .join(";");
+
+    const requestData = {
+      name,
+      phone,
+      email,
+      home: fullAddress,
+      payment_proof: uploadData.filePath,
+      payment_amount,
+      card: parsedCard,
+      cardwithbox: parsedCardWithBox,
+      shirts: shirtData,
+      receipt: wantsReceipt ? "yes" : "no",
+      payment_method: paymentMethod,
+      national_id: wantsReceipt ? nationalId : "",
+      name_on_receipt: wantsReceipt ? nameOnReceipt : "",
+      address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
+      alumni: isAlumni ? "true" : null,
+      alumni_gen: isAlumni ? alumniGen : "", 
+    };
+
+    console.log("📤 Submitting form data:", requestData);
+
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ Submission error:", errorText);
+      return;
+    }
+
+    const result = await response.json();
+    console.log("✅ Registration successful:", result);
+
+    window.location.href = `/donationsuccess?trackingCode=${
+      result.tracking_code
+    }&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(
+      phone
+    )}&email=${encodeURIComponent(email)}&home=${encodeURIComponent(
+      fullAddress
+    )}&payment_amount=${encodeURIComponent(
+      payment_amount
+    )}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(
+      shirtData
+    )}&cardwithbox=${encodeURIComponent(cardwithbox)}`;
+  } catch (error) {
+    console.error("❌ Error during registration:", error);
+    alert("An error occurred. Please try again.");
   }
-
-  const uploadData = await uploadResponse.json();
-  if (!uploadData.filePath) {
-    console.error("❌ No file path returned from API!");
-    alert("No file path returned. Upload failed.");
-    return;
-  }
-
-  console.log("✅ File uploaded successfully:", uploadData.filePath);
-  setPaymentProof(uploadData.filePath); // Save uploaded file path
-
-  // Prepare the form submission data
-  const fullAddress = getFullAddress();
-  const fullAddressforReceipt = getFullAddressforReceipt();
-  const shirtData = shirts
-    .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
-    .join(";");
-
-  const requestData = {
-    name,
-    phone,
-    email,
-    home: fullAddress,
-    payment_proof: uploadData.filePath,
-    payment_amount,
-    card: parseInt(card),
-    cardwithbox: parseInt(cardwithbox),
-    shirts: shirtData,
-    receipt: wantsReceipt ? "yes" : "no",
-    payment_method: paymentMethod,
-    national_id: wantsReceipt ? nationalId : "",
-    name_on_receipt: wantsReceipt ? nameOnReceipt : "",
-    address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
-    alumni: isAlumni,
-    alumni_gen: isAlumni ? alumniGen : "",
-  };
-
-  console.log("📤 Submitting form data:", requestData);
-
-  const response = await fetch("/api/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestData),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("❌ Submission error:", errorText);
-    return;
-  }
-
-  const result = await response.json();
-  console.log("✅ Registration successful:", result);
-
-  // Redirect to success page with tracking code
-  window.location.href = `/donationsuccess?trackingCode=${result.tracking_code}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&home=${encodeURIComponent(fullAddress)}&payment_amount=${encodeURIComponent(payment_amount)}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(shirtData)}&cardwithbox=${encodeURIComponent(cardwithbox)}`;
-} catch (error) {
-  console.error("❌ Error during registration:", error);
-  alert("An error occurred. Please try again.");
-}
-
+};
 
 
   const addShirtOption = () => {
@@ -451,7 +460,33 @@ try {
               ))}
             </select>
           </div>
-          <div className="text-3xl text-center">ข้อมูลการบริจาค</div>
+          <div className="text-3xl text-center py-2">ข้อมูลการบริจาค</div>
+          {/* Alumni Checkbox and Dropdown */}
+          <div className="flex items-center space-x-4 mb-4">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isAlumni}
+                onChange={() => setIsAlumni(!isAlumni)}
+                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
+              />
+              <span className="ml-2 text-lg py-3">เป็นศิษย์เก่าแพทย์จุฬาฯ</span>
+            </label>
+            {isAlumni && (
+              <select
+                className="select select-bordered ml-4"
+                value={alumniGen}
+                onChange={(e) => setAlumniGen(e.target.value)}
+              >
+                <option value="">เลือกรุ่นศิษย์เก่า</option>
+                {Array.from({ length: 75 }, (_, i) => (
+                  <option key={i + 1} value={String(i + 1)}>
+                    รุ่น {i + 1}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
           <span className="text-xl">จำนวนเงินที่ต้องการบริจาค</span>
           <input
             required
@@ -838,33 +873,6 @@ try {
             <div className="text-red-700">
               โปรดตรวจสอบข้อมูลของท่านก่อนกดยืนยัน
             </div>
-          </div>
-
-          {/* Alumni Checkbox and Dropdown */}
-          <div className="flex items-center space-x-4 mb-4">
-            <label className="flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={isAlumni}
-                onChange={() => setIsAlumni(!isAlumni)}
-                className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
-              />
-              <span className="ml-2 text-lg">เป็นศิษย์เก่าแพทย์จุฬาฯ</span>
-            </label>
-            {isAlumni && (
-              <select
-                className="select select-bordered ml-4"
-                value={alumniGen}
-                onChange={(e) => setAlumniGen(e.target.value)}
-              >
-                <option value="">เลือกรุ่นศิษย์เก่า</option>
-                {Array.from({ length: 75 }, (_, i) => (
-                  <option key={i + 1} value={String(i + 1)}>
-                    รุ่น {i + 1}
-                  </option>
-                ))}
-              </select>
-            )}
           </div>
 
           <button

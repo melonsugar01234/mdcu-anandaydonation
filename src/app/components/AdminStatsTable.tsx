@@ -36,7 +36,7 @@ interface Register {
   national_id: string | null;
   name_on_receipt: string | null;
   address_on_receipt: string | null;
-  alumni: boolean | null;
+  alumni: string | null; 
 }
 
 function formatDate(timestamp: string) {
@@ -181,15 +181,15 @@ export const columns: ColumnDef<Register>[] = [
     accessorKey: "alumni",
     header: "ศิษย์เก่า",
     cell: ({ row }: { row: Row<Register> }) =>
-      row.original.alumni ? (
+      row.original.alumni === "true" ? (
         <div>✅</div>
       ) : (
         <div>-</div>
       ),
     enableColumnFilter: true,
     filterFn: (row, columnId, filterValue) => {
-      if (filterValue === "alumni_true") return !!row.original.alumni;
-      if (filterValue === "alumni_false") return !row.original.alumni;
+      if (filterValue === "alumni_true") return row.original.alumni === "true";
+      if (filterValue === "alumni_false") return row.original.alumni !== "true";
       return true;
     },
   },

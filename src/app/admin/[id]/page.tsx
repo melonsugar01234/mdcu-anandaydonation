@@ -28,7 +28,7 @@ interface Register {
   item_tracking_number?: string | null;
   receipt_tracking_number?: string | null;
   error_details?: string | null;
-  alumni?: boolean;
+  alumni?: string | null;
   alumni_gen?: string | null;
 }
 
@@ -53,7 +53,7 @@ export default function AdminApprovePaymentPage() {
 
   useEffect(() => {
     if (register) {
-      setIsAlumni(!!register.alumni);
+      setIsAlumni(register.alumni === "true");
       setAlumniGen(register.alumni_gen || "");
     }
   }, [register]);
@@ -99,7 +99,7 @@ export default function AdminApprovePaymentPage() {
 
   const handleAlumniUpdate = async () => {
     await updateRegister({
-      alumni: isAlumni,
+      alumni: isAlumni ? "true" : "",
       alumni_gen: isAlumni ? alumniGen : "",
     });
   };
