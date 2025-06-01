@@ -234,48 +234,61 @@ const RegisterForm = ({
     } รหัสไปรษณีย์ ${postalCode2} `.trim();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!selectedFile) {
-      alert("Please select an image before submitting.");
-      return;
-    }
+  if (!selectedFile) {
+    alert("Please select an image before submitting.");
+    return;
+  }
 
-    // Upload the image first
-    const formData = new FormData();
-    formData.append("payment_proof", selectedFile);
+  const parsedCard = parseInt(card);
+  const parsedCardWithBox = parseInt(cardwithbox);
 
-    try {
-      console.log("⏳ Uploading file...");
-      const uploadResponse = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+  if (
+    isNaN(parsedCard) ||
+    parsedCard < 0 ||
+    isNaN(parsedCardWithBox) ||
+    parsedCardWithBox < 0
+  ) {
+    alert("Please enter a positive integer for both Card and Card with Box.");
+    return;
+  }
 
-      if (!uploadResponse.ok) {
-        const errorText = await uploadResponse.text();
-        console.error("❌ Upload error:", errorText);
-        alert("Something went wrong while uploading. Please try again.");
-        return;
-      }
+ // Upload the image first
+const formData = new FormData();
+formData.append("payment_proof", selectedFile);
 
-      const uploadData = await uploadResponse.json();
-      if (!uploadData.filePath) {
-        console.error("❌ No file path returned from API!");
-        alert("No file path returned. Upload failed.");
-        return;
-      }
+try {
+  console.log("⏳ Uploading file...");
+  const uploadResponse = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
 
-      console.log("✅ File uploaded successfully:", uploadData.filePath);
-      setPaymentProof(uploadData.filePath); // Save uploaded file path
+  if (!uploadResponse.ok) {
+    const errorText = await uploadResponse.text();
+    console.error("❌ Upload error:", errorText);
+    alert("Something went wrong while uploading. Please try again.");
+    return;
+  }
 
-      // Prepare the form submission data
-      const fullAddress = getFullAddress();
-      const fullAddressforReceipt = getFullAddressforReceipt();
-      const shirtData = shirts
-        .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
-        .join(";");
+  const uploadData = await uploadResponse.json();
+  if (!uploadData.filePath) {
+    console.error("❌ No file path returned from API!");
+    alert("No file path returned. Upload failed.");
+    return;
+  }
+
+  console.log("✅ File uploaded successfully:", uploadData.filePath);
+  setPaymentProof(uploadData.filePath); // Save uploaded file path
+
+  // Prepare the form submission data
+  const fullAddress = getFullAddress();
+  const fullAddressforReceipt = getFullAddressforReceipt();
+  const shirtData = shirts
+    .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
+    .join(";");
 
       const requestData = {
         name,
@@ -296,42 +309,33 @@ const RegisterForm = ({
         alumni_gen: isAlumni ? alumniGen : "",
       };
 
-      console.log("📤 Submitting form data:", requestData);
+  console.log("📤 Submitting form data:", requestData);
 
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
+  const response = await fetch("/api/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestData),
+  });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("❌ Submission error:", errorText);
-        return;
-      }
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("❌ Submission error:", errorText);
+    return;
+  }
 
-      const result = await response.json();
-      console.log("✅ Registration successful:", result);
+  const result = await response.json();
+  console.log("✅ Registration successful:", result);
 
-      // Redirect to success page with tracking code
-      window.location.href = `/donationsuccess?trackingCode=${
-        result.tracking_code
-      }&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(
-        phone
-      )}&email=${encodeURIComponent(email)}&home=${encodeURIComponent(
-        fullAddress
-      )}&payment_amount=${encodeURIComponent(
-        payment_amount
-      )}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(
-        shirtData
-      )}&cardwithbox=${encodeURIComponent(cardwithbox)}`;
-    } catch (error) {
-      console.error("❌ Error during registration:", error);
-      alert("An error occurred. Please try again.");
-    }
-  };
+  // Redirect to success page with tracking code
+  window.location.href = `/donationsuccess?trackingCode=${result.tracking_code}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&home=${encodeURIComponent(fullAddress)}&payment_amount=${encodeURIComponent(payment_amount)}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(shirtData)}&cardwithbox=${encodeURIComponent(cardwithbox)}`;
+} catch (error) {
+  console.error("❌ Error during registration:", error);
+  alert("An error occurred. Please try again.");
+}
+
+
 
   const addShirtOption = () => {
     setShirts([...shirts, { size: "xs", color: "white", amount: 1 }]);
