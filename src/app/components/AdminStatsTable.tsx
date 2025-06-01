@@ -36,7 +36,6 @@ interface Register {
   national_id: string | null;
   name_on_receipt: string | null;
   address_on_receipt: string | null;
-  alumni: boolean | null;
 }
 
 function formatDate(timestamp: string) {
@@ -174,22 +173,6 @@ export const columns: ColumnDef<Register>[] = [
       if (filterValue === "combo_without_shirts") {
         return (cardNum > 0 || cardWithBoxNum > 0) && !hasShirt;
       }
-      return true;
-    },
-  },
-  {
-    accessorKey: "alumni",
-    header: "ศิษย์เก่า",
-    cell: ({ row }: { row: Row<Register> }) =>
-      row.original.alumni ? (
-        <div>✅</div>
-      ) : (
-        <div>-</div>
-      ),
-    enableColumnFilter: true,
-    filterFn: (row, columnId, filterValue) => {
-      if (filterValue === "alumni_true") return !!row.original.alumni;
-      if (filterValue === "alumni_false") return !row.original.alumni;
       return true;
     },
   },
@@ -431,37 +414,37 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
 
         {/* Item Received Filters */}
         <div className="mb-2">
-          <span className="font-bold mr-2">เข็มและเสื้อ:</span>
-          {[
-            { value: "card_gt_0", label: "เข็มอย่างเดียว" },
-            { value: "cardwithbox_gt_0", label: "เข็มพร้อมกล่องอย่างเดียว" },
-            { value: "shirts_not_null", label: "เสื้ออย่างเดียว" },
-            { value: "combo", label: "เข็มหรือเข็มกล่อง+เสื้อ" },
-            { value: "combo_without_shirts", label: "เข็มหรือเข็มกล่อง" },
-          ].map((item) => (
-            <button
-              key={item.value}
-              className={`btn btn-sm mr-2 ${
-                table.getColumn("combinedFilter")?.getFilterValue() === item.value
-                  ? "btn-neutral"
-                  : "btn-outline"
-              }`}
-              onClick={() =>
-                table.getColumn("combinedFilter")?.setFilterValue(item.value)
-              }
-            >
-              {item.label}
-            </button>
-          ))}
-          <button
-            className="btn btn-sm btn-outline"
-            onClick={() =>
-              table.getColumn("combinedFilter")?.setFilterValue("")
-            }
-          >
-            ล้าง
-          </button>
-        </div>
+  <span className="font-bold mr-2">เข็มและเสื้อ:</span>
+  {[
+    { value: "card_gt_0", label: "เข็มอย่างเดียว" },
+    { value: "cardwithbox_gt_0", label: "เข็มพร้อมกล่องอย่างเดียว" },
+    { value: "shirts_not_null", label: "เสื้ออย่างเดียว" },
+    { value: "combo", label: "เข็มหรือเข็มกล่อง+เสื้อ" },
+    { value: "combo_without_shirts", label: "เข็มหรือเข็มกล่อง" },
+  ].map((item) => (
+    <button
+      key={item.value}
+      className={`btn btn-sm mr-2 ${
+        table.getColumn("combinedFilter")?.getFilterValue() === item.value
+          ? "btn-neutral"
+          : "btn-outline"
+      }`}
+      onClick={() =>
+        table.getColumn("combinedFilter")?.setFilterValue(item.value)
+      }
+    >
+      {item.label}
+    </button>
+  ))}
+  <button
+    className="btn btn-sm btn-outline"
+    onClick={() =>
+      table.getColumn("combinedFilter")?.setFilterValue("")
+    }
+  >
+    ล้าง
+  </button>
+</div>
 
         {/* Receipt Request Filters */}
         <div className="mb-2">
@@ -493,54 +476,39 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
             ล้าง
           </button>
         </div>
-
-        {/* Alumni Filter */}
-        <div className="mb-2">
-          <span className="font-bold mr-2">ศิษย์เก่า:</span>
-          <button
-            className={`btn btn-sm mr-2 ${
-              table.getColumn("alumni")?.getFilterValue() === "alumni_true"
-                ? "btn-neutral"
-                : "btn-outline"
-            }`}
-            onClick={() => table.getColumn("alumni")?.setFilterValue("alumni_true")}
-          >
-            ศิษย์เก่า
-          </button>
-          <button
-            className="btn btn-sm btn-outline"
-            onClick={() => table.getColumn("alumni")?.setFilterValue("")}
-          >
-            ล้าง
-          </button>
-        </div>
       </div>
 
       {/* table */}
       <table className="w-full border-collapse border border-gray-300">
         <thead className="bg-gray-100">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers
-                .filter((header) => header.column.id !== "combinedFilter")
-                .map((header) => (
-                  <th key={header.id} className="border p-2">
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
-            </tr>
-          ))}
+          {table
+            .getHeaderGroups()
+            .map(
+              (headerGroup: {
+                id: React.Key | null | undefined;
+                headers: any[];
+              }) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} className="border p-2">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              )
+            )}
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row: Row<Register>) => (
             <tr key={row.id}>
-              {row.getVisibleCells()
-                .filter((cell) => cell.column.id !== "combinedFilter")
-                .map((cell) => (
-                  <td key={cell.id} className="border p-2">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className="border p-2">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
