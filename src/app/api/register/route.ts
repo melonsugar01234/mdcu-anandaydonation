@@ -36,8 +36,6 @@ export async function POST(req: NextRequest) {
       national_id,
       name_on_receipt,
       address_on_receipt,
-      alumni,           // <-- add this
-      alumni_gen,       // <-- add this
     } = await req.json(); // Since it's NextRequest, you can directly use `req.json()`
 
     if (!name || !phone || !home || !payment_amount || !payment_proof) {
@@ -80,8 +78,6 @@ export async function POST(req: NextRequest) {
         national_id: national_id || "",
         name_on_receipt: name_on_receipt || "",
         address_on_receipt: address_on_receipt || "",
-        alumni: alumni ?? false,                
-        alumni_gen: alumni_gen || null,         
       },
     });
 
