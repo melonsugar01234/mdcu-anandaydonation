@@ -62,6 +62,67 @@ export default function Home() {
           {language === "th" ? "ลงทะเบียน" : "Register"}
         </Link>
         <div className="divider" />
+        <div className="hero bg-base-200 min-h-fit p-10">
+          <div className="hero-content text-center">
+            <div className="max-w-2xl">
+              <h1 className="text-5xl font-bold pt-4">
+                {language === "th"
+                  ? "แจ้งประกาศสำคัญสำหรับศิษย์เก่าทุกท่าน"
+                  : "Important Announcement for Alumni"}
+              </h1>
+              <p className="pt-6 pb-2">
+                {language === "th" ? (
+                  <>
+                    ทางโครงการได้รวบรวมยอดบริจาคของ
+                    <span className="font-bold">ศิษย์เก่าคณะแพทย์จุฬาฯ</span>
+                    และแสดงผลบนเว็บไซต์นี้ หากท่าน
+                    <span className="font-bold">
+                      เคยลงทะเบียนข้อมูลการบริจาค
+                    </span>
+                    กับเรา
+                    และต้องการให้ยอดบริจาคของท่านรวมอยู่ในระบบและแสดงบนหน้าเว็บไซต์
+                    กรุณาติดต่อเจ้าหน้าที่ทาง Facebook Page: ANAN DAY
+                    เพื่อยืนยันตัวตนและอัปเดตข้อมูลเข้าสู่ระบบ
+                  </>
+                ) : (
+                  <>
+                    The project has collected the donation records of
+                    <span className="font-bold">
+                      {" "}
+                      Chulalongkorn Medical School alumni{" "}
+                    </span>
+                    and displays them on this website. If you have
+                    <span className="font-bold">
+                      {" "}
+                      previously registered your donation information {" "}
+                    </span>
+                    with us and would like your donations to be included and
+                    shown on the website, please contact our team via Facebook
+                    Page: ANAN DAY to verify your identity and update your
+                    records.
+                  </>
+                )}
+              </p>
+              <p className="py-2">
+                {language === "th"
+                  ? "แต่หากท่านยังไม่เคยลงทะเบียนข้อมูลการบริจาค สามารถลงทะเบียนและระบุว่าเป็นศิษย์เก่าผ่านทางเว็บไซต์นี้ได้ทันที"
+                  : "If you have not yet registered your donation information, you can register now and indicate that you are an alumnus through this website."}
+              </p>
+              <p className="py-2">
+                {language === "th"
+                  ? "ข้อมูลการบริจาคของท่านจะเป็นส่วนหนึ่งในการรวบรวมสถิติและเชิดชูเกียรติศิษย์เก่า รวมถึงสร้างแรงบันดาลใจให้กับศิษย์รุ่นต่อๆ ไป"
+                  : "Your donation will be part of the alumni records, helping to honor alumni donors and inspire future generations."}
+              </p>
+              <p className="pb-6 pt-2">
+                {language === "th"
+                  ? "ทางโครงการขอขอบคุณทุกท่านเป็นอย่างยิ่งสำหรับการสนับสนุนและความร่วมมือ"
+                  : "We sincerely thank you for your support and cooperation."}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="divider" />
 
         {/* How to request collapse */}
         <div className="collapse collapse-arrow border border-base-300">
