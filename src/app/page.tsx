@@ -67,8 +67,8 @@ export default function Home() {
             <div className="max-w-2xl">
               <h1 className="text-5xl font-bold pt-4">
                 {language === "th"
-                  ? "แจ้งประกาศสำคัญสำหรับศิษย์เก่าทุกท่าน"
-                  : "Important Announcement for Alumni"}
+                  ? "📢แจ้งประกาศสำคัญสำหรับศิษย์เก่าทุกท่าน"
+                  : "📢Important Announcement for Alumni"}
               </h1>
               <p className="pt-6 pb-2">
                 {language === "th" ? (
