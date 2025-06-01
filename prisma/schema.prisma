@@ -32,6 +32,8 @@ model Register {
     item_tracking_number    String?   // เลขพัสดุสำหรับของที่ระลึก
     receipt_tracking_number String?   // เลขพัสดุสำหรับใบเสร็จ
     error_details           String?   // รายละเอียดเพิ่มเติมกรณี error
+    alumni              Boolean  @default(false) // true if alumni, false otherwise
+    alumni_gen         String?  // รุ่นศิษย์เก่า
 }
 
 model DonationStatus {

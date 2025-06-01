@@ -46,6 +46,8 @@ export async function PUT(
       item_tracking_number,
       receipt_tracking_number,
       error_details,
+      alumni,
+      alumni_gen,
     } = await request.json();
 
     const updatedRegister = await prisma.register.update({
@@ -56,6 +58,8 @@ export async function PUT(
         item_tracking_number: item_tracking_number ?? undefined,
         receipt_tracking_number: receipt_tracking_number ?? undefined,
         error_details: error_details ?? undefined,
+        alumni: alumni ?? undefined,
+        alumni_gen: alumni_gen ?? undefined,
       },
     });
 
