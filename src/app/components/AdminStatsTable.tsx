@@ -8,6 +8,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
   useReactTable,
   ColumnFiltersState,
   Row,
@@ -216,6 +217,10 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
   const [data, setData] = useState<Register[]>([]);
   const [loading, setLoading] = useState(true);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 30, // or any default page size you want
+  });
 
   useEffect(() => {
     fetch("/api/register")
@@ -245,10 +250,13 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     state: {
       columnFilters,
+      pagination,
     },
+    onPaginationChange: setPagination,
   });
 
   if (loading) return <div>Loading...</div>;
@@ -545,6 +553,56 @@ export default function AdminStatsTable({ statistics }: AdminStatsTableProps) {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <div className="flex items-center gap-2 mt-4 justify-center">
+      <button
+        className="btn btn-sm"
+        onClick={() => table.setPageIndex(0)}
+        disabled={!table.getCanPreviousPage()}
+      >
+        {"<<"}
+      </button>
+      <button
+        className="btn btn-sm"
+        onClick={() => table.previousPage()}
+        disabled={!table.getCanPreviousPage()}
+      >
+        {"<"}
+      </button>
+      <span>
+        Page{" "}
+        <strong>
+        {table.getState().pagination.pageIndex + 1} of{" "}
+        {table.getPageCount()}
+        </strong>
+      </span>
+      <button
+        className="btn btn-sm"
+        onClick={() => table.nextPage()}
+        disabled={!table.getCanNextPage()}
+      >
+        {">"}
+      </button>
+      <button
+        className="btn btn-sm"
+        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+        disabled={!table.getCanNextPage()}
+      >
+        {">>"}
+      </button>
+      <select
+        className="select select-bordered select-sm ml-2"
+        value={table.getState().pagination.pageSize}
+        onChange={(e) => table.setPageSize(Number(e.target.value))}
+      >
+        {[10, 20, 50, 100].map((pageSize) => (
+        <option key={pageSize} value={pageSize}>
+          Show {pageSize}
+        </option>
+        ))}
+      </select>
+      </div>
     </div>
   );
 }
