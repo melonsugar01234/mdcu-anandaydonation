@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { Province, District, SubDistrict } from "@/types/address";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -234,117 +234,116 @@ const RegisterForm = ({
     } รหัสไปรษณีย์ ${postalCode2} `.trim();
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!selectedFile) {
-    alert("Please select an image before submitting.");
-    return;
-  }
-
-  const parsedCard = parseInt(card);
-  const parsedCardWithBox = parseInt(cardwithbox);
-
-  if (
-    isNaN(parsedCard) ||
-    parsedCard < 0 ||
-    isNaN(parsedCardWithBox) ||
-    parsedCardWithBox < 0
-  ) {
-    alert("Please enter a positive integer for both Card and Card with Box.");
-    return;
-  }
-
-  // Upload the image first
-  const formData = new FormData();
-  formData.append("payment_proof", selectedFile);
-
-  try {
-    console.log("⏳ Uploading file...");
-    const uploadResponse = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!uploadResponse.ok) {
-      const errorText = await uploadResponse.text();
-      console.error("❌ Upload error:", errorText);
-      alert("Something went wrong while uploading. Please try again.");
+    if (!selectedFile) {
+      alert("Please select an image before submitting.");
       return;
     }
 
-    const uploadData = await uploadResponse.json();
-    if (!uploadData.filePath) {
-      console.error("❌ No file path returned from API!");
-      alert("No file path returned. Upload failed.");
+    const parsedCard = parseInt(card);
+    const parsedCardWithBox = parseInt(cardwithbox);
+
+    if (
+      isNaN(parsedCard) ||
+      parsedCard < 0 ||
+      isNaN(parsedCardWithBox) ||
+      parsedCardWithBox < 0
+    ) {
+      alert("Please enter a positive integer for both Card and Card with Box.");
       return;
     }
 
-    console.log("✅ File uploaded successfully:", uploadData.filePath);
-    setPaymentProof(uploadData.filePath); // Save uploaded file path
+    // Upload the image first
+    const formData = new FormData();
+    formData.append("payment_proof", selectedFile);
 
-    // Prepare the form submission data
-    const fullAddress = getFullAddress();
-    const fullAddressforReceipt = getFullAddressforReceipt();
-    const shirtData = shirts
-      .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
-      .join(";");
+    try {
+      console.log("⏳ Uploading file...");
+      const uploadResponse = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-    const requestData = {
-      name,
-      phone,
-      email,
-      home: fullAddress,
-      payment_proof: uploadData.filePath,
-      payment_amount,
-      card: parsedCard,
-      cardwithbox: parsedCardWithBox,
-      shirts: shirtData,
-      receipt: wantsReceipt ? "yes" : "no",
-      payment_method: paymentMethod,
-      national_id: wantsReceipt ? nationalId : "",
-      name_on_receipt: wantsReceipt ? nameOnReceipt : "",
-      address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
-      alumni: isAlumni ? "true" : null,
-      alumni_gen: isAlumni ? alumniGen : "", 
-    };
+      if (!uploadResponse.ok) {
+        const errorText = await uploadResponse.text();
+        console.error("❌ Upload error:", errorText);
+        alert("Something went wrong while uploading. Please try again.");
+        return;
+      }
 
-    console.log("📤 Submitting form data:", requestData);
+      const uploadData = await uploadResponse.json();
+      if (!uploadData.filePath) {
+        console.error("❌ No file path returned from API!");
+        alert("No file path returned. Upload failed.");
+        return;
+      }
 
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    });
+      console.log("✅ File uploaded successfully:", uploadData.filePath);
+      setPaymentProof(uploadData.filePath); // Save uploaded file path
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("❌ Submission error:", errorText);
-      return;
+      // Prepare the form submission data
+      const fullAddress = getFullAddress();
+      const fullAddressforReceipt = getFullAddressforReceipt();
+      const shirtData = shirts
+        .map((shirt) => `${shirt.size}-${shirt.color}-${shirt.amount}`)
+        .join(";");
+
+      const requestData = {
+        name,
+        phone,
+        email,
+        home: fullAddress,
+        payment_proof: uploadData.filePath,
+        payment_amount,
+        card: parsedCard,
+        cardwithbox: parsedCardWithBox,
+        shirts: shirtData,
+        receipt: wantsReceipt ? "yes" : "no",
+        payment_method: paymentMethod,
+        national_id: wantsReceipt ? nationalId : "",
+        name_on_receipt: wantsReceipt ? nameOnReceipt : "",
+        address_on_receipt: wantsReceipt ? fullAddressforReceipt : "",
+        alumni: isAlumni ? "true" : null,
+        alumni_gen: isAlumni ? alumniGen : "",
+      };
+
+      console.log("📤 Submitting form data:", requestData);
+
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("❌ Submission error:", errorText);
+        return;
+      }
+
+      const result = await response.json();
+      console.log("✅ Registration successful:", result);
+
+      window.location.href = `/donationsuccess?trackingCode=${
+        result.tracking_code
+      }&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(
+        phone
+      )}&email=${encodeURIComponent(email)}&home=${encodeURIComponent(
+        fullAddress
+      )}&payment_amount=${encodeURIComponent(
+        payment_amount
+      )}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(
+        shirtData
+      )}&cardwithbox=${encodeURIComponent(cardwithbox)}`;
+    } catch (error) {
+      console.error("❌ Error during registration:", error);
+      alert("An error occurred. Please try again.");
     }
-
-    const result = await response.json();
-    console.log("✅ Registration successful:", result);
-
-    window.location.href = `/donationsuccess?trackingCode=${
-      result.tracking_code
-    }&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(
-      phone
-    )}&email=${encodeURIComponent(email)}&home=${encodeURIComponent(
-      fullAddress
-    )}&payment_amount=${encodeURIComponent(
-      payment_amount
-    )}&card=${encodeURIComponent(card)}&shirts=${encodeURIComponent(
-      shirtData
-    )}&cardwithbox=${encodeURIComponent(cardwithbox)}`;
-  } catch (error) {
-    console.error("❌ Error during registration:", error);
-    alert("An error occurred. Please try again.");
-  }
-};
-
+  };
 
   const addShirtOption = () => {
     setShirts([...shirts, { size: "xs", color: "white", amount: 1 }]);
@@ -353,6 +352,53 @@ const handleSubmit = async (e: React.FormEvent) => {
   const removeShirtOption = () => {
     setShirts(shirts.slice(0, -1));
   };
+  // State สำหรับ checkbox
+  const [sameAddress, setSameAddress] = useState(false);
+
+  // Effect เพื่อคัดลอกที่อยู่หากเลือก sameAddress
+  useEffect(() => {
+    if (
+      sameAddress &&
+      provinces.length > 0 &&
+      districts.length > 0 &&
+      subDistricts.length > 0
+    ) {
+      setAddressDetail2(addressDetail);
+      setSelectedProvince2(selectedProvince);
+      setSelectedDistrict2(selectedDistrict);
+      setSelectedSubDistrict2(selectedSubDistrict);
+      setPostalCode2(postalCode);
+      setAvailablePostalCodes2(availablePostalCodes);
+      console.log("คัดลอกที่อยู่สำหรับใบเสร็จ:", {
+        addressDetail,
+        selectedProvince,
+        selectedDistrict,
+        selectedSubDistrict,
+        postalCode,
+        availablePostalCodes,
+      });
+    } else if (!sameAddress) {
+      // ล้างค่า ถ้าต้องการให้ผู้ใช้กรอกเองใหม่
+      setAddressDetail2("");
+      setSelectedProvince2("");
+      setSelectedDistrict2("");
+      setSelectedSubDistrict2("");
+      setPostalCode2("");
+      setAvailablePostalCodes2([]);
+      console.log("ยกเลิกการคัดลอกที่อยู่ใบเสร็จ");
+    }
+  }, [
+    sameAddress,
+    addressDetail,
+    selectedProvince,
+    selectedDistrict,
+    selectedSubDistrict,
+    postalCode,
+    availablePostalCodes,
+    provinces,
+    districts,
+    subDistricts,
+  ]);
 
   return (
     <>
@@ -536,7 +582,9 @@ const handleSubmit = async (e: React.FormEvent) => {
               className="rounded-xl w-full h-auto object-contain"
             />
           </div>
-          <span className="text-xl text-center">ตัวอย่างเข็มที่ระลึกและกล่อง</span>
+          <span className="text-xl text-center">
+            ตัวอย่างเข็มที่ระลึกและกล่อง
+          </span>
           <img
             src="/images/2025/pinbox.jpg"
             alt="pinbox"
@@ -556,7 +604,8 @@ const handleSubmit = async (e: React.FormEvent) => {
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
           <span className="text-xl">
-            จำนวนเข็มพร้อมกล่องที่ต้องการรับ (เงินบริจาค 250 บาทต่อเข็มพร้อมกล่อง 1 ชุด)
+            จำนวนเข็มพร้อมกล่องที่ต้องการรับ (เงินบริจาค 250
+            บาทต่อเข็มพร้อมกล่อง 1 ชุด)
           </span>
           <input
             required
@@ -768,73 +817,88 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <span className="text-xl">
                   ที่อยู่ที่ต้องการให้ปรากฏในใบเสร็จ
                 </span>
-                <input
-                  required
-                  type="text"
-                  placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
-                  value={addressDetail2}
-                  onChange={(e) => setAddressDetail2(e.target.value)}
-                  className="input input-bordered w-full bg-white"
-                />
+                {wantsReceipt && (
+                  <div className="space-y-4">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={sameAddress}
+                        onChange={(e) => setSameAddress(e.target.checked)}
+                        className="checkbox"
+                      />
+                      <span>ใช้ที่อยู่เดียวกับที่อยู่จัดส่ง</span>
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      disabled={sameAddress}
+                      placeholder="บ้านเลขที่ หมู่บ้าน/อาคาร ถนน"
+                      value={addressDetail2}
+                      onChange={(e) => setAddressDetail2(e.target.value)}
+                      className="input input-bordered w-full bg-white"
+                    />
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={selectedProvince2}
-                  onChange={handleProvinceChange2}
-                >
-                  <option value="">เลือกจังหวัด</option>
-                  {provinces.map((province) => (
-                    <option key={province.id} value={province.id}>
-                      {province.name_th}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      disabled={sameAddress}
+                      className="select select-bordered w-full bg-white"
+                      value={selectedProvince2}
+                      onChange={handleProvinceChange2}
+                    >
+                      <option value="">เลือกจังหวัด</option>
+                      {provinces.map((province) => (
+                        <option key={province.id} value={province.id}>
+                          {province.name_th}
+                        </option>
+                      ))}
+                    </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={selectedDistrict2}
-                  onChange={handleDistrictChange2}
-                  disabled={!selectedProvince2}
-                >
-                  <option value="">เลือกอำเภอ/เขต</option>
-                  {filteredDistricts2.map((district) => (
-                    <option key={district.id} value={district.id}>
-                      {district.name_th}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      className="select select-bordered w-full bg-white"
+                      value={selectedDistrict2}
+                      onChange={handleDistrictChange2}
+                      disabled={sameAddress || !selectedProvince2}
+                    >
+                      <option value="">เลือกอำเภอ/เขต</option>
+                      {filteredDistricts2.map((district) => (
+                        <option key={district.id} value={district.id}>
+                          {district.name_th}
+                        </option>
+                      ))}
+                    </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={selectedSubDistrict2}
-                  onChange={handleSubDistrictChange2}
-                  disabled={!selectedDistrict2}
-                >
-                  <option value="">เลือกตำบล/แขวง</option>
-                  {filteredSubDistricts2.map((subDistrict) => (
-                    <option key={subDistrict.id} value={subDistrict.id}>
-                      {subDistrict.name_th}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      className="select select-bordered w-full bg-white"
+                      value={selectedSubDistrict2}
+                      onChange={handleSubDistrictChange2}
+                      disabled={sameAddress || !selectedDistrict2}
+                    >
+                      <option value="">เลือกตำบล/แขวง</option>
+                      {filteredSubDistricts2.map((subDistrict) => (
+                        <option key={subDistrict.id} value={subDistrict.id}>
+                          {subDistrict.name_th}
+                        </option>
+                      ))}
+                    </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={postalCode2}
-                  onChange={(e) => setPostalCode2(e.target.value)}
-                  disabled={!selectedSubDistrict2}
-                >
-                  <option value="">เลือกรหัสไปรษณีย์</option>
-                  {availablePostalCodes2.map((code) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      className="select select-bordered w-full bg-white"
+                      value={postalCode2}
+                      onChange={(e) => setPostalCode2(e.target.value)}
+                      disabled={sameAddress || !selectedSubDistrict2}
+                    >
+                      <option value="">เลือกรหัสไปรษณีย์</option>
+                      {availablePostalCodes2.map((code) => (
+                        <option key={code} value={code}>
+                          {code}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -1020,7 +1084,9 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div>For each 350 baht donated, you can receive 1 T-shirt</div>
           </div>
 
-          <span className="text-xl text-center">Souvenir example (Pin and postcard)</span>
+          <span className="text-xl text-center">
+            Souvenir example (Pin and postcard)
+          </span>
 
           <div className="flex justify-center space-x-4">
             {images.map((image, index) => (
@@ -1048,7 +1114,9 @@ const handleSubmit = async (e: React.FormEvent) => {
               className="rounded-xl w-full h-auto object-contain"
             />
           </div>
-          <span className="text-xl text-center">Memorial pin and box example</span>
+          <span className="text-xl text-center">
+            Memorial pin and box example
+          </span>
 
           <div className="flex justify-center w-full">
             <img
@@ -1279,73 +1347,88 @@ const handleSubmit = async (e: React.FormEvent) => {
               />
               <div className="space-y-4">
                 <span className="text-xl">Address on receipt</span>
-                <input
-                  required
-                  type="text"
-                  placeholder="House number, Village/building, Road"
-                  value={addressDetail2}
-                  onChange={(e) => setAddressDetail2(e.target.value)}
-                  className="input input-bordered w-full bg-white"
-                />
+                {wantsReceipt && (
+                  <div className="space-y-4">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={sameAddress}
+                        onChange={(e) => setSameAddress(e.target.checked)}
+                        className="checkbox"
+                      />
+                      <span>Use the same address as the shipping address</span>
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      disabled={sameAddress}
+                      placeholder="House number, Village/building, Road"
+                      value={addressDetail2}
+                      onChange={(e) => setAddressDetail2(e.target.value)}
+                      className="input input-bordered w-full bg-white"
+                    />
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={selectedProvince2}
-                  onChange={handleProvinceChange2}
-                >
-                  <option value="">Select province</option>
-                  {provinces.map((province) => (
-                    <option key={province.id} value={province.id}>
-                      {province.name_en}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      disabled={sameAddress}
+                      className="select select-bordered w-full bg-white"
+                      value={selectedProvince2}
+                      onChange={handleProvinceChange2}
+                    >
+                      <option value="">Select province</option>
+                      {provinces.map((province) => (
+                        <option key={province.id} value={province.id}>
+                          {province.name_en}
+                        </option>
+                      ))}
+                    </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={selectedDistrict2}
-                  onChange={handleDistrictChange2}
-                  disabled={!selectedProvince2}
-                >
-                  <option value="">Select district</option>
-                  {filteredDistricts2.map((district) => (
-                    <option key={district.id} value={district.id}>
-                      {district.name_en}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      className="select select-bordered w-full bg-white"
+                      value={selectedDistrict2}
+                      onChange={handleDistrictChange2}
+                      disabled={sameAddress || !selectedProvince2}
+                    >
+                      <option value="">Select district</option>
+                      {filteredDistricts2.map((district) => (
+                        <option key={district.id} value={district.id}>
+                          {district.name_en}
+                        </option>
+                      ))}
+                    </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={selectedSubDistrict2}
-                  onChange={handleSubDistrictChange2}
-                  disabled={!selectedDistrict2}
-                >
-                  <option value="">Select subdistrict</option>
-                  {filteredSubDistricts2.map((subDistrict) => (
-                    <option key={subDistrict.id} value={subDistrict.id}>
-                      {subDistrict.name_en}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      className="select select-bordered w-full bg-white"
+                      value={selectedSubDistrict2}
+                      onChange={handleSubDistrictChange2}
+                      disabled={sameAddress || !selectedDistrict2}
+                    >
+                      <option value="">Select subdistrict</option>
+                      {filteredSubDistricts2.map((subDistrict) => (
+                        <option key={subDistrict.id} value={subDistrict.id}>
+                          {subDistrict.name_en}
+                        </option>
+                      ))}
+                    </select>
 
-                <select
-                  required
-                  className="select select-bordered w-full bg-white"
-                  value={postalCode2}
-                  onChange={(e) => setPostalCode2(e.target.value)}
-                  disabled={!selectedSubDistrict2}
-                >
-                  <option value="">Postal code</option>
-                  {availablePostalCodes2.map((code) => (
-                    <option key={code} value={code}>
-                      {code}
-                    </option>
-                  ))}
-                </select>
+                    <select
+                      required
+                      className="select select-bordered w-full bg-white"
+                      value={postalCode2}
+                      onChange={(e) => setPostalCode2(e.target.value)}
+                      disabled={sameAddress || !selectedSubDistrict2}
+                    >
+                      <option value="">Postal code</option>
+                      {availablePostalCodes2.map((code) => (
+                        <option key={code} value={code}>
+                          {code}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             </div>
           )}
