@@ -491,7 +491,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           <input
             required
             type="number"
-            placeholder="กรุณากรอกเป็นตัวเลข"
+            placeholder="กรุณากรอกเป็นตัวเลข โดยไม่มี ,"
             className="input input-bordered w-full bg-white"
             value={payment_amount}
             onChange={(e) => setpayment_amount(e.target.value)}
@@ -549,17 +549,19 @@ const handleSubmit = async (e: React.FormEvent) => {
           <input
             required
             type="number"
+            placeholder="กรุณากรอกเป็นตัวเลข หากไม่ต้องการให้ใส่เลข 0"
             className="input input-bordered w-full bg-white"
             value={card}
             onChange={(e) => setCard(e.target.value)}
             onWheel={(e) => e.currentTarget.blur()}
           ></input>
           <span className="text-xl">
-            จำนวนเข็มพร้อมกล่องที่ต้องการรับ (เงินบริจาค 250 ต่อ 1 ชุด)
+            จำนวนเข็มพร้อมกล่องที่ต้องการรับ (เงินบริจาค 250 บาทต่อเข็มพร้อมกล่อง 1 ชุด)
           </span>
           <input
             required
             type="number"
+            placeholder="กรุณากรอกเป็นตัวเลข หากไม่ต้องการให้ใส่เลข 0"
             className="input input-bordered w-full bg-white"
             value={cardwithbox}
             onChange={(e) => setCardwithbox(e.target.value)}
@@ -751,7 +753,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               />
               <div className="space-y-4">
                 <span className="text-xl">
-                  ชื่อ-นามสกุลที่ต้องการให้ปรากฎในใบเสร็จ
+                  ชื่อ-นามสกุลที่ต้องการให้ปรากฏในใบเสร็จ
                 </span>
               </div>
               <input
@@ -764,7 +766,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               />
               <div className="space-y-4">
                 <span className="text-xl">
-                  ที่อยู่ที่ต้องการให้ปรากฎในใบเสร็จ
+                  ที่อยู่ที่ต้องการให้ปรากฏในใบเสร็จ
                 </span>
                 <input
                   required
